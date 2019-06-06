@@ -1,37 +1,50 @@
 <?php
 
-class Schueler {
-	public $vorname;
-	public $nachname;
-	public $geburtsdatum;
-	public $kurs;
-	public $fach;
-	public $note;
+require '_config.php';
 
-// 	ADD getter & setter
+class Schueler {
+
+	public $vorname, $nachname, $geburtsdatum, $klasse, $fach, $id;
+
+	function __construct($vorname, $nachname, $geburtsdatum, $klasse, $fach, $id){
+		$this->vorname = $vorname;
+		$this->nachname = $nachname;
+		$this->geburtsdatum = $geburtsdatum;
+		$this->klasse = $klasse;
+		$this->fach = $fach;
+		$this->id = $id;
+	}
+
+	function setVorname($neuerVorname){
+		$this->vorname = $neuerVorname;
+	}
+
+	function getVorname(){
+		return $this->vorname;
+	}
 }
 
-// vormals Note (für mich zur Verständlichkeit)
+// vormals Note (für mich zur Verständlichkeit, 
+// da eine Note kein Objekt ist sondern z.B. di Klassenarbeit)
 class BenotungsObjekt{
 
-	public $bezeichnung;
-	public $prozentNote;
-	public $datum;
-	public $notenTyp;
-	public $kommentar;
-	public $schuelerID;
-	public $note;
+	private $bezeichnung, $prozentNote, $datum, $notenTyp, $kommentar, $schuelerID;
 
-/*
-
-*/
-
-	function __constructor($bezeichnung, $prozentNote, $datum, $notenTyp, $kommentar, $schuelerID){
-		$this->$bezeichnung=bezeichnung;
-		$this->$prozentNote=prozentNote;
-		$this->$datum=datum;
-		$this->$kommentar=kommentar;
-		$this->$schuelerID=schuelerID;
+	/**
+	 * @param String $bezeichnung (Name des Benotungsfalles)
+	 * @param number $prozentNote (Note in Prozent)
+	 * @param date $datum (Datum des Benotungsfalles)
+	 * @param String $notenTyp (Art/Kategorie des Benotungsfalles)
+	 * @param String $kommentar (Kommentar zur Benotung)
+	 * @param number $schuelerID (ID des zugehörigen Schülers)
+	*/
+	function __construct($bezeichnung, $prozentNote, $datum, $notenTyp, $kommentar, $schuelerID){
+		$this->bezeichnung=$bezeichnung;
+		$this->prozentNote=$prozentNote;
+		$this->datum=$datum;
+		$this->notenTyp = $notenTyp;
+		$this->kommentar=$kommentar;
+		$this->schuelerID=$schuelerID;
 	}
 
 	function berechneNote($notenschluessel, $prozentNote){
@@ -87,31 +100,111 @@ class BenotungsObjekt{
 		}
 	}
 
+	public function setBezeichnung($neueBezeichnung){
+		$this->bezeichnung=$neueBezeichnung;
+	}
+
 	public function getBezeichnung(){
 		return $this->bezeichnung;
 	}
-
-	public function setBezeichnung($bezeichnung){
-		$this->bezeichnung=$bezeichnung;
-	}
-
-	// 	ADD getter & setter 
-
 }
 
-class Kurs {
-	public $kursBezeichnung;
-	public $notenschluessel;
+class Klasse {
+	private $bezeichnungKlasse, $notenschluessel;
 
-	function erstelleKurs($kursBezeichnung, $notenschluessel){
-		// pack Werte per Query in neuen Kurs in die Datenbank
-		// INSERT INTO Schuelerverwaltung.Kurs (Name, Notenschluessel) VALUES ($kursBezeichnung, $notenschluessel)
+	/**
+	 * @param String $bezeichnungKlasse (Klassenbezeichnung)
+	 * @param String $notenschluessel (Notenschlüssel)
+	 */
+	function __construct($bezeichnungKlasse, $notenschluessel){
+		$this->bezeichnungKlasse = $bezeichnungKlasse;
+		$this->notenschluessel = $notenschluessel;
 	}
 
-// 	add getter & setter
+	function setBezeichnungKlasse($neueBezeichnungKlasse){
+		$this->bezeichnungKlasse = $neueBezeichnungKlasse;
+	}
 
+	function getBezeichnungKlasse(){
+		return $this->bezeichnungKlasse;
+	}
 }
 
+class Notenschluessel {
+	private $notenschluesselID, $notenschluesselTyp;
 
+	/**
+	 * @param number $notenschluesselID
+	 * @param String $notenschluesselTyp
+	 */
+
+	function __construct($notenschluesselID, $notenschluesselTyp){
+		$this->notenschluesselID = $notenschluesselID;
+		$this->notenschluesselTyp = $notenschluesselTyp;
+	}
+
+	function setNotenschluesselTyp($neuerNST){
+		$this->notenschluesselTyp = $neuerNST;
+	}
+
+	function getNotenschluesselTyp(){
+		return $this->notenschluesselTyp;
+	}
+}
+
+class Database {
+
+	private $hostname;
+	private $dbname;
+	private $charset;
+	private $username;
+	private $password;
+
+	public function connect(){
+		$this->hostname = DBHOST;
+		$this->dbname = DBNAME;
+		$this->charset = DBCHARSET;
+		$this->username = DBUSERNAME;
+		$this->password = DBPASSWORD;
+
+		try {
+			$dsn = "mysql:host=".$this->hostname.";dbname=".$this->dbname.";charset=".$this->charset;
+			$pdo_conn = new PDO($dsn, $this->username, $this->password);
+			$pdo_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			// echo "Yupiee, connection succsessful!";
+			return $pdo_conn;
+		} catch (PDOException $e){
+			echo "Sorry, connection failed: ".$e->getMessage();
+		}
+	}
+
+
+	public function showAllStudents(){
+		$stmt = $this->connect()->query("SELECT * FROM student");
+		
+		echo "<table>";
+
+			echo "<th>studentID</th>";
+			echo "<th>firstName</th>";
+			echo "<th>lastName</th>";
+			echo "<th>birthDate</th>";
+
+			while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+				echo "<tr>";
+
+					foreach ($row as $value) {
+					echo "<td>".$value."</td>";
+					}
+					
+				echo "</tr>";
+			}
+
+		echo "</table>";
+	}
+
+	public function disconnect(){
+		$pdo_conn = NULL;
+	}
+}
 
 ?>
