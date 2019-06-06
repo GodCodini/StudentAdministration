@@ -8,8 +8,7 @@ class Schueler {
 	public $fach;
 	public $note;
 
-// 	ADD getter & setter 
-// hi
+// 	ADD getter & setter
 }
 
 class Note{
