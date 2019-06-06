@@ -11,17 +11,28 @@ class Schueler {
 // 	ADD getter & setter
 }
 
-class Note{
+// vormals Note (für mich zur Verständlichkeit)
+class BenotungsObjekt{
 
 	public $bezeichnung;
-	public $note;
 	public $prozentNote;
 	public $datum;
 	public $notenTyp;
 	public $kommentar;
-	public $notenschluessel;
+	public $schuelerID;
+	public $note;
 
-	function berechneProzentNote(){}
+/*
+
+*/
+
+	function __constructor($bezeichnung, $prozentNote, $datum, $notenTyp, $kommentar, $schuelerID){
+		$this->$bezeichnung=bezeichnung;
+		$this->$prozentNote=prozentNote;
+		$this->$datum=datum;
+		$this->$kommentar=kommentar;
+		$this->$schuelerID=schuelerID;
+	}
 
 	function berechneNote($notenschluessel, $prozentNote){
 		if ($notenschluessel = "IHK") {
@@ -75,7 +86,15 @@ class Note{
 			} 
 		}
 	}
-	
+
+	public function getBezeichnung(){
+		return $this->bezeichnung;
+	}
+
+	public function setBezeichnung($bezeichnung){
+		$this->bezeichnung=$bezeichnung;
+	}
+
 	// 	ADD getter & setter 
 
 }
