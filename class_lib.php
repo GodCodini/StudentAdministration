@@ -9,7 +9,7 @@ class Schueler {
 	public $note;
 
 // 	ADD getter & setter 
-
+// hi
 }
 
 class Note{
