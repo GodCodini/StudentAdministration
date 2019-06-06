@@ -29,3 +29,6 @@ Browser & connection to a database (own or dummy database)
 
 **ERM-Model:**  
 ![alt text](https://github.com/TheAmazingCodini/StudentAdministration/blob/master/ERM_Schuelerverwaltung.png)
+
+**Database creation SQL script**
+[a link](https://github.com/TheAmazingCodini/StudentAdministration/blob/master/database_structure.sql)
