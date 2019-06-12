@@ -1,5 +1,5 @@
 <?php
-
+include 'db.php';
 ?>
 
 <html>
@@ -7,12 +7,27 @@
         <title>Schülerverwaltung</title>
         <link rel="stylesheet" href="styles/styles.css">
         <link rel="text/javascript" href="functions/functions.js">
+        <link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+        <script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+        <script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
+        <script>
+            $( function() {
+                $( "#tabs" ).tabs();
+            } );
+        </script>
     </head>
     <body>
+        <div id="tabs">
         <ul>
             <li><a href="#tabs-1">Startseite</a></li>
             <li><a href="#tabs-2">Schüler verwalten</a></li>
             <li><a href="#tabs-3">Kurse/Klassen verwalten</a></li>
+            <?php 
+                $result = $pdo->query("SELECT * FROM schueler");
+                echo '<pre>';
+                var_dump($result);
+                echo '</pre>';
+            ?>
         </ul>
         <div class="container">
             <div class="row">
@@ -43,6 +58,7 @@
                     </p>
                 </div>
             </div>
+        </div>
         </div>
     </body>
 </html>

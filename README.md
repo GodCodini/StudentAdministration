@@ -5,6 +5,7 @@ This is an administration interface for students grades as a school project.
 
 **Languages:**  
 Based on PHP (OOP)
+JavaScript (jQuery)
 
 **Dependencies:**  
 Browser & connection to a database (own or dummy database)
@@ -14,10 +15,10 @@ Browser & connection to a database (own or dummy database)
 - Classes can be added
 - Subjects can be added
 - Grades can be added (different amount of grades are possible)
-- Grades are present as percentage and school grade
+- Grades are present as percentage and school grade (European)
 - Grades can have different types (ex. exam, homework, presentation, projects, collaboration ...)
 - Weighting of different grade types (ex. written and oral grades are weighted 50/50)
-- Calculation of final grade (ex. based on: written & oral, quarter-year, hald-year, full-year ...)
+- Calculation of final grade (ex. based on: written & oral, quarter-year, half-year, full-year ...)
 - Calculation of grades based on two specific algorithms (German Highschool "Abitur" and Internship "IHK") 
 - Algorithm can be choosen depending on which class the specific student is in
 - Students, Classes and Grades are linked together in the database via foreign keys
