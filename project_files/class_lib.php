@@ -14,6 +14,27 @@ class Schueler {
 		$this->fach = $fach;
 		$this->id = $id;
 	}
+	/**
+	 * @param String $vorname
+	 * @param String $nachname
+	 * @param date $geburtsdatum
+	 * @param Number $klasse
+	 * @return Boolean
+	 */
+	function create($vorname, $nachname, $geburtsdatum, $klasse) {
+		$sql = "INSERT INTO schuelerverwaltung.schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) VALUES (?, ?, ?, ?)";
+		$pdo_conn = DATABASE::connect();
+		$stmt = $pdo_conn->prepare($sql);
+		$result = $stmt->execute(array($vorname, $nachname, $geburtsdatum, $klasse));
+		if ($result) {
+			DATABASE::disconnect();
+			return true;
+		}
+		else {
+			DATABASE::disconnect();
+			return false;
+		}
+	}
 
 	function setVorname($neuerVorname){
 		$this->vorname = $neuerVorname;
@@ -25,7 +46,7 @@ class Schueler {
 }
 
 // vormals Note (für mich zur Verständlichkeit, 
-// da eine Note kein Objekt ist sondern z.B. di Klassenarbeit)
+// da eine Note kein Objekt ist sondern z.B. die Klassenarbeit)
 class BenotungsObjekt{
 
 	private $bezeichnung, $prozentNote, $datum, $notenTyp, $kommentar, $schuelerID;
@@ -128,6 +149,10 @@ class Klasse {
 	function getBezeichnungKlasse(){
 		return $this->bezeichnungKlasse;
 	}
+
+	function getAlleKlassen() {
+		$sql = "SELECT 'Name', 'Notenschluesseltyp_id_Notenschluesseltyp'";
+	}
 }
 
 class Notenschluessel {
@@ -161,15 +186,10 @@ class Database {
 	private $password;
 
 	public function connect(){
-		$this->hostname = DBHOST;
-		$this->dbname = DBNAME;
-		$this->charset = DBCHARSET;
-		$this->username = DBUSERNAME;
-		$this->password = DBPASSWORD;
 
 		try {
-			$dsn = "mysql:host=".$this->hostname.";dbname=".$this->dbname.";charset=".$this->charset;
-			$pdo_conn = new PDO($dsn, $this->username, $this->password);
+			$dsn = "mysql:host=".DBHOST.";dbname=".DBNAME.";charset=".DBCHARSET."";
+			$pdo_conn = new PDO($dsn, DBUSERNAME, DBPASSWORD);
 			$pdo_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			// echo "Yupiee, connection succsessful!";
 			return $pdo_conn;

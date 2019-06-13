@@ -3,9 +3,9 @@
 // Database configuration file
 
 define('DBHOST','localhost');
-define('DBNAME','studentadministration');
+define('DBNAME','schuelerverwaltung');
 define('DBCHARSET', 'utf8mb4');
-define('DBUSERNAME','username');
+define('DBUSERNAME','root');
 define('DBPASSWORD','');
 
 ?>
