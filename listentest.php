@@ -134,3 +134,54 @@ $obj->insertFirst($value);
 $obj->insert($value,$key); //at any index
 $obj->deleteNode($value);
 $obj->readList();
+
+class DoublyLinkedList {
+    private $start = null;
+    private $end = null;
+
+    public function add(Element $element) {
+        //if this is the first element we've added, we need to set the start
+        //and end to this one element
+        if($this->start === null) {
+            $this->start = $element);
+            $this->end = $element;
+            return;
+        }
+
+        //there were elements already, so we need to point the end of our list
+        //to this new element and make the new one the end
+        $this->end->setNext($element);
+        $element->setPrevious($this->end);
+        $this->end = $element;
+    }
+
+    public function getStart() {
+        return $this->start;
+    }
+
+    public function getEnd() {
+        return $this->end;
+    }
+}
+
+class Element {
+    private $prev;
+    private $next;
+    private $data;
+
+    public __construct($data) {
+        $this->data = $data;
+    }
+
+    public function setPrevious(Element $element) {
+        $this->prev = $element;
+    }
+
+    public function setNext(Element $element) {
+        $this->next = $element;
+    }
+
+    public function setData($data) {
+        $this->data = $data;
+    }
+}
