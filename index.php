@@ -1,5 +1,16 @@
 <?php
 include 'db.php';
+include 'project_files/class_lib.php';
+
+if (isset($_POST['submit'])) {
+    $vorname = $_POST['vorname'];
+    $nachname = $_POST['nachname'];
+    $geburtstdatum = $_POST['bday'];
+    $klasse = $_POST['kurs'];
+
+    $succsess = Schueler::create($vorname, $nachname, $geburtstdatum, $klasse);
+    
+}
 ?>
 
 <html>
@@ -22,12 +33,7 @@ include 'db.php';
             <li><a href="#tabs-1">Startseite</a></li>
             <li><a href="#tabs-2">Schüler verwalten</a></li>
             <li><a href="#tabs-3">Kurse/Klassen verwalten</a></li>
-            <?php 
-                $result = $pdo->query("SELECT * FROM schueler");
-                echo '<pre>';
-                var_dump($result);
-                echo '</pre>';
-            ?>
+            
         </ul>
         <div class="container">
             <div class="row">
@@ -38,6 +44,28 @@ include 'db.php';
                         Begrüßung<br>
                         Fehlermeldungen
                     </p>
+                    <form action="index.php" method="post">
+                        <label for="vorname">Vorname</label>
+                        <input type="text" name="vorname">
+                        <label for="nachname">Nachname</label>
+                        <input type="text" name="nachname">
+                        <label for="bday">Geburtstdatum</label>
+                        <input type="date" name="bday">
+                        <label for="kurs">Kurs auswählen</label>
+                        <select name="kurs" id="kurs">
+                            <option value="1">FI7S</option>
+                            <option value="2">FI8A</option>
+                        </select>
+                        <input type="submit" name="submit" value="Senden">
+                    </form>
+                    <?php 
+                        if ($succsess) {
+                            echo 'Schüler wurde angelegt.';
+                        }
+                        else {
+                            echo 'Schüler konnte nicht angelegt werden';
+                        }
+                    ?>
                 </div>
                 <div id="tabs-2">
                     <?php //TODO Schülerverwaltung implementieren. Tabelle klickbar machen? ?>
