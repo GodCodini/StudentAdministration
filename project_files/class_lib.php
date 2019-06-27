@@ -6,13 +6,17 @@ class Schueler {
 
 	public $vorname, $nachname, $geburtsdatum, $klasse, $fach, $id;
 
-	function __construct($vorname, $nachname, $geburtsdatum, $klasse, $fach, $id){
+	function __construct($vorname, $nachname, $geburtsdatum, $klasse, $fach, $id = NULL){
 		$this->vorname = $vorname;
 		$this->nachname = $nachname;
 		$this->geburtsdatum = $geburtsdatum;
 		$this->klasse = $klasse;
 		$this->fach = $fach;
 		$this->id = $id;
+	}
+
+	public function createStudent(){
+		$this->connect()->query("INSERT INTO `student` (`studentID`, `firstName`, `lastName`, `birthDate`) VALUES (NULL, '".$this->vorname."', '".$this->nachname."', '".$this->geburtsdatum);
 	}
 
 	function setVorname($neuerVorname){
@@ -25,7 +29,7 @@ class Schueler {
 }
 
 // vormals Note (für mich zur Verständlichkeit, 
-// da eine Note kein Objekt ist sondern z.B. di Klassenarbeit)
+// da eine Note kein Objekt ist sondern z.B. die Klassenarbeit)
 class BenotungsObjekt{
 
 	private $bezeichnung, $prozentNote, $datum, $notenTyp, $kommentar, $schuelerID;
@@ -152,7 +156,7 @@ class Notenschluessel {
 	}
 }
 
-class Database {
+abstract class Database {
 
 	private $hostname;
 	private $dbname;
@@ -178,6 +182,9 @@ class Database {
 		}
 	}
 
+	public function disconnect(){
+		$pdo_conn = NULL;
+	}
 
 	public function showAllStudents(){
 		$stmt = $this->connect()->query("SELECT * FROM student");
@@ -201,9 +208,27 @@ class Database {
 
 		echo "</table>";
 	}
+}
 
-	public function disconnect(){
-		$pdo_conn = NULL;
+class Node {
+	public $nodeData;
+	public $nodeIndex;
+	public $nextNode;
+	public $prevNode;
+
+	function __construct($nodeData){
+		$this->nodeData = $nodeData;
+		$this->nodeIndex = NULL;
+		$this->prevNode = NULL;
+		$this->nextNode = NULL;
+	}
+}
+
+class NodeList {
+	public $nodeCount;
+
+	function add_Node($nodeData){
+		$node = new Node($nodeData);
 	}
 }
 
