@@ -185,3 +185,60 @@ class Element {
         $this->data = $data;
     }
 }
+
+
+
+
+
+-----------------
+    
+    <!DOCTYPE html>
+<html>
+<body>
+
+<?php
+class Node {
+  public $nodeData;
+  public $prevNode;
+  public $nextNode;
+  public $nodeIndex;
+  
+  function __construct($nodeData){
+    $this->nodeData = $nodeData;
+    $this->prevNode = NULL;
+    $this->nextNode = NULL;
+    $this->nodeIndex = NULL;
+  }
+}
+  
+class nodeList {
+  public $nodeCou
+  
+  function addNode ($nodeData){
+  	$node = new Node($nodeData);
+    $this->prevNode = ;
+    
+    /*
+    
+    ZÄHLE MENGE NODES IN LISTE
+    WENN = 0 dann setze added Node auf platz 1 (kein prev & next)
+    WENN != 0
+    
+    
+    
+    */
+  }
+  
+  function read_nodeData() {
+    return $this->nodeData;
+  }
+}
+  
+  $test = new Node("Mike");
+  echo "<pre>";
+  var_dump($test);
+  echo "</pre>";
+?> 
+
+</body>
+</html>
