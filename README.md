@@ -26,7 +26,7 @@ Browser & connection to a database (own or dummy database)
 - Overview of student information (firstname, lastname, grades sortable acending and descending)
 - Student overview as full-, half- & quarter-year possible to choose from
 - Forgotten homework can be assigned to a student with a specific date
-- Random generator of student name within a choosen subject
+- Random picking a student for who must present first *HINT: It wont be me =)*
 
 **ERM-Model:**  
 ![alt text](https://github.com/TheAmazingCodini/StudentAdministration/blob/master/ERM_Schuelerverwaltung.png)
