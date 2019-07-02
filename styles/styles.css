@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+form {
+    justify-content: center;
+}
+
+.input {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 30px;
+}
+
+.submit {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: darkgreen;
+    color: white;
+    position: relative;
+}
+
+img {
+    align-self: center;
+    margin-top: 10px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1em;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.error {
+    color: white;
+    font-weight: bold;
+    border: red 1px solid;
+    background-color: red;
+    padding: 5px;
+}
+
+.succsess {
+    color: white;
+    font-weight: bold;
+    border: green 1px solid;
+    background-color: green;
+    padding: 5px;
+    display: block;
+}
+
+#tabs {
+    padding: 0px;
+    background: none;
+    border-width: 0px;
+}
+#tabs .ui-tabs-nav {
+    padding-left: 0px;
+    background: transparent;
+    border-width: 0px 0px 1px 0px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
+
+#tabs .ui-tabs-active {
+    background-color: darkgreen;
+    border: darkgreen 1px solid;
+}
+
+.cellEditing {
+    background-color: aquamarine;
+}
+
+#myTable {
+    border-collapse: collapse;
+}
+
+th, td {
+    width: 200px;
+    height: 100%;
+}
+td a {
+    display: block;
+    height:100%;
+    width:100%;
+}
+
+.test-label{
+    display: inline-block;
+    text-align: right;
+    clear: left;
+    width: 190px;
+}
+.inputFilesAjax {
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 30%;
+    border-collapse: collapse;
+    height: 30px;
+
+}
+
+.testdiv {
+    position: relative;
+    justify-content: center;
+}
