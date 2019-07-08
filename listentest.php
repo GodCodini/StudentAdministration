@@ -39,20 +39,23 @@ class DoublyLinkedList
     public function readList()
     {
         $start = $this->getStart();
-        $test = $start->getData();
-        $count = $this->getCount();
-        $arr = [];
-        for ($i = 0; $i < $count; $i++) {
-            array_push($arr, $test);
-            //echo $test . "<br>";
-            //verhindert ein getData auf ein leeres Objekt
-            if ($i != $count - 1) {
-                $start = $start->getNext();
-                $test = $start->getData();
-            }
+        $data = $start->getData();
+        $this->readData($start, $data);
 
+    }
+
+    public function readData($node, $data) {
+        if ($node->getNext() === null) {
+            $data = $node->getData();
+            echo $data . "<br>";
+            return 0;
         }
-        return $arr;
+        else {
+            echo $data . "<br>";
+            $node = $node->getNext();
+            $data = $node->getData();
+            $this->readData($node, $data);
+        }
     }
 
     public function getStart()
