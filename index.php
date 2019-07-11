@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once './ajaxNode.php';
 
 
@@ -14,20 +15,13 @@ include_once './ajaxNode.php';
 </head>
 
 <body>
-
-<form action="./index.php" onsubmit="return false;" method="post">
+<form action="./project_files/liste.php" method="post">
     <label for="data">Daten für die Liste</label>
     <input class="test" type="text" name="liste" id="listenname">
-    <button onclick="listElement()">Senden</button>
-</form>
+    <input type="submit" name="submit" value="Senden">
+    </form>
+    <br><br><br>
 
-<form action="./index.php" onsubmit="return false;" method="post">
-    <label for="data">Daten fürn Knoten</label>
-    <input class="test" type="text" name="data" id="name">
-    <button onclick="nodeElement()">Senden</button>
-</form>
-
-<p>Hier stehen (hoffentlich irgendwann) alle Schüler:</p>
 <?php
 
 
@@ -35,13 +29,8 @@ include_once './ajaxNode.php';
 if (isset($_POST['liste'])) {
     $test = $_POST['liste'];
     $liste = new DoublyLinkedList();
+    $_SESSION['liste'] = $liste;
 }
 
-if (isset($_POST['data'])) {
-    $name = $_POST['data'];
-    $schueler = new Schueler($name);
-    $liste->add($schueler);
-    $liste->readList();
-}
 ?>
 </body>

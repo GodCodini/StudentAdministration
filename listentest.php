@@ -119,7 +119,7 @@ class Element
     }
 }
 
-$elm1 = "element 1";
+/*$elm1 = "element 1";
 $elm2 = "Das ist ein Test lol 2";
 $elm3 = "testetstetstetstetstetstetst 3";
 $elm4 = "teste 4";
@@ -140,3 +140,4 @@ highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");
 echo "</pre>";
 $array = $liste->readList();
 dev::printTableFromObjectArray($array);
+*/

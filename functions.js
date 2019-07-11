@@ -1,7 +1,7 @@
 function nodeElement() {
 
     $.ajax({
-        url: "index.php",
+        url: "liste.php",
         cache: false,
         type: "post",
         data: {
@@ -23,7 +23,7 @@ function nodeElement() {
 function listElement() {
 
     $.ajax({
-        url: "index.php",
+        url: "project_files/liste.php",
         cache: false,
         type: "post",
         data: { data: $("#name").data('value')},
