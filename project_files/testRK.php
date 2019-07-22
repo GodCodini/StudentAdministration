@@ -27,7 +27,7 @@ $nodeList->add_Node("Anja");
 $nodeList->add_Node("Björn");
 $nodeList->add_Node("Castjel");
 $nodeList->add_Node("Daniel");
-$nodeList->add_Node("Erna");
+$nodeList->add_Node("Pascal");
 $count = $nodeList->count_Nodes();
 
 echo "<div class='counter'>Total nodes: $count</div><br>";
