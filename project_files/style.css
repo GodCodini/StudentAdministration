@@ -1,0 +1,26 @@
+.nodeElement {
+    border: 1px solid;
+    float: left;
+    margin-right: 10px;
+}
+
+.nodeElement div {
+    padding: 10px;
+    background-color: lightgray;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10px;
+}
+
+.nodeIndex {
+    background-color: gray !important;
+    color: white;
+}
+
+.counter {
+    clear: left;
+    width: 110px;
+    text-align: center;
+    background-color: lightgray;
+    border: 1px solid;
+    padding: 10px;
+}

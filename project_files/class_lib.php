@@ -236,20 +236,124 @@ class Node {
 	public $nextNode;
 	public $prevNode;
 
-	function __construct($nodeData){
+	function __construct($nodeData, $nodeIndex = NULL, $prevNode = NULL, $nextNode = NULL) {
 		$this->nodeData = $nodeData;
-		$this->nodeIndex = NULL;
-		$this->prevNode = NULL;
-		$this->nextNode = NULL;
+		$this->nodeIndex = $nodeIndex;
+		$this->prevNode = $prevNode;
+		$this->nextNode = $nextNode;
+	}
+
+	function getNodeData() {
+		return $this->nodeData;
 	}
 }
 
 class NodeList {
-	public $nodeCount;
+	public $firstNode;
+	public $lastNode;
+	public $counter;
+	
+	function __construct($firstNode = NULL, $lastNode = NULL, $counter = 0){
+		$this->counter = $counter;
+		$this->firstNode = $firstNode;
+		$this->lastNode = $lastNode;
+	}
 
 	function add_Node($nodeData){
 		$node = new Node($nodeData);
+				
+		if ($this->counter == 0)
+		{
+			$node->nodeIndex = $this->counter;
+			$node->prevNode = NULL;
+			$node->nextNode = NULL;
+			$this->counter++;
+			$this->firstNode = $node;
+			$this->lastNode = $node;
+		}	
+		else 
+		{
+			$this->lastNode->nextNode = $node;
+			$node->prevNode = $this->lastNode;
+			$node->nodeIndex = $this->counter;
+			$this->lastNode = $node;
+			
+			$node->nextNode = NULL; 
+			
+			$this->counter++;
+		}	
+	}
+
+	function count_Nodes(){
+		return $this->counter;
+	}
+
+	function displayAllNodes(){
+		$currentNode = $this->firstNode;
+		$offset = 40;
+
+		while($currentNode !== NULL){
+
+			if ($currentNode->prevNode !== NULL){
+				$pre = $currentNode->prevNode->nodeData;
+			} else {
+				$pre = NULL;
+			}
+
+			if($nex = $currentNode->nextNode !== NULL){
+				$nex = $currentNode->nextNode->nodeIndex;
+			} else {
+				$nex = NULL;
+			}
+
+			$dat = $currentNode->nodeData;
+			$cur = $currentNode->nodeIndex;
+			
+			$steps = $offset * $cur;
+
+			echo "<div class='nodeElement' style='margin-top:".$steps."px'>";
+        		echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
+        		echo "<div class='nodeIndex'>Node index: ".$cur."<br>Data: ".$dat."</div>";
+        		echo "<div class='nextNode'>Next node: ".$nex." --></div>";
+			echo "</div>";
+			
+			$currentNode = $currentNode->nextNode;
+		}
+	}
+
+	function displaySpecificNode($nodeID){
+		$currentNode = $this->firstNode;
+
+		if ($nodeID <= $this->counter){
+			while ($currentNode->nodeIndex !== $nodeID){
+				$currentNode = $currentNode->nextNode;
+			}
+		} 
+/*
+		while ($currentNode->nodeIndex !== $nodeID){
+			$currentNode = $currentNode->nextNode;
+		}
+*/
+		if ($currentNode->prevNode !== NULL){
+			$pre = $currentNode->prevNode->nodeData;
+		} else {
+			$pre = NULL;
+		}
+
+		if($nex = $currentNode->nextNode !== NULL){
+			$nex = $currentNode->nextNode->nodeIndex;
+		} else {
+			$nex = NULL;
+		}
+
+		$dat = $currentNode->nodeData;
+		$cur = $currentNode->nodeIndex;
+
+		echo "<div class='nodeElement'>";
+		echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
+		echo "<div class='nodeIndex'>Node index: ".$cur."<br>Data: ".$dat."</div>";
+		echo "<div class='nextNode'>Next node: ".$nex." --></div>";
+		echo "</div>";		
 	}
 }
-
 ?>
