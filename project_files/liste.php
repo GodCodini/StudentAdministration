@@ -1,19 +1,37 @@
 <?php
- class Liste {
-    //mach ne coole Liste für Schüler liebes VS Studio Code, thx
+session_start();
+include_once '../ajaxNode.php';
+if (isset($_POST['submit'])) {
+   $test = $_POST['liste'];
+   $liste = new DoublyLinkedList();
+}
 
+?>
 
-    /**
-     * 
-     * Eine Liste, wo jeder Knoten einen Pointer auf den nächsten Knoten hat. Ebenso hat jeder einen Pointer auf den vorherigen.
-     * Um einen Knoten zu löschen, muss man alle Pointer auf das Objekt löschen/verschieben. Die Liste soll erweiterbar und 
-     * sortierbar sein. Es ist eine verkette Liste. Und ziemlich doof. lol. reeeeee
-     */
-    private $schueler;
-    private $liste;
-    private $startKnoten;
-    private $nächsterKnoten;
-    private $vorherigerKnoten;
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+    <!--<link rel="stylesheet" href="style/styles.css">-->
 
- }
+    <script type="text/javascript" src="../functions.js"></script>
+
+</head>
+
+<body>
+    <label for="data">Daten fürn Knoten</label>
+    <input class="test" type="text" name="data" id="name">
+    <button onclick="nodeElement()">Senden</button>
+
+<p>Hier stehen (hoffentlich irgendwann) alle Schüler:</p>
+<?php
+$liste->readList();
+//POST wird nicht richtig abgefangen. AJAX ist doch irgendwie komisch alla.
+if (isset($_POST['data'])) {
+    $name = $_POST['data'];
+    $schueler = new Schueler($name);
+    $liste->add($schueler);
+    var_dump($liste);
+    $liste->readList();
+}
+?>
+</body>
