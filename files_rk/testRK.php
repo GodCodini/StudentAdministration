@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="style.css">
+<script type="text/javascript" src="ajax_request.js"></script>
 
 <?php
 
@@ -31,20 +32,9 @@ $nodeList->add_Node("Pascal");
 $count = $nodeList->count_Nodes();
 
 echo "<div class='counter'>Total nodes: $count</div><br>";
-//echo "<pre>";
-/*
-echo "First node is: ";
-print_r($nodeList->firstNode);
-echo "<br><br>";
 
-echo "Last node is: ";
-print_r($nodeList->lastNode);
-echo "</pre>";
-*/
-//$nodeList->displayAllNodes();
+$nodeList->displayAllNodes();
 
-// echo '<button onclick="'.$nodeList->displayAllNodes().'">Show all</button>';
-
-$nodeList->displaySpecificNode(6);
+//$nodeList->displaySpecificNode(3);
 
 ?>

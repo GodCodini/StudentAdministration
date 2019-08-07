@@ -324,16 +324,12 @@ class NodeList {
 	function displaySpecificNode($nodeID){
 		$currentNode = $this->firstNode;
 
-		if ($nodeID <= $this->counter){
+		if ($nodeID < $this->counter){
 			while ($currentNode->nodeIndex !== $nodeID){
 				$currentNode = $currentNode->nextNode;
-			}
-		} 
-/*
-		while ($currentNode->nodeIndex !== $nodeID){
-			$currentNode = $currentNode->nextNode;
+				}
 		}
-*/
+		
 		if ($currentNode->prevNode !== NULL){
 			$pre = $currentNode->prevNode->nodeData;
 		} else {
@@ -349,11 +345,17 @@ class NodeList {
 		$dat = $currentNode->nodeData;
 		$cur = $currentNode->nodeIndex;
 
-		echo "<div class='nodeElement'>";
-		echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
-		echo "<div class='nodeIndex'>Node index: ".$cur."<br>Data: ".$dat."</div>";
-		echo "<div class='nextNode'>Next node: ".$nex." --></div>";
-		echo "</div>";		
+
+		if ($nodeID < $this->counter){	
+			echo "<div class='nodeElement'>";
+			echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
+			echo "<div class='nodeIndex'>Node index: ".$cur."<br>Data: ".$dat."</div>";
+			echo "<div class='nextNode'>Next node: ".$nex." --></div>";
+			echo "</div>";
+		
+		} else {
+			echo "entered note id does not exists";
+		}
 	}
 }
 ?>
