@@ -3,7 +3,8 @@ error_reporting(E_ALL); ini_set('display_errors', 1);
 session_start();
 include_once './ajaxNode.php';
 $pw = $_COOKIE['password'];
-$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');$redirect_after_login = 'files_lp/liste.php';
+$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');
+$redirect_after_login = 'files_lp/liste.php';
 
 $sql = "SELECT (aktuellesPW) FROM passwort";
 $statement = $pdo->query($sql);
@@ -45,7 +46,6 @@ if (isset($_GET['succsess'])) {
     <input class="test" type="text" name="liste" id="listenname">
     <input type="submit" name="senden" value="Senden">
 </form>
-</body>
 <form id="list" method="post" action="liste.php">
     <label for="data">Daten des Schülers</label>
     <input class="test" type="text" name="name" autocomplete="off" autofocus id="name">

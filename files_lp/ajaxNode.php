@@ -131,15 +131,21 @@ class DoublyLinkedList
      */
     public function reverseReadData($node, $data)
     {
-        if ($node !== null) {
+        if ($node !== null)
+        {
             echo $data . "<br>";
             $node = $node->getPrevious();
-            if ($node !== null) {
+            if ($node !== null)
+            {
                 $this->reverseReadData($node, $node->getData());
-            } else {
+            }
+            else
+            {
                 return;
             }
-        } else {
+        }
+        else
+        {
             return;
         }
     }
@@ -149,33 +155,39 @@ class DoublyLinkedList
         $current = $this->start;
 
         for ($i = 1; $i <= $this->count; $i++) {
-            if ($current->getData() === $key) {
-                if ($this->count === 1) {
-                    $this->start = null;
-                    $this->end = null;
-                    $this->count--;
+            if ($current->getData() === $key)
+            {
+                if ($this->count === 1)
+                {
+                    $this->resetList();
                     break;
                 }
-                elseif($this->start === $current) {
+                elseif ($this->start === $current)
+                {
                     $next = $current->getNext();
                     $next->setPrevious(null);
                     $this->start = $next;
                     $this->count--;
                     break;
                 }
-                elseif ($this->end === $current) {
+                elseif ($this->end === $current)
+                {
                     $pre = $current->getPrevious();
                     $pre->setNext(null);
                     $this->end = $pre;
                     $this->count--;
                     break;
                 }
-                $pre = $current->getPrevious();
-                $nex = $current->getNext();
-                $pre->setNext($nex);
-                $nex->setPrevious($pre);
-                $this->count--;
-                break;
+                else
+                    {
+                    $pre = $current->getPrevious();
+                    $nex = $current->getNext();
+                    $pre->setNext($nex);
+                    $nex->setPrevious($pre);
+                    $this->count--;
+                    break;
+                }
+
             }
             $current = $current->getNext();
         }
