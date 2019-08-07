@@ -1,7 +1,36 @@
 <?php
 error_reporting(E_ALL); ini_set('display_errors', 1);
 session_start();
-include_once '../ajaxNode.php';
+include_once './ajaxNode.php';
+$pw = $_COOKIE['password'];
+$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');$redirect_after_login = 'files_lp/liste.php';
+
+$sql = "SELECT (aktuellesPW) FROM passwort";
+$statement = $pdo->query($sql);
+$result = $statement->fetch(PDO::FETCH_ASSOC);
+$aktuellesPW = $result['aktuellesPW'];
+
+if (isset($_GET['succsess'])) {
+    if ($_GET['succsess'] == "pwupdated") {
+        $remember_password = strtotime('+1 days');
+        $sql = "SELECT (aktuellesPW) FROM passwort";
+        $statement = $pdo->query($sql);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $aktuellePW = $result['aktuellesPW'];
+        setcookie("password", $aktuellePW, $remember_password);
+        header('Refresh:5;url=./admin.php?succsess=pwupdate');
+    }
+} elseif (empty($_COOKIE['password'])) {
+    //Wenn der Cookie leer ist oder das falsche Passwort hat, redirect zur login.php
+    header('Location: ./login.php');
+    exit;
+} elseif ($pw != $aktuellesPW) {
+    header('Location: ./login.php');
+    exit;
+} else {
+    header("Location: ./liste.php");
+}
+
 ?>
 
 <head>
@@ -11,6 +40,12 @@ include_once '../ajaxNode.php';
 </head>
 
 <body>
+<form action="liste.php" method="post">
+    <label for="data">Daten für die Liste</label>
+    <input class="test" type="text" name="liste" id="listenname">
+    <input type="submit" name="senden" value="Senden">
+</form>
+</body>
 <form id="list" method="post" action="liste.php">
     <label for="data">Daten des Schülers</label>
     <input class="test" type="text" name="name" autocomplete="off" autofocus id="name">
@@ -42,10 +77,10 @@ include_once '../ajaxNode.php';
 //var_dump($liste);
 //echo "</pre>";
 if (isset($_POST['senden'])) {
-    $test = $_POST['liste'];
-    $liste = new DoublyLinkedList();
+    $name = $_POST['liste'];
+    $liste = new DoublyLinkedList($name);
     $liste->readList();
-    $_SESSION['liste'] = serialize($liste);
+    $_SESSION[''.$name.''] = serialize($liste);
     unset($_POST['submit']);
 }
 
@@ -84,5 +119,9 @@ if (array_key_exists('resetList', $_POST)) {
     $liste->readList();
     $_SESSION['liste'] = serialize($liste);
 }
+
+echo "<h3> PHP List All Session Variables</h3>";
+foreach ($_SESSION as $key=>$val)
+    echo $key.", Val: ".$val."<br/>";
 ?>
 </body>

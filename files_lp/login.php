@@ -1,6 +1,6 @@
 <?php
-require 'db.php';
-$redirect_after_login = './admin.php';
+$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');
+$redirect_after_login = 'files_lp/liste.php';
 $remember_password = strtotime('+1 days');
 //Wenn passwort korrekt, speichert cookie mit passwort für einen Tag
 

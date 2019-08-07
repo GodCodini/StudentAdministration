@@ -38,9 +38,11 @@ class DoublyLinkedList
     private $start;
     private $end;
     private $count;
+    private $name;
 
-    public function __construct()
+    public function __construct($name)
     {
+        $this->name = $name;
         $this->start = null;
         $this->end = null;
         $this->count = 0;
@@ -57,11 +59,6 @@ class DoublyLinkedList
             $this->start = $element;
             $this->end = $element;
             $this->count++;
-//            $dateiname = "C:\\xampp_7\\htdocs\\StudentAdministration\logs\list_add_log.txt";
-//            $datei = fopen($dateiname, "a");
-//            $obj = serialize($element);
-//            fputs($datei, "Füge als Start " .$obj. " ein \n");
-//            fclose($datei);
             return;
         }
         //ende auf das neue element setzen, wenn schon eins existiert.
@@ -69,11 +66,6 @@ class DoublyLinkedList
         $element->setPrevious($this->end);
         $this->end = $element;
         $this->count++;
-//        $dateiname = "C:\\xampp_7\\htdocs\\StudentAdministration\logs\list_add_log.txt";
-//        $datei = fopen($dateiname, "a");
-//        $obj = serialize($element);
-//        fputs($datei, "Füge als Ende " .$obj. " ein\n");
-//        fclose($datei);
     }
 
     public function getCount()
@@ -152,33 +144,26 @@ class DoublyLinkedList
         }
     }
 
-//    public function delete($node) {
-//        $prev = $node->getPrevious();
-//        $next = $node->getNext();
-//        $prev->setNext($next);
-//        $next->setPrevious($prev);
-//        $node->setNext(null);
-//        $node->setPrevious(null);
-//        $this->count--;
-//    }
-
     public function deleteNode($key)
     {
         $current = $this->start;
 
         for ($i = 1; $i <= $this->count; $i++) {
-//            echo $this->count."<br>";
-//            echo $i."<br>";
-//            echo $current->getData()."<br>";
             if ($current->getData() === $key) {
-                if ($this->start === $current){
+                if ($this->count === 1) {
+                    $this->start = null;
+                    $this->end = null;
+                    $this->count--;
+                    break;
+                }
+                elseif($this->start === $current) {
                     $next = $current->getNext();
                     $next->setPrevious(null);
                     $this->start = $next;
                     $this->count--;
                     break;
                 }
-                if ($this->end === $current) {
+                elseif ($this->end === $current) {
                     $pre = $current->getPrevious();
                     $pre->setNext(null);
                     $this->end = $pre;
@@ -225,8 +210,7 @@ class Element
     {
         if ($element == null) {
             $this->prev = null;
-        }
-        else {
+        } else {
             $this->prev = $element;
         }
     }
@@ -240,8 +224,7 @@ class Element
     {
         if ($element === null) {
             $this->next = null;
-        }
-        else {
+        } else {
             $this->next = $element;
         }
     }
@@ -262,4 +245,3 @@ class Element
     }
 
 }
-
