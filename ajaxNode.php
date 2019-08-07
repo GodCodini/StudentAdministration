@@ -76,11 +76,12 @@ class DoublyLinkedList
         else {
             $start = $this->getStart();
             $data = $start->getData();
+            echo "Richtige Liste <br>";
             $this->readData($start, $data);
         }
     }
 
-    private function readData($node, $data)
+    public function readData($node, $data)
     {
         if ($node !== null)
         {
@@ -96,6 +97,41 @@ class DoublyLinkedList
         }
         else
         {
+            return 0;
+        }
+    }
+
+    public function resetList() {
+        $this->count = 0;
+        $this->start = null;
+        $this->end = null;
+
+    }
+
+    public function reverseReadList() {
+        if ($this->count === 0) {
+            echo "nix drin";
+        }
+        else {
+            $end = $this->getEnd();
+            $data = $end->getData();
+            echo "Verkehrte Liste <br>";
+            $this->reverseReadData($end, $data);
+        }
+    }
+
+    public function reverseReadData($node, $data) {
+        if ($node !== null) {
+            echo $data . "<br>";
+            $node = $node->getPrevious();
+            if ($node !== null) {
+                $this->reverseReadData($node, $node->getData());
+            }
+            else {
+                return 0;
+            }
+        }
+        else {
             return 0;
         }
     }
@@ -160,40 +196,3 @@ class Element
         return $this->data;
     }
 }
-
-//$elm1 = "element 1";
-//$elm2 = "Das ist ein Test lol 2";
-//$elm3 = "testetstetstetstetstetstetst 3";
-//$elm4 = "teste 4";
-//$elm5 = "reeeeeeeeeeeeeeeee 5";
-//$liste = new DoublyLinkedList();
-//
-//$liste->add($elm1);
-//$liste->add($elm1);
-//$liste->add($elm2);
-//$liste->add($elm3);
-//$liste->add($elm3);
-//$liste->add($elm4);
-//$liste->add($elm4);
-//$liste->add($elm5);
-//$liste->add($elm5);
-//$liste->add($elm5);
-//
-//echo $liste->getCount();
-//echo "<br>";
-//echo "<pre>";
-/*highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");*/
-//echo "</pre>";
-//$liste->readList();
-////dev::printTableFromObjectArray($array);
-//
-//$spl = new SplDoublyLinkedList();
-//$spl->push($elm1);
-//$spl->push($elm2);
-//$spl->push($elm3);
-//$spl->push($elm4);
-//$spl->push($elm5);
-//
-//echo "<pre>";
-//var_dump($spl);
-//echo "</pre>";
