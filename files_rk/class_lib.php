@@ -95,7 +95,7 @@ class BenotungsObjekt{
       				// 	break;
 				default:
 					$note = 6;
-			} 
+			}
 		}
 
 		// Sonst Abischlüssel
@@ -121,7 +121,7 @@ class BenotungsObjekt{
       				// 	break;
 				default:
 					$note = 6;
-			} 
+			}
 		}
 	}
 
@@ -132,6 +132,29 @@ class BenotungsObjekt{
 	public function getBezeichnung(){
 		return $this->bezeichnung;
 	}
+}
+
+class Schule {
+    private $bezeichnungSchule;
+
+    /**
+     * @param String $bezeichnungSchule (Schulenbezeichnung)
+     */
+    function __construct($bezeichnungSchule){
+        $this->bezeichnungSchule = $bezeichnungSchule;
+    }
+
+    function setBezeichnungSchule($neueBezeichnungSchule){
+        $this->bezeichnungSchule = $neueBezeichnungSchule;
+    }
+
+    function getBezeichnungSchule(){
+        return $this->bezeichnungSchule;
+    }
+
+    function getAlleSchule() {
+        $sql = "SELECT 'Name'";
+    }
 }
 
 class Klasse {
@@ -208,7 +231,7 @@ abstract class Database {
 
 	public function showAllStudents(){
 		$stmt = $this->connect()->query("SELECT * FROM student");
-		
+
 		echo "<table>";
 
 			echo "<th>studentID</th>";
@@ -222,7 +245,7 @@ abstract class Database {
 					foreach ($row as $value) {
 					echo "<td>".$value."</td>";
 					}
-					
+
 				echo "</tr>";
 			}
 
@@ -246,22 +269,35 @@ class Node {
 	function getNodeData() {
 		return $this->nodeData;
 	}
+
+	function getPrevNode(){
+	    return $this->prevNode;
+    }
+
+    function getNextNode(){
+	    return $this->nextNode;
+    }
 }
 
 class NodeList {
 	public $firstNode;
 	public $lastNode;
 	public $counter;
-	
+
 	function __construct($firstNode = NULL, $lastNode = NULL, $counter = 0){
 		$this->counter = $counter;
 		$this->firstNode = $firstNode;
 		$this->lastNode = $lastNode;
 	}
 
-	function add_Node($nodeData){
+	function __destruct()
+    {
+       // echo "Selected node deleted";
+    }
+
+    function add_Node($nodeData){
 		$node = new Node($nodeData);
-				
+
 		if ($this->counter == 0)
 		{
 			$node->nodeIndex = $this->counter;
@@ -270,18 +306,18 @@ class NodeList {
 			$this->counter++;
 			$this->firstNode = $node;
 			$this->lastNode = $node;
-		}	
-		else 
+		}
+		else
 		{
 			$this->lastNode->nextNode = $node;
 			$node->prevNode = $this->lastNode;
 			$node->nodeIndex = $this->counter;
 			$this->lastNode = $node;
-			
-			$node->nextNode = NULL; 
-			
+
+			$node->nextNode = NULL;
+
 			$this->counter++;
-		}	
+		}
 	}
 
 	function count_Nodes(){
@@ -289,8 +325,9 @@ class NodeList {
 	}
 
 	function displayAllNodes(){
+	    if (isset($this->firstNode)){
 		$currentNode = $this->firstNode;
-		$offset = 40;
+		$offset = 0; // 40
 
 		while($currentNode !== NULL){
 
@@ -301,24 +338,25 @@ class NodeList {
 			}
 
 			if($nex = $currentNode->nextNode !== NULL){
-				$nex = $currentNode->nextNode->nodeIndex;
+				$nex = $currentNode->nextNode->nodeData;
 			} else {
 				$nex = NULL;
 			}
 
 			$dat = $currentNode->nodeData;
 			$cur = $currentNode->nodeIndex;
-			
+
 			$steps = $offset * $cur;
 
 			echo "<div class='nodeElement' style='margin-top:".$steps."px'>";
-        		echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
-        		echo "<div class='nodeIndex'>Node index: ".$cur."<br>Data: ".$dat."</div>";
-        		echo "<div class='nextNode'>Next node: ".$nex." --></div>";
+                echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
+                echo "<div class='nodeIndex'>Data: ".$dat."</div>";
+                echo "<div class='nextNode'>Next node: ".$nex." --></div>";
 			echo "</div>";
-			
+
 			$currentNode = $currentNode->nextNode;
 		}
+        }
 	}
 
 	function displaySpecificNode($nodeID){
@@ -329,7 +367,7 @@ class NodeList {
 				$currentNode = $currentNode->nextNode;
 				}
 		}
-		
+
 		if ($currentNode->prevNode !== NULL){
 			$pre = $currentNode->prevNode->nodeData;
 		} else {
@@ -346,16 +384,59 @@ class NodeList {
 		$cur = $currentNode->nodeIndex;
 
 
-		if ($nodeID < $this->counter){	
+		if ($nodeID < $this->counter){
 			echo "<div class='nodeElement'>";
-			echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
-			echo "<div class='nodeIndex'>Node index: ".$cur."<br>Data: ".$dat."</div>";
-			echo "<div class='nextNode'>Next node: ".$nex." --></div>";
+                echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
+                echo "<div class='nodeIndex'>Data: ".$dat."</div>";
+                echo "<div class='nextNode'>Next node: ".$nex." --></div>";
 			echo "</div>";
-		
+
 		} else {
 			echo "entered note id does not exists";
 		}
 	}
+
+	function deleteAllNodes(){
+	    unset($this->firstNode);
+	    unset($this->lastNode);
+	    $this->counter = 0;
+    }
+
+    function deleteSpecificNode($nodeData)
+    {
+        $currentNode = $this->firstNode;
+
+        for($i = 0; $i <= $this->counter; $i++) {
+            if($currentNode !== NULL){
+                if ($currentNode->nodeData == $nodeData) {
+                    $this->counter--;
+                    $prev = $currentNode->getPrevNode();
+                    $next = $currentNode->getNextNode();
+
+                    if($prev != NULL){
+                        $prev->nextNode = $next;
+                    } else {
+                        $this->firstNode = $next;
+                        //echo "new first node: ".$this->firstNode->nodeData."<br>";
+                    }
+
+                    if($next != NULL){
+                        $next->prevNode = $prev;
+                    } else {
+                        $this->lastNode = $prev;
+                        //echo "new last node: ".$this->lastNode->nodeData."<br>";
+                    }
+                    unset($currentNode);
+                    break;
+                } else {
+                    $currentNode = $currentNode->nextNode;
+                }
+            } else {
+                echo "node not found";
+            }
+        }
+    }
+
+    // TODO: Sortierung, Oberfläche, Datenbank Login, Rechteverwaltung und Einschränkungen, Notenberechnung,
 }
 ?>

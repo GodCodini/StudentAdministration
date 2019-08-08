@@ -1,5 +1,5 @@
 .nodeElement {
-    border: 1px solid;
+    border: 1px solid black;
     float: left;
     margin-right: 10px;
 }
@@ -16,11 +16,15 @@
     color: white;
 }
 
+.prevNode {
+    background-color: #e8e8e8 !important;
+}
+
 .counter {
     clear: left;
     width: 110px;
     text-align: center;
     background-color: lightgray;
-    border: 1px solid;
+    border: 1px solid black;
     padding: 10px;
 }

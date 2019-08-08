@@ -10,7 +10,7 @@ require 'dev_functions.php';
 echo "// Test create object BenotungsObjekt with parameters: <br>";
 
 $hausaufgabe = new BenotungsObjekt("Sinn von OOP darstellen", 95.45, "2019-10-10", "Hausaufgabe", "Toll umgesetzt", 1);
-Dev::takeDump($hausaufgabe);
+D::takeDump($hausaufgabe);
 
 echo "<br><br>// Test create student object with paramters and test getter and setter methods: <br>";
 
@@ -24,17 +24,22 @@ $schuelerMax->createStudent();
 */
 
 $nodeList = new NodeList();
-$nodeList->add_Node("Anja");
-$nodeList->add_Node("Björn");
-$nodeList->add_Node("Castjel");
-$nodeList->add_Node("Daniel");
-$nodeList->add_Node("Pascal");
-$count = $nodeList->count_Nodes();
+$nodeList->add_Node("A");
+$nodeList->add_Node("B");
+$nodeList->add_Node("C");
+$nodeList->add_Node("D");
+$nodeList->add_Node("E");
+$nodeList->add_Node("F");
 
-echo "<div class='counter'>Total nodes: $count</div><br>";
+$nodeList->deleteSpecificNode("A");
+
+$nodeList->deleteAllNodes();
+// unset($nodeList);
+
+$nodeList->add_Node("a");
+$nodeList->add_Node("X");
 
 $nodeList->displayAllNodes();
-
-//$nodeList->displaySpecificNode(3);
+//$nodeList->displaySpecificNode("Daniel");
 
 ?>
