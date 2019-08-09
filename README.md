@@ -29,7 +29,7 @@ Browser & connection to a database (own or dummy database)
 - Random picking a student for who must present first *HINT: It wont be me =)*
 
 **ERM-Model:**  
-![alt text](https://github.com/TheAmazingCodini/StudentAdministration/blob/master/ERM_Schuelerverwaltung.png)
+![alt text](https://github.com/TheAmazingCodini/StudentAdministration/blob/master/db_schuelerverwaltung.PNG)
 
 **Database creation SQL script**
 [a link](https://github.com/TheAmazingCodini/StudentAdministration/blob/master/database_structure.sql)
