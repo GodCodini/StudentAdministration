@@ -39,7 +39,7 @@ class DoublyLinkedList
     private $end;
     private $count;
     private $name;
-
+    //TODO Random Picker mich ignorieren lassen
     public function __construct($name)
     {
         $this->name = $name;

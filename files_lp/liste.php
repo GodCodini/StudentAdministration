@@ -2,9 +2,10 @@
 error_reporting(E_ALL); ini_set('display_errors', 1);
 session_start();
 include_once './ajaxNode.php';
+include_once './listHelper.php';
 $pw = $_COOKIE['password'];
 $pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');
-$redirect_after_login = 'files_lp/liste.php';
+$redirect_after_login = './liste.php';
 
 $sql = "SELECT (aktuellesPW) FROM passwort";
 $statement = $pdo->query($sql);
@@ -28,8 +29,6 @@ if (isset($_GET['succsess'])) {
 } elseif ($pw != $aktuellesPW) {
     header('Location: ./login.php');
     exit;
-} else {
-    header("Location: ./liste.php");
 }
 
 ?>
@@ -70,55 +69,61 @@ if (isset($_GET['succsess'])) {
     <input type="submit" name="resetList" value="Liste resetten">
 </form>
 
+<form action="" method="post">
+    <select name="klasse" id="klasse">
+        <?php
+        foreach ($_SESSION as $key=>$val)
+        {
+            echo "<option value='".$key."'>".$key."</option>";
+        }
+        ?>
+    </select>
+    <input type="submit" name="laden" value="Laden">
+</form>
+
 <p>Hier stehen (hoffentlich irgendwann) alle Schüler:</p>
 <?php
-//$liste = unserialize($_SESSION['liste']);
-//echo "<pre>";
-//var_dump($liste);
-//echo "</pre>";
+$name = $_SESSION['name'];
+function setListName($listName) {
+    global $name;
+    $name = $listName;
+    $_SESSION['name'] = $name;
+}
+
+if (isset($_POST['laden'])) {
+    $listName = $_POST['klasse'];
+    setListName($listName);
+}
+var_dump($GLOBALS['name']);
 if (isset($_POST['senden'])) {
     $name = $_POST['liste'];
-    $liste = new DoublyLinkedList($name);
-    $liste->readList();
-    $_SESSION[''.$name.''] = serialize($liste);
+    listHelper::createList($name);
     unset($_POST['submit']);
 }
 
 if (isset($_POST['delete'])) {
-    $liste = unserialize($_SESSION['liste']);
     $data = $_POST['data'];
-    $liste->deleteNode($data);
-    $liste->readList();
-    $_SESSION['liste'] = serialize($liste);
+    listHelper::delete($data);
 }
 
 if (isset($_POST['submit'])) {
-    $liste = unserialize($_SESSION['liste']);
     $name = $_POST['name'];
-    $schueler = new Schueler($name);
-    $liste->add($schueler);
-    $liste->readList();
-    $_SESSION['liste'] = serialize($liste);
+    listHelper::addStudent($name);
 }
 
 if (array_key_exists('listData', $_POST)) {
-    $liste = unserialize($_SESSION['liste']);
-    $liste->readList();
-    $_SESSION['liste'] = serialize($liste);
+    listHelper::listHelperData();
 }
 
 if (array_key_exists('reverseListData', $_POST)) {
-    $liste = unserialize($_SESSION['liste']);
-    $liste->reverseReadList();
-    $_SESSION['liste'] = serialize($liste);
+    listHelper::listHelperReverse();
 }
 
 if (array_key_exists('resetList', $_POST)) {
-    $liste = unserialize($_SESSION['liste']);
-    $liste->resetList();
-    $liste->readList();
-    $_SESSION['liste'] = serialize($liste);
+    listHelper::listReset();
 }
+
+
 
 echo "<h3> PHP List All Session Variables</h3>";
 foreach ($_SESSION as $key=>$val)
