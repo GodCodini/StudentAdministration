@@ -7,7 +7,16 @@
  */
 
 abstract class listHelper {
+
     private static $currList;
+
+    /**
+     * @return mixed
+     */
+    public static function getCurrList()
+    {
+        return self::$currList;
+    }
 
     public static function createList($name) {
         $liste = new DoublyLinkedList($name);
@@ -28,6 +37,7 @@ abstract class listHelper {
         $list = listHelper::$currList;
         $liste = unserialize($_SESSION[''.$list.'']);
         $schueler = new Schueler($name);
+        var_dump($liste);
         $liste->add($schueler);
         $liste->readList();
         $_SESSION[''.$list.''] = serialize($liste);
@@ -53,5 +63,9 @@ abstract class listHelper {
         $liste->resetList();
         $liste->readList();
         $_SESSION[''.$name.''] = serialize($liste);
+    }
+
+    public static function setListName($listName){
+        listHelper::$currList = $listName;
     }
 }

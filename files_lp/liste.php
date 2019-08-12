@@ -92,9 +92,8 @@ function setListName($listName) {
 
 if (isset($_POST['laden'])) {
     $listName = $_POST['klasse'];
-    setListName($listName);
+    listHelper::setListName($listName);
 }
-var_dump($GLOBALS['name']);
 if (isset($_POST['senden'])) {
     $name = $_POST['liste'];
     listHelper::createList($name);
