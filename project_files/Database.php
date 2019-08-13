@@ -1,5 +1,4 @@
 <?php
-require_once '../project_files/_config.php';
 
 /**
  * Class DB

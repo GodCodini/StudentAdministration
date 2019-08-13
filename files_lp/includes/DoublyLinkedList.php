@@ -1,37 +1,12 @@
 <?php
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-class Student
-{
-    private $name;
-
-    /**
-     * Schueler constructor.
-     * @param $name
-     */
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-}
+/**
+ * Created by PhpStorm.
+ * User: pamperin
+ * Date: 13.08.2019
+ * Time: 16:12
+ */
+require_once 'Student.php';
+require_once 'Element.php';
 
 class DoublyLinkedList
 {
@@ -39,13 +14,15 @@ class DoublyLinkedList
     private $end;
     private $count;
     private $name;
+    private $gradeKey;
     //TODO Random Picker mich ignorieren lassen
-    public function __construct($name)
+    public function __construct($name, $key)
     {
         $this->name = $name;
         $this->start = null;
         $this->end = null;
         $this->count = 0;
+        $this->gradeKey = $key;
     }
 
     /**
@@ -76,7 +53,7 @@ class DoublyLinkedList
     public function readList()
     {
         if ($this->count === 0) {
-            echo "Noch keine Einträge vorhanden.";
+            echo "Noch keine Einträge vorhanden.<br>";
         } else {
             $start = $this->getStart();
             $data = $start->getData();
@@ -155,7 +132,7 @@ class DoublyLinkedList
         $current = $this->start;
 
         for ($i = 1; $i <= $this->count; $i++) {
-            if ($current->getData() === $key)
+            if ($current->getLastName() === $key)
             {
                 if ($this->count === 1)
                 {
@@ -179,7 +156,7 @@ class DoublyLinkedList
                     break;
                 }
                 else
-                    {
+                {
                     $pre = $current->getPrevious();
                     $nex = $current->getNext();
                     $pre->setNext($nex);
@@ -202,58 +179,4 @@ class DoublyLinkedList
     {
         return $this->end;
     }
-}
-
-/**
- * Class Element
- */
-class Element
-{
-    private $prev;
-    private $next;
-    private $data;
-
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
-
-    public function setPrevious($element)
-    {
-        if ($element == null) {
-            $this->prev = null;
-        } else {
-            $this->prev = $element;
-        }
-    }
-
-    public function getPrevious()
-    {
-        return $this->prev;
-    }
-
-    public function setNext($element)
-    {
-        if ($element === null) {
-            $this->next = null;
-        } else {
-            $this->next = $element;
-        }
-    }
-
-    public function getNext()
-    {
-        return $this->next;
-    }
-
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-
-    public function getData()
-    {
-        return $this->data->getName();
-    }
-
 }

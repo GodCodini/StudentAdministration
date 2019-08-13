@@ -27,7 +27,8 @@
 //} else {
 //    header("Location: files_lp/liste.php");
 //}
-
+require_once 'project_files/Database.php';
+require_once 'project_files/_config.php';
 ?>
 
 <head>
@@ -40,6 +41,15 @@
 <form action="files_lp/liste.php" method="post">
     <label for="data">Daten für die Liste</label>
     <input class="test" type="text" name="liste" id="listenname">
+    <select name="gradeKey" id="gradeKey">
+    <?php
+        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+        $sql = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
+        foreach ($PDO->query($sql) as $row) {
+            echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
+        }
+    ?>
+    </select>
     <input type="submit" name="senden" value="Senden">
 </form>
 
