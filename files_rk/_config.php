@@ -6,9 +6,9 @@
  * Time: 11:48
  */
 
-// Database configuration file
+// Database configuration
 define('DBHOST','localhost');
-define('DBNAME','schuelerverwaltung');
+define('DBNAME','Schuelerverwaltung');
 define('DBCHARSET', 'utf8mb4');
 define('DBUSERNAME','root');
 define('DBPASSWORD','');

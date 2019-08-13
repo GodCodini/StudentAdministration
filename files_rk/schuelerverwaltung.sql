@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 09. Aug 2019 um 13:21
--- Server-Version: 10.1.25-MariaDB
--- PHP-Version: 7.1.7
+-- Erstellungszeit: 13. Aug 2019 um 17:32
+-- Server-Version: 10.1.34-MariaDB
+-- PHP-Version: 7.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `schuelerverwaltung`
 --
-CREATE DATABASE IF NOT EXISTS `schuelerverwaltung` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `schuelerverwaltung`;
 
 -- --------------------------------------------------------
 
@@ -61,7 +59,12 @@ CREATE TABLE `kurs` (
 --
 
 INSERT INTO `kurs` (`id_Kurs`, `kursName`, `NotenschluesselTyp_idNotenschluesselTyp`) VALUES
-(1, 'FI7S', 1);
+(1, 'FI7S', 1),
+(2, 'FIA8', 2),
+(28, 'AG7H', 2),
+(29, 'FAAA', 1),
+(30, 'PL19', 1),
+(31, 'ss', 1);
 
 -- --------------------------------------------------------
 
@@ -158,6 +161,7 @@ CREATE TABLE `schueler` (
   `Vorname` varchar(45) NOT NULL,
   `Nachname` varchar(45) NOT NULL,
   `Geburtsdatum` date NOT NULL,
+  `eMail` varchar(255) NOT NULL,
   `Kurs_id_Kurs` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -165,9 +169,13 @@ CREATE TABLE `schueler` (
 -- Daten für Tabelle `schueler`
 --
 
-INSERT INTO `schueler` (`id_Schueler`, `Vorname`, `Nachname`, `Geburtsdatum`, `Kurs_id_Kurs`) VALUES
-(1, 'Lennart', 'Pamperin', '1996-10-11', 1),
-(2, 'Ralf', 'Klaßen', '1979-12-26', 1);
+INSERT INTO `schueler` (`id_Schueler`, `Vorname`, `Nachname`, `Geburtsdatum`, `eMail`, `Kurs_id_Kurs`) VALUES
+(1, 'Lennart', 'Pamperin', '1996-10-11', 'pamperin@pmg.de', 1),
+(2, 'Ralf', 'Klaßen', '1979-12-26', 'klassen@pmg.de', 1),
+(3, 'Max', 'GmbH', '2019-08-10', 'max@mustermann-gmbh.de', 1),
+(5, 'Michal', 'Meier', '2000-08-22', 'micha@meier.com', 1),
+(15, 'Peter', ' Loer', '1988-12-16', 'loer@pmg.de', 30),
+(18, 'Mike', 'Krüger', '1945-04-15', 'asdsd@klasd.de', 28);
 
 -- --------------------------------------------------------
 
@@ -256,41 +264,49 @@ ALTER TABLE `typ`
 --
 ALTER TABLE `fach`
   MODIFY `id_Fach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT für Tabelle `kurs`
 --
 ALTER TABLE `kurs`
-  MODIFY `id_Kurs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_Kurs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
 --
 -- AUTO_INCREMENT für Tabelle `note`
 --
 ALTER TABLE `note`
   MODIFY `id_Note` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT für Tabelle `notenschluesseltyp`
 --
 ALTER TABLE `notenschluesseltyp`
-  MODIFY `idNotenschluesselTyp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idNotenschluesselTyp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT für Tabelle `notentyp`
 --
 ALTER TABLE `notentyp`
   MODIFY `idNotenTyp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT für Tabelle `passwort`
 --
 ALTER TABLE `passwort`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT für Tabelle `schueler`
 --
 ALTER TABLE `schueler`
-  MODIFY `id_Schueler` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_Schueler` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
 --
 -- AUTO_INCREMENT für Tabelle `typ`
 --
 ALTER TABLE `typ`
   MODIFY `idTyp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- Constraints der exportierten Tabellen
 --

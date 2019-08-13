@@ -1,3 +1,204 @@
+@import url('https://fonts.googleapis.com/css?family=Orbitron&display=swap');
+
+/* COLOR SCHEME */
+
+:root {
+    --mainColor: dimgray;
+    --softMainColor: #e9e9e9;
+    --softerMainColor: #d9d9d9;
+    --tableBorders: darkgray;
+    --accentColor: orange;
+    --softAccentColor: rgb(255, 202, 128);
+    --backgroundColor: #f3f3f3;
+    --elementsOnAccentColor: white;
+    --headerLogoGradient: radial-gradient(circle, rgba(65,65,65,1) 0%, rgba(0,0,0,1) 150%);
+
+    --mainFont: "Open Sans", sans-serif;
+}
+
+/* GENERAL STYLING */
+
+.contentContainer {
+    margin: 0 30px;
+}
+
+body{
+    background-color: var(--backgroundColor);
+    font-family: var(--mainFont);
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    width: 150px !important;
+    display: inline-block;
+}
+
+input, select, form > div {
+    margin-bottom: 10px;
+}
+
+.sectionHeader {
+    background-color: var(--accentColor);
+    color: var(--elementsOnAccentColor);
+    padding: 10px;
+    font-weight: bold;
+}
+
+.inputArea{
+    background-color: var(--softMainColor);
+    padding: 10px 10px 0 10px;
+    margin-bottom: 30px;
+}
+
+/* INPUT ELEMENTS */
+
+.addNewElementButton {
+    background-color: var(--softerMainColor);
+    text-decoration: none;
+    padding: 0 5px;
+    color: var(--mainColor);
+    margin-left: 7px;
+    font-size: 13px;
+    border-radius: 3px;
+    position: relative;
+    bottom: -1px;
+}
+
+.addNewElementButton:hover {
+    background-color: var(--accentColor);
+    color: var(--elementsOnAccentColor);
+}
+
+.dropDownKlasse,
+.neueKlasseInput {
+    border: none;
+    padding: 5px 17px;
+    border-radius: 3px;
+}
+
+.styledButton{
+    border: none;
+    background-color: var(--softerMainColor);
+    padding: 10px 17px;
+    border-radius: 3px;
+}
+
+.styledButton:hover {
+    background-color: var(--accentColor);
+    color: var(--elementsOnAccentColor);
+    cursor: pointer;
+}
+
+.inputAreaElement {
+
+}
+
+
+/* HEADER LOGO*/
+
+#logoContainer {
+    background: var(--headerLogoGradient);
+    color: var(--elementsOnAccentColor);
+    text-align: center;
+    padding: 75px 0 60px 0;
+}
+
+#logoContainer #headline {
+    font-size: 40px;
+    font-weight: 100;
+    font-family: "Orbitron";
+}
+
+#logoContainer #headline span {
+    border-bottom: 5px solid var(--accentColor);
+}
+
+#logoContainer #subHeadline {
+    font-size: 13px;
+    font-weight: 100;
+    opacity: 0.7;
+    margin-top: -8px;
+    position: relative;
+    left: 95px;
+}
+
+#logoDots:before {
+    content: ".";
+    position: relative;
+    top: -28px;
+    left: 13px;
+    margin-left: -5px;
+    opacity: 0.5;
+}
+
+#logoDots:after {
+    content: ".";
+    position: relative;
+    top: -28px;
+    left: -8px;
+    margin-left: -5px;
+    opacity: 0.5;
+}
+
+/* HEADER MENU */
+
+#headerContainer {
+    margin-bottom: 30px;
+}
+
+#menuContainer {
+    background-color: var(--accentColor);
+    color: var(--elementsOnAccentColor);
+}
+
+#menuContainer ul {
+    list-style-type: none;
+    padding-inline-start: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#menuContainer li {
+    display: inline-block;
+    position: relative;
+}
+
+#menuContainer a {
+    padding: 10px 25px;
+    display: inline-block;
+    position: relative;
+}
+
+#menuContainer a:hover {
+    cursor: pointer;
+    background-color: #ffb133;
+}
+
+#menuContainer a:hover:after {
+    content: "";
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid var(--elementsOnAccentColor);
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+}
+
+#menuContainer a {
+    text-decoration: none;
+    color: var(--elementsOnAccentColor);
+}
+
+/* DEVELOPMENT STYLES */
+
+.takeDump {
+    font-size: 75%;
+    opacity: 0.5;
+}
+
 .nodeElement {
     border: 1px solid black;
     float: left;
@@ -27,4 +228,44 @@
     background-color: lightgray;
     border: 1px solid black;
     padding: 10px;
+}
+
+/* TABLE STYLING */
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: var(--mainFont);
+    text-align: left;
+}
+
+table thead {
+    background-color: var(--accentColor);
+    color: var(--elementsOnAccentColor);
+    font-weight: bold;
+}
+
+td, th {
+    padding: 10px;
+}
+
+tr {
+    border-bottom: 1px solid var(--tableBorders);
+}
+
+tr:nth-child(even) {
+    background-color: var(--softerMainColor);
+}
+
+tr:nth-child(odd):not(.tableHead) {
+    background-color: var(--softMainColor);
+}
+
+tr:not(.tableHead):hover {
+    background-color: var(--softAccentColor);
+    cursor: pointer;
+}
+
+th:hover {
+    cursor: pointer;
 }

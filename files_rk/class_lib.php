@@ -2,42 +2,27 @@
 
 require '_config.php';
 
-class Schueler {
+class Student {
 
-	public $vorname, $nachname, $geburtsdatum, $klasse, $fach, $id;
+	public $vorname, $nachname, $geburtsdatum, $email, $klasse;
 
-	function __construct($vorname, $nachname, $geburtsdatum, $klasse, $fach, $id = NULL){
+	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse){
 		$this->vorname = $vorname;
 		$this->nachname = $nachname;
 		$this->geburtsdatum = $geburtsdatum;
+		$this->email = $email;
 		$this->klasse = $klasse;
-		$this->fach = $fach;
-		$this->id = $id;
 	}
 	/**
 	 * @param String $vorname
 	 * @param String $nachname
-	 * @param date $geburtsdatum
+	 * @param Date $geburtsdatum
 	 * @param Number $klasse
 	 * @return Boolean
 	 */
-	function create($vorname, $nachname, $geburtsdatum, $klasse) {
-		$sql = "INSERT INTO schuelerverwaltung.schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) VALUES (?, ?, ?, ?)";
-		$pdo_conn = DATABASE::connect();
-		$stmt = $pdo_conn->prepare($sql);
-		$result = $stmt->execute(array($vorname, $nachname, $geburtsdatum, $klasse));
-		if ($result) {
-			DATABASE::disconnect();
-			return true;
-		}
-		else {
-			DATABASE::disconnect();
-			return false;
-		}
-	}
 
-	public function createStudent(){
-		$this->connect()->query("INSERT INTO `student` (`studentID`, `firstName`, `lastName`, `birthDate`) VALUES (NULL, '".$this->vorname."', '".$this->nachname."', '".$this->geburtsdatum);
+	public function createStudentOnDB(){
+        Database::connect()->query("INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$this->vorname."', '".$this->nachname."', '".$this->geburtsdatum."', '".$this->email."','".$this->klasse."')");
 	}
 
 	function setVorname($neuerVorname){
@@ -47,6 +32,38 @@ class Schueler {
 	function getVorname(){
 		return $this->vorname;
 	}
+
+	function setNachname($neuerNachname){
+	    $this->nachname = $neuerNachname;
+    }
+
+    function getNachname(){
+	    return $this->nachname;
+    }
+
+    function setGeburtsdatum($neuesGeburtsdatum){
+	    $this->geburtsdatum = $neuesGeburtsdatum;
+    }
+
+    function getGeburtsdatum(){
+	    return $this->geburtsdatum;
+    }
+
+    function setKlasse($neueKlasse){
+	    $this->klasse = $neueKlasse;
+    }
+
+    function getKlasse(){
+	    return $this->klasse;
+    }
+
+    function setFach($neuesFach){
+	    $this->fach = $neuesFach;
+    }
+
+    function getFach(){
+	    return $this->fach;
+    }
 }
 
 // vormals Note (für mich zur Verständlichkeit, 
@@ -177,9 +194,21 @@ class Klasse {
 		return $this->bezeichnungKlasse;
 	}
 
-	function getAlleKlassen() {
-		$sql = "SELECT 'Name', 'Notenschluesseltyp_id_Notenschluesseltyp'";
-	}
+    function setNotenschluesselKlasse($neueNotenschluesselKlasse){
+        $this->notenschluessel = $neueNotenschluesselKlasse;
+    }
+
+    function createKlasseOnDB(){
+        Database::connect()->query("INSERT INTO schuelerverwaltung.kurs (kursName, NotenschluesselTyp_idNotenschluesselTyp) VALUES ('$this->bezeichnungKlasse', '.$this->notenschluessel.')");
+    }
+
+    function getNotenschluesselKlasse(){
+        return $this->notenschluessel;
+    }
+}
+
+class Leherer {
+    //TODO
 }
 
 class Notenschluessel {
@@ -230,7 +259,7 @@ abstract class Database {
 	}
 
 	public function showAllStudents(){
-		$stmt = $this->connect()->query("SELECT * FROM student");
+		$stmt = $this->connect()->query("SELECT * FROM schueler");
 
 		echo "<table>";
 
@@ -251,6 +280,93 @@ abstract class Database {
 
 		echo "</table>";
 	}
+
+    function getAlleKlassen() {
+
+        // Revive KnötchenListe
+        if(!isset($klassenListe)){
+            $klassenListe = new Nodelist();
+        }
+        //
+
+        $stmt = Database::connect()->query("SELECT kursName, SchlusselName FROM kurs JOIN notenschluesseltyp ON notenschluesseltyp.idNotenschluesselTyp = kurs.NotenschluesselTyp_idNotenschluesselTyp;");
+
+        echo "<table id='klassenTable' class='klassenTabelle'>";
+        echo  "<thead>";
+        echo  "<tr class='tableHead'>";
+        echo  "<th>Klasse</th>";
+        echo  "<th>Notenschlüssel</th>";
+        echo  "</tr>";
+        echo  "</thead>";
+        echo  "<tbody>";
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            // Revive Knötchen
+            $kurs = $row["kursName"];
+            $notenschluessel = $row["SchlusselName"];
+
+            $klasse = new Klasse($kurs, $notenschluessel);
+            $klassenListe->add_Node($klasse);
+            //
+
+            echo  "<tr>";
+            foreach ($row as $value) {
+                echo  "<td>".$value."</td>";
+            }
+            echo  "</tr>";
+        }
+        echo  "</tbody>";
+        echo  "</table>";
+
+        echo  "<div><br>Number of Nodes in List: ".$klassenListe->counter."<br><br>";
+        $klassenListe->displayAllNodesKlasse();
+        echo "</div>";
+    }
+
+    function getDatabaseData($columnsArr=[], $table) {
+
+        $sql = "SELECT";
+
+        for($i=0; $i < sizeof($columnsArr);$i++){
+
+            if($i +1 == sizeof($columnsArr))
+            {
+                $sql .= ' '.$columnsArr[$i];
+            }else{
+                $sql .= ' '.$columnsArr[$i].',';
+            }
+        }
+
+        $sql .= ' FROM '.$table;
+
+        $stmt = Database::connect()->query($sql);
+
+        $resultArr=[];
+        $counter = 0;
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+            foreach ($columnsArr as $entry){
+                $resultArr[$counter][$entry] = $row[$entry];
+            }
+            $counter++;
+        }
+        return $resultArr;
+    }
+
+    function getAllStudents() {
+        $stmt = Database::connect()->query("SELECT Vorname, Nachname, Geburtsdatum, eMail, kursName FROM schueler JOIN kurs ON kurs.id_Kurs = schueler.Kurs_id_Kurs;");
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            echo '<tr onclick="window.location=\'student.php\';">';
+            echo '<td>'.$row["Vorname"].'</td>';
+            echo '<td>'.$row["Nachname"].'</td>';
+            echo '<td>'.$row["Geburtsdatum"].'</td>';
+            echo '<td>'.$row["eMail"].'</td>';
+            echo '<td>'.$row["kursName"].'</td>';
+            echo '</tr>';
+        }
+    }
 }
 
 class Node {
@@ -266,7 +382,7 @@ class Node {
 		$this->nextNode = $nextNode;
 	}
 
-	function getNodeData() {
+	function getNodeData(){
 		return $this->nodeData;
 	}
 
@@ -290,16 +406,15 @@ class NodeList {
 		$this->lastNode = $lastNode;
 	}
 
-	function __destruct()
-    {
+	function __destruct(){
        // echo "Selected node deleted";
     }
 
     function add_Node($nodeData){
 		$node = new Node($nodeData);
 
-		if ($this->counter == 0)
-		{
+		if ($this->counter == 0){
+
 			$node->nodeIndex = $this->counter;
 			$node->prevNode = NULL;
 			$node->nextNode = NULL;
@@ -307,8 +422,8 @@ class NodeList {
 			$this->firstNode = $node;
 			$this->lastNode = $node;
 		}
-		else
-		{
+		else {
+
 			$this->lastNode->nextNode = $node;
 			$node->prevNode = $this->lastNode;
 			$node->nodeIndex = $this->counter;
@@ -324,40 +439,38 @@ class NodeList {
 		return $this->counter;
 	}
 
-	function displayAllNodes(){
+	function displayAllNodesKlasse(){
+
 	    if (isset($this->firstNode)){
-		$currentNode = $this->firstNode;
-		$offset = 0; // 40
 
-		while($currentNode !== NULL){
+		    $currentNode = $this->firstNode;
 
-			if ($currentNode->prevNode !== NULL){
-				$pre = $currentNode->prevNode->nodeData;
-			} else {
-				$pre = NULL;
-			}
+            while($currentNode !== NULL){
 
-			if($nex = $currentNode->nextNode !== NULL){
-				$nex = $currentNode->nextNode->nodeData;
-			} else {
-				$nex = NULL;
-			}
+                if ($currentNode->prevNode !== NULL){
+                    $pre = $currentNode->prevNode->nodeData->getBezeichnungKlasse();
+                } else {
+                    $pre = NULL;
+                }
 
-			$dat = $currentNode->nodeData;
-			$cur = $currentNode->nodeIndex;
+                if($currentNode->nextNode !== NULL){
+                    $nex = $currentNode->nextNode->nodeData->getBezeichnungKlasse();
+                } else {
+                    $nex = NULL;
+                }
 
-			$steps = $offset * $cur;
+                $dat = $currentNode->nodeData->getBezeichnungKlasse();
 
-			echo "<div class='nodeElement' style='margin-top:".$steps."px'>";
-                echo "<div class='prevNode'><-- Prev node: ".$pre."</div>";
-                echo "<div class='nodeIndex'>Data: ".$dat."</div>";
-                echo "<div class='nextNode'>Next node: ".$nex." --></div>";
-			echo "</div>";
+                echo "<div class='nodeElement'>";
+                    echo "<div class='prevNode'>".$pre." <-- Prev</div>";
+                    echo "<div class='nodeIndex'>Node: ".$dat."</div>";
+                    echo "<div class='nextNode'>Next --> ".$nex."</div>";
+                echo "</div>";
 
-			$currentNode = $currentNode->nextNode;
-		}
+                $currentNode = $currentNode->nextNode;
+            }
         }
-	}
+    }
 
 	function displaySpecificNode($nodeID){
 		$currentNode = $this->firstNode;
@@ -402,8 +515,8 @@ class NodeList {
 	    $this->counter = 0;
     }
 
-    function deleteSpecificNode($nodeData)
-    {
+    function deleteSpecificNode($nodeData){
+
         $currentNode = $this->firstNode;
 
         for($i = 0; $i <= $this->counter; $i++) {
@@ -437,6 +550,6 @@ class NodeList {
         }
     }
 
-    // TODO: Sortierung, Oberfläche, Datenbank Login, Rechteverwaltung und Einschränkungen, Notenberechnung,
+    // TODO: Sortierung, Oberfläche, Datenbank Login, Rechteverwaltung und Einschränkungen, Notenberechnung, weitere Listenelemente
 }
 ?>
