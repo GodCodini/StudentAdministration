@@ -6,7 +6,7 @@
  * Time: 12:36
  */
 
-abstract class listHelper {
+abstract class listHelper extends Database {
 
     private static $currList;
 
@@ -36,7 +36,7 @@ abstract class listHelper {
     public static function addStudent($name) {
         $list = listHelper::$currList;
         $liste = unserialize($_SESSION[''.$list.'']);
-        $schueler = new Schueler($name);
+        $schueler = new Student($name);
         var_dump($liste);
         $liste->add($schueler);
         $liste->readList();
