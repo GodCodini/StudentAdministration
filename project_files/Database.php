@@ -43,7 +43,6 @@ abstract class DB {
      */
     public static function execute($query, $input_parameters = NULL) {
         $success = $query->execute($input_parameters);
-
         if (!$success) {
             throw new Exception($query->errorCode() . ' - ' . $query->errorInfo()[2]);
         }

@@ -29,28 +29,50 @@
 //}
 require_once 'project_files/Database.php';
 require_once 'project_files/_config.php';
+include_once 'files_lp/ui/header.php';
+
+
+$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+$sql = "SELECT Name FROM kurs";
+$result = $PDO->query($sql);
+
+if (isset($_GET['id'])) {
+    echo $_GET['id'];
+    $kurs = $_GET['id'];
+    echo "<br>";
+    $liste = unserialize($_SESSION[$_GET['id']]);
+    $search = "SELECT schueler.Vorname, schueler.Nachname, schueler.Geburtsdatum, kurs.NotenschluesselTyp_idNotenschluesselTyp FROM kurs
+               LEFT JOIN schueler s on kurs.id_Kurs = s.Kurs_id_Kurs
+               WHERE kurs.Name = ?";
+    echo "Search <br>";
+    var_dump($search);
+    echo "<br>";
+    $pre = $PDO->prepare($search);
+    echo "pre <br>";
+    var_dump($pre);
+    echo "<br>";
+    $search_result = $pre->execute(array($kurs));
+    echo "result <br>";
+    var_dump($search_result);
+
+}
+else {
 ?>
 
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./functions.js"></script>
-    <title>Schülerverwaltung</title>
-</head>
+    <table id="myTable">
+        <th>Klasse</th>
 
-<body>
-<form action="files_lp/liste.php" method="post">
-    <label for="data">Daten für die Liste</label>
-    <input class="test" type="text" name="liste" id="listenname">
-    <select name="gradeKey" id="gradeKey">
-    <?php
-        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-        $sql = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
-        foreach ($PDO->query($sql) as $row) {
-            echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
+        <?php
+        foreach ($result as $item) {
+            echo "<tr>";
+            echo "<td>";
+            echo "<a href='index.php?id=" . $item['Name'] . "'>" . $item['Name'] . "</a>";
+            echo "</td>";
+            echo "</tr>";
         }
-    ?>
-    </select>
-    <input type="submit" name="senden" value="Senden">
-</form>
+        ?>
 
-</body>
+    </table>
+
+<?php
+}
