@@ -1,34 +1,45 @@
 <?php
 error_reporting(E_ALL); ini_set('display_errors', 1);
 session_start();
-include_once './ajaxNode.php';
-include_once './listHelper.php';
-$pw = $_COOKIE['password'];
-$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');
-$redirect_after_login = './liste.php';
+include_once 'includes/DoublyLinkedList.php';
+include_once 'includes/Student.php';
+include_once 'includes/Element.php';
+include_once 'helper/listHelper.php';
+include_once '../project_files/_config.php';
+//$pw = $_COOKIE['password'];
+//$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');
+//$redirect_after_login = './liste.php';
+//
+//$sql = "SELECT (aktuellesPW) FROM passwort";
+//$statement = $pdo->query($sql);
+//$result = $statement->fetch(PDO::FETCH_ASSOC);
+//$aktuellesPW = $result['aktuellesPW'];
+//
+//if (isset($_GET['succsess'])) {
+//    if ($_GET['succsess'] == "pwupdated") {
+//        $remember_password = strtotime('+1 days');
+//        $sql = "SELECT (aktuellesPW) FROM passwort";
+//        $statement = $pdo->query($sql);
+//        $result = $statement->fetch(PDO::FETCH_ASSOC);
+//        $aktuellePW = $result['aktuellesPW'];
+//        setcookie("password", $aktuellePW, $remember_password);
+//        header('Refresh:5;url=./admin.php?succsess=pwupdate');
+//    }
+//} elseif (empty($_COOKIE['password'])) {
+//    //Wenn der Cookie leer ist oder das falsche Passwort hat, redirect zur login.php
+//    header('Location: ./login.php');
+//    exit;
+//} elseif ($pw != $aktuellesPW) {
+//    header('Location: ./login.php');
+//    exit;
+//}
 
-$sql = "SELECT (aktuellesPW) FROM passwort";
-$statement = $pdo->query($sql);
-$result = $statement->fetch(PDO::FETCH_ASSOC);
-$aktuellesPW = $result['aktuellesPW'];
+//NEUE LISTE ANLEGEN
+if (isset($_POST['senden'])) {
+    $name = $_POST['liste'];
+    $gradeKey = $_POST['gradeKey'];
 
-if (isset($_GET['succsess'])) {
-    if ($_GET['succsess'] == "pwupdated") {
-        $remember_password = strtotime('+1 days');
-        $sql = "SELECT (aktuellesPW) FROM passwort";
-        $statement = $pdo->query($sql);
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        $aktuellePW = $result['aktuellesPW'];
-        setcookie("password", $aktuellePW, $remember_password);
-        header('Refresh:5;url=./admin.php?succsess=pwupdate');
-    }
-} elseif (empty($_COOKIE['password'])) {
-    //Wenn der Cookie leer ist oder das falsche Passwort hat, redirect zur login.php
-    header('Location: ./login.php');
-    exit;
-} elseif ($pw != $aktuellesPW) {
-    header('Location: ./login.php');
-    exit;
+    listHelper::createList($name, $gradeKey);
 }
 
 ?>
@@ -45,9 +56,25 @@ if (isset($_GET['succsess'])) {
     <input class="test" type="text" name="liste" id="listenname">
     <input type="submit" name="senden" value="Senden">
 </form>
+<!-- NEUEN SCHÜLER ANLEGEN -->
 <form id="list" method="post" action="liste.php">
-    <label for="data">Daten des Schülers</label>
-    <input class="test" type="text" name="name" autocomplete="off" autofocus id="name">
+    <label for="data">Vorname</label>
+    <input class="test" type="text" name="firstName" autocomplete="off" autofocus id="firstName">
+    <label for="data">Nachname</label>
+    <input class="test" type="text" name="lastName" autocomplete="off" id="lastName">
+    <label for="data">Geburtstdatum</label>
+    <input class="test" type="date" name="bday" autocomplete="off" id="bday">
+    <select name="klasse" id="klasse">
+        <?php
+        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+        $sql = "SELECT id_kurs, Name FROM kurs";
+
+        foreach ($PDO->query($sql) as $key=>$val)
+        {
+            echo "<option value='".$key."'>".$val."</option>";
+        }
+        ?>
+    </select>
     <input type="submit" name="submit" value="Senden">
 </form>
 
@@ -74,7 +101,10 @@ if (isset($_GET['succsess'])) {
         <?php
         foreach ($_SESSION as $key=>$val)
         {
-            echo "<option value='".$key."'>".$key."</option>";
+            if ($key !== "name") {
+                echo "<option value='".$key."'>".$key."</option>";
+            }
+
         }
         ?>
     </select>
@@ -83,50 +113,47 @@ if (isset($_GET['succsess'])) {
 
 <p>Hier stehen (hoffentlich irgendwann) alle Schüler:</p>
 <?php
-$name = $_SESSION['name'];
-function setListName($listName) {
-    global $name;
-    $name = $listName;
-    $_SESSION['name'] = $name;
-}
-
+//LISTE LADEN/FESTLEGEN
 if (isset($_POST['laden'])) {
     $listName = $_POST['klasse'];
-    setListName($listName);
-}
-var_dump($GLOBALS['name']);
-if (isset($_POST['senden'])) {
-    $name = $_POST['liste'];
-    listHelper::createList($name);
-    unset($_POST['submit']);
+    $_SESSION['name'] = $listName;
+    $liste = unserialize($_SESSION[$listName]);
+    $liste->readList();
 }
 
+//KNOTEN LÖSCHEN
 if (isset($_POST['delete'])) {
     $data = $_POST['data'];
-    listHelper::delete($data);
+    $name = $_SESSION['name'];
+    listHelper::delete($data, $name);
 }
-
+//NEUEN SCHÜLER HINZUFÜGEN
 if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    listHelper::addStudent($name);
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $bday = $_POST['bday'];
+    $class = $_POST['class'];
+    $listNa = $_SESSION['name'];
+    listHelper::addStudent($firstName, $lastName, $bday, $class, $listNa);
 }
-
+//LISTE AUSGEBEN
 if (array_key_exists('listData', $_POST)) {
     listHelper::listHelperData();
 }
-
+//LISTE VERKEHRT AUSGEBEN
 if (array_key_exists('reverseListData', $_POST)) {
     listHelper::listHelperReverse();
 }
-
+//LISTE ZURÜCKSETZEN
 if (array_key_exists('resetList', $_POST)) {
     listHelper::listReset();
 }
 
+//echo "<h3> PHP List All Session Variables</h3>";
+//foreach ($_SESSION as $key=>$val)
+//    if ($key !== "name") {
+//        echo $key.", Val: ".$val."<br/>";
+//    }
 
-
-echo "<h3> PHP List All Session Variables</h3>";
-foreach ($_SESSION as $key=>$val)
-    echo $key.", Val: ".$val."<br/>";
 ?>
 </body>
