@@ -6,16 +6,16 @@
  * Time: 12:36
  */
 
-require_once '../includes/DoublyLinkedList.php';
-require_once '../includes/Element.php';
-require_once '../includes/Student.php';
-require_once '../../project_files/Database.php';
-include_once '../../project_files/_config.php';
+require_once 'files_lp/includes/DoublyLinkedList.php';
+require_once 'files_lp/includes/Element.php';
+require_once 'files_lp/includes/Student.php';
+require_once 'project_files/Database.php';
 
 //TODO Funktionen neu anpassen
 abstract class listHelper {
 
-    public static function createList($name, $key) {
+    public static function createList($name, $key)
+    {
         $liste = new DoublyLinkedList($name, $key);
         $_SESSION[$name] = serialize($liste);
         try {
@@ -28,6 +28,35 @@ abstract class listHelper {
             echo $e->getCode();
             echo $e->getMessage();
         }
+    }
+
+    public static function buildList($class)
+    {
+        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+        if (isset($_SESSION[$class]))
+        {
+            $liste = unserialize($_SESSION[$class]);
+        }
+        else
+        {
+            $keysql = "SELECT NotenschluesselTyp_idNotenschluesselTyp FROM kurs WHERE Name = ?";
+            $res = $PDO->prepare($keysql);
+            $res->execute(array($class));
+            $key = $res->fetch(PDO::FETCH_ASSOC);
+            listHelper::createList($class, $key['NotenschluesselTyp_idNotenschluesselTyp']);
+            $liste = unserialize($_SESSION[$class]);
+        }
+        $search = "SELECT schueler.Vorname, schueler.Nachname, schueler.Geburtsdatum, k.id_Kurs FROM schueler
+                   LEFT JOIN kurs k on schueler.Kurs_id_Kurs = k.id_Kurs
+                   WHERE k.Name = ?";
+        $pre = $PDO->prepare($search);
+        $pre->execute(array($class));
+        $test = $pre->fetch(PDO::FETCH_ASSOC);
+        foreach ($test as $row) {
+            $student = new Student($test['Vorname'], $test['Nachname'], $test['Geburtsdatum'], $class);
+            $liste->add($student);
+        }
+        $_SESSION[$class] = serialize($liste);
     }
 
     public static function addStudent($firstName, $lastName, $bday, $class) {

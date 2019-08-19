@@ -7,10 +7,10 @@
  */
 session_start();
 require_once 'project_files/Database.php';
-require_once 'project_files/_config.php';
 include_once "files_lp/includes/DoublyLinkedList.php";
 include_once "files_lp/includes/Element.php";
 include_once "files_lp/includes/Student.php";
+include_once "files_lp/helper/listHelper.php";
 ?>
 
 <head>

@@ -31,32 +31,18 @@ require_once 'project_files/Database.php';
 require_once 'project_files/_config.php';
 include_once 'files_lp/ui/header.php';
 
-
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-$sql = "SELECT Name FROM kurs";
-$result = $PDO->query($sql);
 
 if (isset($_GET['id'])) {
-    echo $_GET['id'];
     $kurs = $_GET['id'];
-    echo "<br>";
-    $liste = unserialize($_SESSION[$_GET['id']]);
-    $search = "SELECT schueler.Vorname, schueler.Nachname, schueler.Geburtsdatum, kurs.NotenschluesselTyp_idNotenschluesselTyp FROM kurs
-               LEFT JOIN schueler s on kurs.id_Kurs = s.Kurs_id_Kurs
-               WHERE kurs.Name = ?";
-    echo "Search <br>";
-    var_dump($search);
-    echo "<br>";
-    $pre = $PDO->prepare($search);
-    echo "pre <br>";
-    var_dump($pre);
-    echo "<br>";
-    $search_result = $pre->execute(array($kurs));
-    echo "result <br>";
-    var_dump($search_result);
-
+    listHelper::buildList($kurs);
+    $liste = unserialize($_SESSION[$kurs]);
+    $array = $liste->readList();
+    var_dump($array);
 }
 else {
+    $sql = "SELECT Name FROM kurs";
+    $result = $PDO->query($sql);
 ?>
 
     <table id="myTable">

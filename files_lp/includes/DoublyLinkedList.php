@@ -15,7 +15,7 @@ class DoublyLinkedList
     private $count;
     private $name;
     private $gradeKey;
-    //TODO Random Picker mich ignorieren lassen
+    //TODO Random Picker mich ignorieren lassen :--))
     public function __construct($name, $key)
     {
         $this->name = $name;
@@ -52,33 +52,37 @@ class DoublyLinkedList
 
     public function readList()
     {
+        $array = null;
         if ($this->count === 0) {
             echo "Noch keine Einträge vorhanden.<br>";
         } else {
             $start = $this->getStart();
             $data = $start->getData();
             echo "Richtige Liste <br>";
-            $this->readData($start, $data);
+            $array .= $this->readData($start, $data);
+            return $array;
+
         }
     }
 
     /**
      * @param $node
      * @param $data
-     * @return int
+     * @return array
      */
     public function readData($node, $data)
     {
+        $array = array();
         if ($node !== null) {
-            echo $data . "<br>";
+            array_push($array, $data);
             $node = $node->getNext();
             if ($node !== null) {
                 $this->readData($node, $node->getData());
             } else {
-                return 0;
+                return $array;
             }
         } else {
-            return 0;
+            return $array;
         }
     }
 

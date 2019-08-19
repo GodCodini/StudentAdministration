@@ -8,7 +8,7 @@
 include_once 'files_lp/ui/header.php';
 ?>
 
-<form id="list" method="post" action="files_lp/helper/newStudentHelper.php">
+<form id="list" method="post" action="./newStudentHelper.php">
     <label for="firstName">Vorname</label>
     <input class="test" type="text" name="firstName" autocomplete="off" autofocus id="firstName">
     <label for="lastName">Nachname</label>

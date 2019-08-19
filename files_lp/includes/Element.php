@@ -55,7 +55,8 @@ class Element
 
     public function getData()
     {
-        return $this->data->getFirstName();
+
+        return $this->data->getStudentData();
     }
 
     public function getLast(){

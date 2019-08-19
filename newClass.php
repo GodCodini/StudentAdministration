@@ -6,6 +6,8 @@
  * Time: 08:27
  */
 include_once 'files_lp/ui/header.php';
+include_once 'project_files/Database.php';
+include_once 'project_files/_config.php';
 if (isset($_GET["succsess"])) {
     if ($_GET["succsess"] == "class") {
         echo "<span class='succsess'>Klasse erfolgreich angelegt.</span><br><br>";
@@ -18,16 +20,24 @@ if (isset($_GET["succsess"])) {
 }
 ?>
 
-<form action="files_lp/helper/newClassHelper.php" method="post">
+<form action="./newClassHelper.php" method="post">
     <label for="data">Klassenbezeichnung</label>
     <input class="test" type="text" name="liste" id="listenname">
     <select name="gradeKey" id="gradeKey">
         <?php
-        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-        $sql = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
-        foreach ($PDO->query($sql) as $row) {
-            echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
+        try {
+            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+            $sql = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
+            foreach ($PDO->query($sql) as $row) {
+                echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
+            }
         }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+        }
+
         ?>
     </select>
     <input type="submit" name="senden" value="Senden">
