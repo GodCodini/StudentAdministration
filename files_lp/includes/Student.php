@@ -29,6 +29,23 @@ class Student
         $this->class = $class;
     }
 
+    public function addToDB($first, $last, $bday, $class)
+    {
+        try
+        {
+            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+            $sql = "INSERT IGNORE INTO schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) values (?, ?, ?, ?)";
+            $pre = $PDO->prepare($sql);
+            $pre->execute(array($first, $last, $bday, $class));
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+        }
+
+    }
+
     /**
      * @return mixed
      */
@@ -91,6 +108,17 @@ class Student
     public function setClass($class)
     {
         $this->class = $class;
+    }
+
+    public function getStudentData()
+    {
+        $data = array();
+        $first = $this->getFirstName();
+        $last = $this->getLastName();
+        $bd = $this->getBday();
+        array_push($data, $first, $last, $bd);
+
+        return $data;
     }
 
 }

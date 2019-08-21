@@ -2,69 +2,69 @@
 
 require '_config.php';
 
-class Student {
-
-	public $vorname, $nachname, $geburtsdatum, $email, $klasse;
-
-	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse){
-		$this->vorname = $vorname;
-		$this->nachname = $nachname;
-		$this->geburtsdatum = $geburtsdatum;
-		$this->email = $email;
-		$this->klasse = $klasse;
-	}
-	/**
-	 * @param String $vorname
-	 * @param String $nachname
-	 * @param Date $geburtsdatum
-	 * @param Number $klasse
-	 * @return Boolean
-	 */
-
-	public function createStudentOnDB(){
-        Database::connect()->query("INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$this->vorname."', '".$this->nachname."', '".$this->geburtsdatum."', '".$this->email."','".$this->klasse."')");
-	}
-
-	function setVorname($neuerVorname){
-		$this->vorname = $neuerVorname;
-	}
-
-	function getVorname(){
-		return $this->vorname;
-	}
-
-	function setNachname($neuerNachname){
-	    $this->nachname = $neuerNachname;
-    }
-
-    function getNachname(){
-	    return $this->nachname;
-    }
-
-    function setGeburtsdatum($neuesGeburtsdatum){
-	    $this->geburtsdatum = $neuesGeburtsdatum;
-    }
-
-    function getGeburtsdatum(){
-	    return $this->geburtsdatum;
-    }
-
-    function setKlasse($neueKlasse){
-	    $this->klasse = $neueKlasse;
-    }
-
-    function getKlasse(){
-	    return $this->klasse;
-    }
-
-    function setFach($neuesFach){
-	    $this->fach = $neuesFach;
-    }
-
-    function getFach(){
-	    return $this->fach;
-    }
-}
+//class Student {
+//
+//	public $vorname, $nachname, $geburtsdatum, $email, $klasse;
+//
+//	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse){
+//		$this->vorname = $vorname;
+//		$this->nachname = $nachname;
+//		$this->geburtsdatum = $geburtsdatum;
+//		$this->email = $email;
+//		$this->klasse = $klasse;
+//	}
+//	/**
+//	 * @param String $vorname
+//	 * @param String $nachname
+//	 * @param Date $geburtsdatum
+//	 * @param Number $klasse
+//	 * @return Boolean
+//	 */
+//
+//	public function createStudentOnDB(){
+//        Database::connect()->query("INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$this->vorname."', '".$this->nachname."', '".$this->geburtsdatum."', '".$this->email."','".$this->klasse."')");
+//	}
+//
+//	function setVorname($neuerVorname){
+//		$this->vorname = $neuerVorname;
+//	}
+//
+//	function getVorname(){
+//		return $this->vorname;
+//	}
+//
+//	function setNachname($neuerNachname){
+//	    $this->nachname = $neuerNachname;
+//    }
+//
+//    function getNachname(){
+//	    return $this->nachname;
+//    }
+//
+//    function setGeburtsdatum($neuesGeburtsdatum){
+//	    $this->geburtsdatum = $neuesGeburtsdatum;
+//    }
+//
+//    function getGeburtsdatum(){
+//	    return $this->geburtsdatum;
+//    }
+//
+//    function setKlasse($neueKlasse){
+//	    $this->klasse = $neueKlasse;
+//    }
+//
+//    function getKlasse(){
+//	    return $this->klasse;
+//    }
+//
+//    function setFach($neuesFach){
+//	    $this->fach = $neuesFach;
+//    }
+//
+//    function getFach(){
+//	    return $this->fach;
+//    }
+//}
 
 // vormals Note (für mich zur Verständlichkeit, 
 // da eine Note kein Objekt ist sondern z.B. die Klassenarbeit)
