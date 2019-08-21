@@ -27,7 +27,6 @@ class Student
         $this->lastName = $lastName;
         $this->bday = $bday;
         $this->class = $class;
-        $this->addToDB($this->firstName, $this->lastName, $this->bday, $this->class);
     }
 
     public function addToDB($first, $last, $bday, $class)
@@ -117,11 +116,6 @@ class Student
         $first = $this->getFirstName();
         $last = $this->getLastName();
         $bd = $this->getBday();
-//        echo "<pre>";
-//
-//        var_dump($first);
-//        var_dump($last);
-//        echo "</pre>";
         array_push($data, $first, $last, $bd);
 
         return $data;

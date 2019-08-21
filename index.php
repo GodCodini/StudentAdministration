@@ -30,21 +30,55 @@
 require_once 'project_files/Database.php';
 require_once 'project_files/_config.php';
 include_once 'files_lp/ui/header.php';
+include_once 'files_lp/includes/functions.php';
 
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 
 if (isset($_GET['id'])) {
     $kurs = $_GET['id'];
-    listHelper::buildList($kurs);
-    $liste = unserialize($_SESSION[$kurs]);
+    if (isset($_SESSION[$kurs]))
+    {
+        $liste = unserialize($_SESSION[$kurs]);
+    }
+    else
+    {
+        listHelper::buildList($kurs);
+        $liste = unserialize($_SESSION[$kurs]);
+    }
+
     $array = $liste->readList();
-    var_dump($array);
+//    dev::printTableFromObjectArray($array);
+//    echo "<pre>";
+//    echo "hier die klasse ".$kurs;
+//    echo "<br>";
+//    var_dump($array);
+//    echo "</pre>";
+
+    echo "<table>";
+    echo "<tr>";
+    echo "<th>Vorname</th>";
+    echo "<th>Nachname</th>";
+    echo "<th>Geburtsdatum</th>";
+    echo "</tr>";
+    foreach ($array as $row) {
+        echo "<tr>";
+        echo "<td>";
+        echo "<p>".$row[0]."</p>";
+        echo "</td>";
+        echo "<td>";
+        echo "<p>".$row[1]."</p>";
+        echo "</td>";
+        echo "<td>";
+        echo "<p>".$row[2]."</p>";
+        echo "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
 }
 else {
     $sql = "SELECT Name FROM kurs";
     $result = $PDO->query($sql);
 ?>
-
     <table id="myTable">
         <th>Klasse</th>
 

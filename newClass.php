@@ -18,9 +18,17 @@ if (isset($_GET["succsess"])) {
         echo "<span class='error'>Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.</span><br><br>";
     }
 }
+
+if (isset($_POST['senden'])) {
+    $name = $_POST['liste'];
+    $gradeKey = $_POST['gradeKey'];
+
+    listHelper::createList($name, $gradeKey);
+    header("Location: ./newClass.php?succsess=class");
+}
 ?>
 
-<form action="./newClassHelper.php" method="post">
+<form action="" method="post">
     <label for="data">Klassenbezeichnung</label>
     <input class="test" type="text" name="liste" id="listenname">
     <select name="gradeKey" id="gradeKey">

@@ -22,11 +22,14 @@ class Element
 
     public function setPrevious($element)
     {
-        if ($element == null) {
+        if ($element == null)
+        {
             $this->prev = null;
-        } esle; {
-        $this->prev = $element;
-    }
+        }
+        esle;
+        {
+            $this->prev = $element;
+        }
     }
 
     public function getPrevious()
@@ -36,9 +39,12 @@ class Element
 
     public function setNext($element)
     {
-        if ($element === null) {
+        if ($element === null)
+        {
             $this->next = null;
-        } else {
+        }
+        else
+        {
             $this->next = $element;
         }
     }
@@ -55,11 +61,11 @@ class Element
 
     public function getData()
     {
-
         return $this->data->getStudentData();
     }
 
-    public function getLast(){
+    public function getLast()
+    {
         return $this->data->getLastName();
     }
 

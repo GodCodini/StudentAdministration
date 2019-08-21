@@ -52,39 +52,63 @@ class DoublyLinkedList
 
     public function readList()
     {
-        $array = null;
-        if ($this->count === 0) {
+        $array = array();
+        if ($this->count === 0)
+        {
             echo "Noch keine Einträge vorhanden.<br>";
-        } else {
+        }
+        else
+        {
             $start = $this->getStart();
             $data = $start->getData();
             echo "Richtige Liste <br>";
-            $array .= $this->readData($start, $data);
-            return $array;
 
-        }
-    }
-
-    /**
-     * @param $node
-     * @param $data
-     * @return array
-     */
-    public function readData($node, $data)
-    {
-        $array = array();
-        if ($node !== null) {
-            array_push($array, $data);
-            $node = $node->getNext();
-            if ($node !== null) {
-                $this->readData($node, $node->getData());
-            } else {
-                return $array;
+            //$array = $this->readData($start, $data);
+            for ($i = 0; $i < $this->count; $i++) {
+                array_push($array, $data);
+                $start = $start->getNext();
+//                echo "<pre>";
+//                var_dump($array);
+//                echo "</pre>";
+                if ($start !== null)
+                {
+                    $data = $start->getData();
+                }
+                else
+                {
+                    return $array;
+                }
             }
-        } else {
             return $array;
+
         }
     }
+
+
+//    public function readData($node, $data)
+//    {
+//        $array = array();
+//        if ($node !== null)
+//        {
+//            array_push($array, $data);
+//            $node = $node->getNext();
+//            echo "<pre>";
+//            var_dump($array);
+//            echo "</pre>";
+//            if ($node !== null)
+//            {
+//                $this->readData($node, $node->getData());
+//            }
+//            else
+//            {
+//                return $array;
+//            }
+//        }
+//        else
+//        {
+//            return $array;
+//        }
+//    }
 
     public function resetList()
     {
@@ -96,9 +120,12 @@ class DoublyLinkedList
 
     public function reverseReadList()
     {
-        if ($this->count === 0) {
+        if ($this->count === 0)
+        {
             echo "Noch keine Einträge vorhanden.";
-        } else {
+        }
+        else
+        {
             $end = $this->getEnd();
             $data = $end->getData();
             echo "Verkehrte Liste <br>";
@@ -135,7 +162,7 @@ class DoublyLinkedList
     {
         $current = $this->start;
 
-        for ($i = 1; $i <= $this->count; $i++) {
+        for ($i = 0; $i <= $this->count; $i++) {
             if ($current->getLastName() === $key)
             {
                 if ($this->count === 1)
