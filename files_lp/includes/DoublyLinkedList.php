@@ -61,15 +61,11 @@ class DoublyLinkedList
         {
             $start = $this->getStart();
             $data = $start->getData();
-            echo "Richtige Liste <br>";
-
-            //$array = $this->readData($start, $data);
+            echo $this->name;
+            echo "<br>";
             for ($i = 0; $i < $this->count; $i++) {
                 array_push($array, $data);
                 $start = $start->getNext();
-//                echo "<pre>";
-//                var_dump($array);
-//                echo "</pre>";
                 if ($start !== null)
                 {
                     $data = $start->getData();

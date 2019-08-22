@@ -23,30 +23,50 @@ if (isset($_POST['senden'])) {
     $name = $_POST['liste'];
     $gradeKey = $_POST['gradeKey'];
 
-    listHelper::createList($name, $gradeKey);
-    header("Location: ./newClass.php?succsess=class");
+    $return = listHelper::createList($name, $gradeKey);
+    if ($return)
+    {
+        header("Location: ./newClass.php?succsess=class");
+    }
+    else {
+        header("Location: ./newClass.php?error=error");
+    }
+
 }
 ?>
 
-<form action="" method="post">
-    <label for="data">Klassenbezeichnung</label>
-    <input class="test" type="text" name="liste" id="listenname">
-    <select name="gradeKey" id="gradeKey">
-        <?php
-        try {
-            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-            $sql = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
-            foreach ($PDO->query($sql) as $row) {
-                echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
-            }
-        }
-        catch (Exception $e)
-        {
-            echo $e->getCode();
-            echo $e->getMessage();
-        }
+<form class="form-style-7" method="post" action="">
+    <ul>
+        <li>
+            <label for="name">Klassenbezeichnung</label>
+            <input type="text" name="liste" autocomplete="off" autofocus id="listenname">
+            <span>Geben Sie das Kürzel der Klasse ein</span>
+        </li>
 
-        ?>
-    </select>
-    <input type="submit" name="senden" value="Senden">
+        <li>
+            <label for="name">Notenschlüssel</label>
+            <select name="gradeKey" id="gradeKey">
+                <?php
+                try {
+                    $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+                    $sql = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
+                    foreach ($PDO->query($sql) as $row) {
+                        echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
+                    }
+                }
+                catch (Exception $e)
+                {
+                    echo $e->getCode();
+                    echo $e->getMessage();
+                }
+
+                ?>
+            </select>
+            <span>Geben Sie den Notenschlüssel an</span>
+        </li>
+
+        <li>
+            <input type="submit" name="senden" value="Klasse anlegen" >
+        </li>
+    </ul>
 </form>

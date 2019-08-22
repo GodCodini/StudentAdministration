@@ -24,28 +24,45 @@ if (isset($_POST['submit'])) {
     $lastName = $_POST['lastName'];
     $bday = $_POST['bday'];
     $class = $_POST['class'];
-    //$listName = $_SESSION['name'];
     listHelper::addStudent($firstName, $lastName, $bday, $class);
     header("Location: ./newStudent.php?succsess=student");
 }
 ?>
-
-<form id="list" method="post" action="">
-    <label for="firstName">Vorname</label>
-    <input class="test" type="text" name="firstName" autocomplete="off" autofocus id="firstName">
-    <label for="lastName">Nachname</label>
-    <input class="test" type="text" name="lastName" autocomplete="off" id="lastName">
-    <label for="bday">Geburtstdatum</label>
-    <input class="test" type="date" name="bday" autocomplete="off" id="bday">
-    <select name="class" id="class">
-        <?php
-        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-        $sql = "SELECT id_kurs, Name FROM kurs";
-        foreach ($PDO->query($sql) as $row)
-        {
-            echo "<option value='".$row['id_kurs']."'>".$row['Name']."</option>";
-        }
-        ?>
-    </select>
-    <input type="submit" name="submit" value="Senden">
-</form>
+<div class="centerThis">
+    <form class="form-style-7" method="post" action="">
+        <ul>
+            <li>
+                <label for="name">Vorname</label>
+                <input type="text" name="firstName" autocomplete="off" autofocus id="firstName">
+                <span>Geben Sie den Vornamen ein</span>
+            </li>
+            <li>
+                <label for="name">Nachname</label>
+                <input type="text" name="lastName" autocomplete="off" autofocus id="lastName">
+                <span>Geben Sie den Nachnamen ein</span>
+            </li>
+            <li>
+                <label for="name">Geburtstag</label>
+                <input type="date" name="bday" autocomplete="off" id="bday">
+                <span>Geben Sie das Geburtsdatum ein</span>
+            </li>
+            <li>
+                <label for="name">Klasse</label>
+                <select class="neueKlasseInput" name="class" id="class">
+                    <?php
+                    $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+                    $sql = "SELECT id_kurs, kursName FROM kurs";
+                    foreach ($PDO->query($sql) as $row)
+                    {
+                        echo "<option value='".$row['id_kurs']."'>".$row['kursName']."</option>";
+                    }
+                    ?>
+                </select>
+                <span>Geben Sie die Klasse an</span>
+            </li>
+            <li>
+                <input type="submit" name="submit" value="Schüler eintragen" >
+            </li>
+        </ul>
+    </form>
+</div>

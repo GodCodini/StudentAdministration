@@ -74,7 +74,7 @@ abstract class DB {
      */
     public static function convertDate($date) {
         if ($date) {
-            return date('d.m.', strtotime($date));
+            return date('d.m.Y', strtotime($date));
         }
         else {
             return NULL;

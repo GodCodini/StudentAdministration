@@ -15,6 +15,13 @@ include_once "files_lp/helper/listHelper.php";
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        //auto expand textarea
+        function adjust_textarea(h) {
+            h.style.height = "20px";
+            h.style.height = (h.scrollHeight)+"px";
+        }
+    </script>
     <link rel="stylesheet" href="files_lp/styles/styles.css">
     <title>Schülerverwaltung</title>
 </head>

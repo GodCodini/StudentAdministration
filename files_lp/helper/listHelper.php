@@ -16,14 +16,16 @@ abstract class listHelper
         try
         {
             $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-            $sql = "INSERT INTO kurs (Name, NotenschluesselTyp_idNotenschluesselTyp) VALUES (?, ?)";
+            $sql = "INSERT INTO kurs (kursName, NotenschluesselTyp_idNotenschluesselTyp) VALUES (?, ?)";
             $exe = $PDO->prepare($sql);
             $exe->execute(array($name, $key));
+            return 1;
         }
         catch (Exception $e)
         {
             echo $e->getCode();
             echo $e->getMessage();
+            return 0;
         }
     }
 
@@ -42,7 +44,7 @@ abstract class listHelper
         }
         else
         {
-            $keysql = "SELECT NotenschluesselTyp_idNotenschluesselTyp FROM kurs WHERE Name = ?";
+            $keysql = "SELECT NotenschluesselTyp_idNotenschluesselTyp FROM kurs WHERE kursName = ?";
             $res = $PDO->prepare($keysql);
             $res->execute(array($class));
             $key = $res->fetch(PDO::FETCH_ASSOC);
@@ -52,7 +54,7 @@ abstract class listHelper
 
         $search = "SELECT s.Vorname, s.Nachname, s.Geburtsdatum FROM kurs
                    LEFT JOIN schueler s on kurs.id_Kurs = s.Kurs_id_Kurs
-                   WHERE kurs.Name = ?";
+                   WHERE kurs.kursName = ?";
         $pre = $PDO->prepare($search);
         $pre->execute(array($class));
         $test = $pre->fetchAll(PDO::FETCH_ASSOC);
@@ -69,7 +71,7 @@ abstract class listHelper
         try
         {
             $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-            $sql = "SELECT Name FROM kurs WHERE id_Kurs = ?";
+            $sql = "SELECT kursName FROM kurs WHERE id_Kurs = ?";
             $res = $PDO->prepare($sql);
             $res->execute(array($class));
             $result = $res->fetchAll(PDO::FETCH_ASSOC);
@@ -80,7 +82,7 @@ abstract class listHelper
             echo $e->getMessage();
             return;
         }
-        $name = $result[0]['Name'];
+        $name = $result[0]['kursName'];
         if (isset($_SESSION[$name]))
         {
             $liste = unserialize($_SESSION[$name]);
