@@ -8,7 +8,6 @@ require_once 'project_files/_config.php';
 
 abstract class listHelper
 {
-
     public static function createList($name, $key)
     {
         $liste = new DoublyLinkedList($name, $key);
@@ -52,18 +51,25 @@ abstract class listHelper
             $liste = unserialize($_SESSION[$class]);
         }
 
-        $search = "SELECT s.Vorname, s.Nachname, s.Geburtsdatum FROM kurs
+        $search = "SELECT s.id_Schueler, s.Vorname, s.Nachname, s.Geburtsdatum FROM kurs
                    LEFT JOIN schueler s on kurs.id_Kurs = s.Kurs_id_Kurs
                    WHERE kurs.kursName = ?";
         $pre = $PDO->prepare($search);
         $pre->execute(array($class));
         $test = $pre->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($test as $row)
-        {
-            $student = new Student($row['Vorname'], $row['Nachname'], $row['Geburtsdatum'], $class);
-            $liste->add($student);
+        if ($test[0]["id_Schueler"] !== null) {
+            foreach ($test as $row)
+            {
+                var_dump($row);
+                $student = new Student($row['id_Schueler'], $row['Vorname'], $row['Nachname'], $row['Geburtsdatum'], $class);
+                $liste->add($student);
+            }
+            $_SESSION[$class] = serialize($liste);
         }
-        $_SESSION[$class] = serialize($liste);
+        else{
+            $_SESSION[$class] = serialize($liste);
+        }
+
     }
 
     public static function addStudent($firstName, $lastName, $bday, $class)
@@ -82,6 +88,20 @@ abstract class listHelper
             echo $e->getMessage();
             return;
         }
+        try
+        {
+            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+            $sql = "INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) VALUES (?, ?, ?, ?)";
+            $exe = $PDO->prepare($sql);
+            $exe->execute(array($firstName, $lastName, $bday, $class));
+            $id = $PDO->lastInsertId();
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+            return;
+        }
         $name = $result[0]['kursName'];
         if (isset($_SESSION[$name]))
         {
@@ -92,20 +112,35 @@ abstract class listHelper
             listHelper::buildList($name);
             $liste = unserialize($_SESSION[$name]);
         }
-        $schueler = new Student($firstName, $lastName, $bday, $class);
+        $schueler = new Student($id, $firstName, $lastName, $bday, $class);
         $liste->add($schueler);
         $_SESSION[$name] = serialize($liste);
+    }
+
+    /**
+     * @param $grade
+     * @param $percent
+     * @param $date
+     * @param $studentID
+     * @param $classID
+     * @param $gradeTypID
+     * @param null $comment
+     * @return int
+     */
+    public static function addGrade($grade, $percent, $date, $studentID, $classID, $gradeTypID, $comment = null) {
         try
         {
             $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-            $sql = "INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $exe = $PDO->prepare($sql);
-            $exe->execute(array($firstName, $lastName, $bday, $class));
+            $exe->execute(array($comment, $grade, $percent, $date, $studentID, $classID, $gradeTypID));
+            return 1;
         }
         catch (Exception $e)
         {
             echo $e->getCode();
             echo $e->getMessage();
+            return 0;
         }
     }
 //TODO Funktionen neu anpassen

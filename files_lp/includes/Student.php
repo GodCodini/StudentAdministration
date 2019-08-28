@@ -13,16 +13,19 @@ class Student
     private $lastName;
     private $bday;
     private $class;
+    private $id;
 
     /**
      * Student constructor.
-     * @param $firstName
-     * @param $lastName
-     * @param $bday
-     * @param $class
+     * @param $id int id in der db
+     * @param $firstName String Vorname Schüler
+     * @param $lastName String Nachname Schüler
+     * @param $bday date Geburtstag
+     * @param $class int id der Klasse
      */
-    public function __construct($firstName, $lastName, $bday, $class)
+    public function __construct($id, $firstName, $lastName, $bday, $class)
     {
+        $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->bday = $bday;
@@ -34,7 +37,7 @@ class Student
         try
         {
             $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-            $sql = "INSERT IGNORE INTO schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) values (?, ?, ?, ?)";
+            $sql = "INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) values (?, ?, ?, ?)";
             $pre = $PDO->prepare($sql);
             $pre->execute(array($first, $last, $bday, $class));
         }
@@ -44,6 +47,14 @@ class Student
             echo $e->getMessage();
         }
 
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -112,11 +123,13 @@ class Student
 
     public function getStudentData()
     {
+
         $data = array();
+        $id = $this->getId();
         $first = $this->getFirstName();
         $last = $this->getLastName();
         $bd = $this->getBday();
-        array_push($data, $first, $last, $bd);
+        array_push($data, $first, $last, $bd, $id);
 
         return $data;
     }

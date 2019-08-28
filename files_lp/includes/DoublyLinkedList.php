@@ -105,54 +105,54 @@ class DoublyLinkedList
 //            return $array;
 //        }
 //    }
-
-    public function resetList()
-    {
-        $this->count = 0;
-        $this->start = null;
-        $this->end = null;
-
-    }
-
-    public function reverseReadList()
-    {
-        if ($this->count === 0)
-        {
-            echo "Noch keine Einträge vorhanden.";
-        }
-        else
-        {
-            $end = $this->getEnd();
-            $data = $end->getData();
-            echo "Verkehrte Liste <br>";
-            $this->reverseReadData($end, $data);
-        }
-    }
-
-    /**
-     * @param $node
-     * @param $data
-     */
-    public function reverseReadData($node, $data)
-    {
-        if ($node !== null)
-        {
-            echo $data . "<br>";
-            $node = $node->getPrevious();
-            if ($node !== null)
-            {
-                $this->reverseReadData($node, $node->getData());
-            }
-            else
-            {
-                return;
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
+//
+//    public function resetList()
+//    {
+//        $this->count = 0;
+//        $this->start = null;
+//        $this->end = null;
+//
+//    }
+//
+//    public function reverseReadList()
+//    {
+//        if ($this->count === 0)
+//        {
+//            echo "Noch keine Einträge vorhanden.";
+//        }
+//        else
+//        {
+//            $end = $this->getEnd();
+//            $data = $end->getData();
+//            echo "Verkehrte Liste <br>";
+//            $this->reverseReadData($end, $data);
+//        }
+//    }
+//
+//    /**
+//     * @param $node
+//     * @param $data
+//     */
+//    public function reverseReadData($node, $data)
+//    {
+//        if ($node !== null)
+//        {
+//            echo $data . "<br>";
+//            $node = $node->getPrevious();
+//            if ($node !== null)
+//            {
+//                $this->reverseReadData($node, $node->getData());
+//            }
+//            else
+//            {
+//                return;
+//            }
+//        }
+//        else
+//        {
+//            return;
+//        }
+//    }
 
     public function deleteNode($key)
     {

@@ -54,6 +54,7 @@ if (isset($_GET['id']))
     echo "<th>Vorname</th>";
     echo "<th>Nachname</th>";
     echo "<th>Geburtsdatum</th>";
+    echo "<th>Note hinzufügen</th>";
     echo "</tr>";
     foreach ($array as $row) {
         echo "<tr>";
@@ -65,6 +66,9 @@ if (isset($_GET['id']))
         echo "</td>";
         echo "<td>";
         echo "<p>".DB::convertDate($row[2])."</p>";
+        echo "</td>";
+        echo "<td>";
+        echo "<a href='newGrade.php?id=".$row[3]."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
         echo "</td>";
         echo "</tr>";
     }
