@@ -290,15 +290,9 @@ tr:nth-child(odd):not(.tableHead) {
 
 tr:not(.tableHead):hover {
     background-color: var(--softAccentColor);
-    cursor: pointer;
-}
-
-th:hover {
-    cursor: pointer;
 }
 
 /* INPUT FORM STYLES */
-
 
 .form-style-7{
     max-width:400px;

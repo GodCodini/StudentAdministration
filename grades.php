@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pamperin
- * Date: 28.08.2019
- * Time: 11:37
- */
 include_once 'files_lp/ui/header.php';
 include_once 'project_files/Database.php';
 include_once 'project_files/_config.php';
 
-if (isset($_GET["id"])) {
+if (isset($_GET["id"]))
+{
     $id = $_GET["id"];
 }
 
