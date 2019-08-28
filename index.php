@@ -49,6 +49,7 @@ if (isset($_GET['id']))
     }
     $array = $liste->readList();
 
+
     echo "<table>";
     echo "<tr>";
     echo "<th>Vorname</th>";
@@ -59,7 +60,7 @@ if (isset($_GET['id']))
     foreach ($array as $row) {
         echo "<tr>";
         echo "<td>";
-        echo "<p>".$row[0]."</p>";
+        echo "<a href='grades.php?id=".$row[3]."'>".$row[0]."</a>";
         echo "</td>";
         echo "<td>";
         echo "<p>".$row[1]."</p>";
