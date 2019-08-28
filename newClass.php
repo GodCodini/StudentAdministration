@@ -39,7 +39,7 @@ if (isset($_POST['senden'])) {
     <ul>
         <li>
             <label for="name">Klassenbezeichnung</label>
-            <input type="text" name="liste" autocomplete="off" autofocus id="listenname">
+            <input type="text" name="liste" autocomplete="off" pattern="^[A-Za-z][A-Za-z0-9ÄäÜüÖö]*$" autofocus id="listenname">
             <span>Geben Sie das Kürzel der Klasse ein</span>
         </li>
 

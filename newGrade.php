@@ -109,11 +109,11 @@ $sql = "SELECT typ.Fachname from typ left join fach f on typ.idTyp = f.Typ_idTyp
             </li>
             <li>
                 <label for="name">Kommentar</label>
-                <input type="text" name="comment" autocomplete="off" id="comment">
+                <input type="text" name="comment" autocomplete="off" pattern="^[A-Za-z][A-Za-z0-9,:%/ ÄäÜüÖö]*$" id="comment">
                 <span>Geben Sie einen optionalen Kommentar ab</span>
             </li>
             <li>
-                <input type="submit" name="submit" value="Note eintragen" >
+                <button type="submit" name="submit" value="Note eintragen" >Absenden</button>
             </li>
         </ul>
     </form>
