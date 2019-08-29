@@ -113,7 +113,7 @@ $sql = "SELECT typ.Fachname from typ left join fach f on typ.idTyp = f.Typ_idTyp
                 <span>Geben Sie einen optionalen Kommentar ab</span>
             </li>
             <li>
-                <button type="submit" name="submit" value="Note eintragen" >Absenden</button>
+                <input type="submit" name="submit" value="Note eintragen" >
             </li>
         </ul>
     </form>

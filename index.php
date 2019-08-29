@@ -49,7 +49,6 @@ if (isset($_GET['id']))
     }
     $array = $liste->readList();
 
-
     echo "<table>";
     echo "<tr>";
     echo "<th>Vorname</th>";
@@ -57,7 +56,8 @@ if (isset($_GET['id']))
     echo "<th>Geburtsdatum</th>";
     echo "<th>Note hinzufügen</th>";
     echo "</tr>";
-    foreach ($array as $row) {
+    foreach ($array as $row)
+    {
         echo "<tr>";
         echo "<td>";
         echo "<a href='grades.php?id=".$row[3]."'>".$row[0]."</a>";
@@ -74,10 +74,9 @@ if (isset($_GET['id']))
         echo "</tr>";
     }
     echo "</table>";
-
     echo "<pre>";
-    highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");
-//    var_dump($liste);
+/*    highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");*/
+    var_dump($liste);
     echo "</pre>";
 }
 else
@@ -94,7 +93,5 @@ else
             echo "</td>";
             echo "</tr>";
         }
-
     echo "</table>";
-
 }
