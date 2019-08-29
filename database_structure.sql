@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 09. Aug 2019 um 13:21
+-- Erstellungszeit: 29. Aug 2019 um 16:20
 -- Server-Version: 10.1.25-MariaDB
 -- PHP-Version: 7.1.7
 
@@ -61,7 +61,22 @@ CREATE TABLE `kurs` (
 --
 
 INSERT INTO `kurs` (`id_Kurs`, `kursName`, `NotenschluesselTyp_idNotenschluesselTyp`) VALUES
-(1, 'FI7S', 1);
+(1, 'FI7S', 1),
+(24, 'ITB3', 1),
+(25, 'FI8A', 1),
+(26, 'ITB1', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `loadallstudents`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `loadallstudents` (
+`Vorname` varchar(45)
+,`Nachname` varchar(45)
+,`Geburtsdatum` date
+);
 
 -- --------------------------------------------------------
 
@@ -85,10 +100,35 @@ CREATE TABLE `note` (
 --
 
 INSERT INTO `note` (`id_Note`, `Kommentar`, `Note`, `Prozent`, `Datum`, `Schueler_id_Schueler`, `Fach_id_Fach`, `NotenTyp_idNotenTyp`) VALUES
-(1, NULL, 1, 95, '2019-05-14', 1, 1, 1),
-(2, NULL, 2, 88, '2019-05-10', 1, 1, 2),
-(3, NULL, 1, 95, '2019-05-10', 2, 1, 2),
-(4, NULL, 3, 76, '2019-05-09', 1, 2, 1);
+(3, '', 2, 88, '2019-08-12', 3, 1, 1),
+(4, 'Ein inhaltlicher Fehler, sonst sehr gut', 1, 98, '2019-08-20', 3, 2, 2),
+(5, '', 1, 12, '1998-12-12', 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `notenschluessel`
+--
+
+CREATE TABLE `notenschluessel` (
+  `id` int(11) NOT NULL,
+  `notenschluesselTyp_id` int(11) NOT NULL,
+  `von` int(11) NOT NULL,
+  `bis` int(11) NOT NULL,
+  `entspricht` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `notenschluessel`
+--
+
+INSERT INTO `notenschluessel` (`id`, `notenschluesselTyp_id`, `von`, `bis`, `entspricht`) VALUES
+(1, 1, 92, 100, 1),
+(2, 1, 82, 91, 2),
+(3, 1, 67, 81, 3),
+(4, 1, 50, 66, 4),
+(5, 1, 30, 49, 5),
+(6, 1, 0, 29, 6);
 
 -- --------------------------------------------------------
 
@@ -107,7 +147,8 @@ CREATE TABLE `notenschluesseltyp` (
 
 INSERT INTO `notenschluesseltyp` (`idNotenschluesselTyp`, `SchlusselName`) VALUES
 (1, 'IHK'),
-(2, 'Abitur');
+(2, 'Abitur'),
+(3, 'Referat');
 
 -- --------------------------------------------------------
 
@@ -167,7 +208,9 @@ CREATE TABLE `schueler` (
 
 INSERT INTO `schueler` (`id_Schueler`, `Vorname`, `Nachname`, `Geburtsdatum`, `Kurs_id_Kurs`) VALUES
 (1, 'Lennart', 'Pamperin', '1996-10-11', 1),
-(2, 'Ralf', 'Klaßen', '1979-12-26', 1);
+(2, 'Milad', 'Alshahaf', '1994-12-11', 25),
+(3, 'Ralf', 'KlaÃŸen', '1979-12-26', 1),
+(4, 'Alex', 'Scheibe', '1998-04-05', 25);
 
 -- --------------------------------------------------------
 
@@ -187,6 +230,15 @@ CREATE TABLE `typ` (
 INSERT INTO `typ` (`idTyp`, `Fachname`) VALUES
 (1, 'Anwendungsentwicklung'),
 (2, 'ITSY');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `loadallstudents`
+--
+DROP TABLE IF EXISTS `loadallstudents`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`pamperin`@`%` SQL SECURITY DEFINER VIEW `loadallstudents`  AS  select `s`.`Vorname` AS `Vorname`,`s`.`Nachname` AS `Nachname`,`s`.`Geburtsdatum` AS `Geburtsdatum` from (`kurs` left join `schueler` `s` on((`kurs`.`id_Kurs` = `s`.`Kurs_id_Kurs`))) where (`kurs`.`kursName` = 'FI7S') ;
 
 --
 -- Indizes der exportierten Tabellen
@@ -215,6 +267,13 @@ ALTER TABLE `note`
   ADD KEY `fk_Note_Schueler1_idx` (`Schueler_id_Schueler`),
   ADD KEY `fk_Note_Fach1_idx` (`Fach_id_Fach`),
   ADD KEY `fk_Note_NotenTyp1_idx` (`NotenTyp_idNotenTyp`);
+
+--
+-- Indizes für die Tabelle `notenschluessel`
+--
+ALTER TABLE `notenschluessel`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notenschlüsselTypID` (`notenschluesselTyp_id`);
 
 --
 -- Indizes für die Tabelle `notenschluesseltyp`
@@ -260,17 +319,22 @@ ALTER TABLE `fach`
 -- AUTO_INCREMENT für Tabelle `kurs`
 --
 ALTER TABLE `kurs`
-  MODIFY `id_Kurs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_Kurs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT für Tabelle `note`
 --
 ALTER TABLE `note`
-  MODIFY `id_Note` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_Note` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT für Tabelle `notenschluessel`
+--
+ALTER TABLE `notenschluessel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT für Tabelle `notenschluesseltyp`
 --
 ALTER TABLE `notenschluesseltyp`
-  MODIFY `idNotenschluesselTyp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idNotenschluesselTyp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT für Tabelle `notentyp`
 --
@@ -285,7 +349,7 @@ ALTER TABLE `passwort`
 -- AUTO_INCREMENT für Tabelle `schueler`
 --
 ALTER TABLE `schueler`
-  MODIFY `id_Schueler` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_Schueler` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT für Tabelle `typ`
 --
@@ -315,6 +379,12 @@ ALTER TABLE `note`
   ADD CONSTRAINT `fk_Note_Fach1` FOREIGN KEY (`Fach_id_Fach`) REFERENCES `fach` (`id_Fach`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Note_NotenTyp1` FOREIGN KEY (`NotenTyp_idNotenTyp`) REFERENCES `notentyp` (`idNotenTyp`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Note_Schueler1` FOREIGN KEY (`Schueler_id_Schueler`) REFERENCES `schueler` (`id_Schueler`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints der Tabelle `notenschluessel`
+--
+ALTER TABLE `notenschluessel`
+  ADD CONSTRAINT `notenschlüsselTypID` FOREIGN KEY (`notenschluesselTyp_id`) REFERENCES `notenschluesseltyp` (`idNotenschluesselTyp`);
 
 --
 -- Constraints der Tabelle `schueler`
