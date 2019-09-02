@@ -148,6 +148,7 @@ input[type=submit]:hover {
     position: relative;
     left: 210px;
     font-family: 'Caveat', cursive;
+    display: inline-block;
 }
 
 #logoDots:before {

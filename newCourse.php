@@ -10,7 +10,7 @@ if (isset($_GET))
         $class = $_GET["class"];
     }
 
-    $id = $_GET["id"];
+//    $id = $_GET["id"];
     if (isset($_GET["succsess"]))
     {
         if ($_GET["succsess"] == "grade")

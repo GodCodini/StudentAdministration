@@ -69,7 +69,7 @@ if (isset($_GET['id']))
         echo "<p>".DB::convertDate($row[2])."</p>";
         echo "</td>";
         echo "<td>";
-        echo "<a href='newGrade.php?id=".$row[3]."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
+        echo "<a href='newGrade.php?id=".$row[3]."&class=".$kurs."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
         echo "</td>";
         echo "</tr>";
     }

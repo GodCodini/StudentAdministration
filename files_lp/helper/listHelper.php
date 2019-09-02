@@ -60,7 +60,6 @@ abstract class listHelper
         if ($test[0]["id_Schueler"] !== null) {
             foreach ($test as $row)
             {
-                var_dump($row);
                 $student = new Student($row['id_Schueler'], $row['Vorname'], $row['Nachname'], $row['Geburtsdatum'], $class);
                 $liste->add($student);
             }
@@ -69,7 +68,6 @@ abstract class listHelper
         else{
             $_SESSION[$class] = serialize($liste);
         }
-
     }
 
     public static function addStudent($firstName, $lastName, $bday, $class)
@@ -88,6 +86,7 @@ abstract class listHelper
             echo $e->getMessage();
             return;
         }
+
         try
         {
             $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
@@ -102,6 +101,7 @@ abstract class listHelper
             echo $e->getMessage();
             return;
         }
+
         $name = $result[0]['kursName'];
         if (isset($_SESSION[$name]))
         {
@@ -118,23 +118,24 @@ abstract class listHelper
     }
 
     /**
-     * @param $grade
      * @param $percent
      * @param $date
      * @param $studentID
      * @param $classID
      * @param $gradeTypID
+     * @param $gradeKey
      * @param null $comment
      * @return int
      */
-    public static function addGrade($grade, $percent, $date, $studentID, $classID, $gradeTypID, $comment = null) {
+    public static function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $comment = null) {
+        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
         try
         {
-            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-            $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "SELECT entspricht FROM notenschluessel WHERE notenschluesselTyp_id = ? AND von <= ? AND bis > ?";
             $exe = $PDO->prepare($sql);
-            $exe->execute(array($comment, $grade, $percent, $date, $studentID, $classID, $gradeTypID));
-            return 1;
+            $exe->execute(array($gradeTypID, $percent, $percent));
+            $grade = $exe->fetchAll(PDO::FETCH_ASSOC);
+            var_dump($grade);
         }
         catch (Exception $e)
         {
@@ -142,6 +143,33 @@ abstract class listHelper
             echo $e->getMessage();
             return 0;
         }
+
+        try
+        {
+            $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp, notenschluesselTyp_Id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $exe = $PDO->prepare($sql);
+            $return = $exe->execute(array($comment, $grade[0]['entspricht'], $percent, $date, $studentID, $classID, $gradeTypID, $gradeKey));
+            if ($return)
+            {
+                return 1;
+            }
+            else
+            {
+                return $exe->errorCode();
+            }
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+            return 0;
+        }
+    }
+
+    public static function addCourse($name, $subjectId)
+    {
+
     }
 //TODO Funktionen neu anpassen
 
