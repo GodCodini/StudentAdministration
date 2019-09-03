@@ -1,5 +1,4 @@
 <?php
-
 require_once 'files_lp/includes/DoublyLinkedList.php';
 require_once 'files_lp/includes/Element.php';
 require_once 'files_lp/includes/Student.php';
@@ -72,9 +71,9 @@ abstract class listHelper
 
     public static function addStudent($firstName, $lastName, $bday, $class)
     {
+        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
         try
         {
-            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
             $sql = "SELECT kursName FROM kurs WHERE id_Kurs = ?";
             $res = $PDO->prepare($sql);
             $res->execute(array($class));
@@ -89,7 +88,6 @@ abstract class listHelper
 
         try
         {
-            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
             $sql = "INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, Kurs_id_Kurs) VALUES (?, ?, ?, ?)";
             $exe = $PDO->prepare($sql);
             $exe->execute(array($firstName, $lastName, $bday, $class));
@@ -167,9 +165,62 @@ abstract class listHelper
         }
     }
 
-    public static function addCourse($name, $subjectId)
+    public static function addgradeKey($von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6, $gradeKey)
     {
+        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+        try
+        {
+            $sql = "INSERT INTO notenschluesseltyp (SchlusselName, isGlobal) VALUES (?, ?)";
+            $exe = $PDO->prepare($sql);
+            $exe->execute(array($gradeKey, 0));
+            $id = $PDO->lastInsertId();
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+            return 0;
+        }
 
+        try
+        {
+            $sql = "INSERT INTO notenschluessel (notenschluesselTyp_id, von, bis, entspricht) VALUES (?, ?, ?, ?)";
+            $result = $PDO->prepare($sql);
+            for ($i = 1; $i <= 6; $i++)
+            {
+                switch ($i)
+                {
+                    case 1:
+                        $result->execute(array($id, $von1, $bis1, $i));
+                        break;
+                    case 2:
+                        $result->execute(array($id, $von2, $bis2, $i));
+                        break;
+                    case 3:
+                        $result->execute(array($id, $von3, $bis3, $i));
+                        break;
+                    case 4:
+                        $result->execute(array($id, $von4, $bis4, $i));
+                        break;
+                    case 5:
+                        $result->execute(array($id, $von5, $bis5, $i));
+                        break;
+                    case 6:
+                        $result->execute(array($id, $von6, $bis6, $i));
+                        break;
+                    default:
+                        return 0;
+                        break;
+                }
+            }
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+            return 0;
+        }
+        return 1;
     }
 //TODO Funktionen neu anpassen
 

@@ -27,12 +27,12 @@ if (isset($_POST['submit'])) {
         <ul>
             <li>
                 <label for="name">Vorname</label>
-                <input type="text" name="firstName" autocomplete="off" pattern="^[A-Za-zÖöÄäÜü]*$" autofocus id="firstName">
+                <input type="text" name="firstName" autocomplete="off" pattern="^[A-Za-zÖöÄäÜüß -]*$" autofocus id="firstName">
                 <span>Geben Sie den Vornamen ein</span>
             </li>
             <li>
                 <label for="name">Nachname</label>
-                <input type="text" name="lastName" autocomplete="off" pattern="^[A-Za-z]*$" autofocus id="lastName">
+                <input type="text" name="lastName" autocomplete="off" pattern="^[A-Za-zßÜüÖöäÄ-]*$" autofocus id="lastName">
                 <span>Geben Sie den Nachnamen ein</span>
             </li>
             <li>
