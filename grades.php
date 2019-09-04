@@ -20,7 +20,7 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
 
 echo "<table>";
 echo "<tr>";
-echo "<th>Note</th>";
+echo "<th>Note/Punkte</th>";
 echo "<th>Prozent</th>";
 echo "<th>Datum</th>";
 echo "<th>Fachname</th>";

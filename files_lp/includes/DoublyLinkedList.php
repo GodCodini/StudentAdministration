@@ -80,6 +80,86 @@ class DoublyLinkedList
         }
     }
 
+    public function sortList($liste)
+    {
+        for ($i = 0; $i < $liste->count-1; $i++)
+        {
+            $start = $liste->getStart();
+            $next = $start->getNext();
+            for ($j = 0; $j < $liste->count - $i - 1; $j++)
+            {
+                $firstLastName = $start->getLast();
+                $secondLastName = $next->getLast();
+                if ($liste->start == $start)
+                {
+                    if (strcasecmp($firstLastName, $secondLastName))
+                    {
+                        $nextNode = $next->getNext();
+                        if ($nextNode == null)
+                        {
+                            return $liste;
+                        }
+                        else
+                        {
+                            $nextNode->setPrevious($start);
+                        }
+                        $liste->start = $next;
+                        $start->setNext($nextNode);
+                        $start->setPrevious($next);
+                        $next->setNext($start);
+                        $next->setPrevious(null);
+                        $next = $start->getNext();
+
+                    }
+                    else
+                    {
+                        $start = $next;
+                        $next = $next->getNext();
+                    }
+                }
+                elseif ($liste->end === $next)
+                {
+                    $prev = $start->getPrevious();
+                    $prev->setNext($next);
+                    $next->setPrevious($prev);
+                    $next->setNext($start);
+                    $start->setPrevious($next);
+                    $start->setNext(null);
+                    $liste->end = $start;
+                    return $liste;
+                }
+                else
+                {
+                    if (strcasecmp($firstLastName, $secondLastName))
+                    {
+                        $prevNode = $start->getPrevious();
+                        $nextNode = $next->getNext();
+                        if ($nextNode !== null)
+                        {
+                            $prevNode->setNext($next);
+                            $next->setPrevious($prevNode);
+                            $next->setNext($start);
+                            $start->setPrevious($next);
+                            $start->setNext($nextNode);
+                            $nextNode->setPrevious($start);
+                        }
+                        else
+                        {
+                            $liste->end = $next;
+                        }
+                    }
+                    else
+                    {
+                        $start = $next;
+                        $next = $next->getNext();
+                    }
+                }
+
+            }
+        }
+        return $liste;
+    }
+
 
 //    public function readData($node, $data)
 //    {
@@ -153,49 +233,49 @@ class DoublyLinkedList
 //            return;
 //        }
 //    }
-
-    public function deleteNode($key)
-    {
-        $current = $this->start;
-
-        for ($i = 0; $i <= $this->count; $i++) {
-            if ($current->getLastName() === $key)
-            {
-                if ($this->count === 1)
-                {
-                    $this->resetList();
-                    break;
-                }
-                elseif ($this->start === $current)
-                {
-                    $next = $current->getNext();
-                    $next->setPrevious(null);
-                    $this->start = $next;
-                    $this->count--;
-                    break;
-                }
-                elseif ($this->end === $current)
-                {
-                    $pre = $current->getPrevious();
-                    $pre->setNext(null);
-                    $this->end = $pre;
-                    $this->count--;
-                    break;
-                }
-                else
-                {
-                    $pre = $current->getPrevious();
-                    $nex = $current->getNext();
-                    $pre->setNext($nex);
-                    $nex->setPrevious($pre);
-                    $this->count--;
-                    break;
-                }
-
-            }
-            $current = $current->getNext();
-        }
-    }
+//
+//    public function deleteNode($key)
+//    {
+//        $current = $this->start;
+//
+//        for ($i = 0; $i <= $this->count; $i++) {
+//            if ($current->getLastName() === $key)
+//            {
+//                if ($this->count === 1)
+//                {
+//                    $this->resetList();
+//                    break;
+//                }
+//                elseif ($this->start === $current)
+//                {
+//                    $next = $current->getNext();
+//                    $next->setPrevious(null);
+//                    $this->start = $next;
+//                    $this->count--;
+//                    break;
+//                }
+//                elseif ($this->end === $current)
+//                {
+//                    $pre = $current->getPrevious();
+//                    $pre->setNext(null);
+//                    $this->end = $pre;
+//                    $this->count--;
+//                    break;
+//                }
+//                else
+//                {
+//                    $pre = $current->getPrevious();
+//                    $nex = $current->getNext();
+//                    $pre->setNext($nex);
+//                    $nex->setPrevious($pre);
+//                    $this->count--;
+//                    break;
+//                }
+//
+//            }
+//            $current = $current->getNext();
+//        }
+//    }
 
     public function getStart()
     {

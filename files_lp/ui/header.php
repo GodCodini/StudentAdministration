@@ -39,6 +39,7 @@ include_once "files_lp/helper/listHelper.php";
             <li><a href="newClass.php">Klasse erstellen</a></li>
             <li><a href="newGradeKey.php">Notenschlüssel bearbeiten</a></li>
             <li><a href="newStudent.php">Schüler anlegen</a></li>
+            <li><a href="test.php">Test fürs sortieren</a></li>
             <li><a href="debug.php">Debugseite</a></li>
         </ul>
     </div>

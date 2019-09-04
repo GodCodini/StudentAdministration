@@ -165,8 +165,14 @@ abstract class listHelper
         }
     }
 
-    public static function addgradeKey($von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6, $gradeKey)
+    public static function addgradeKey($gradeKey, $von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6,
+                                       $von7 = null, $von8 = null, $von9 = null, $von10 = null, $von11 = null, $von12 = null,
+                                       $von13 = null, $von14 = null, $von15 = null, $bis7 = null, $bis8 = null, $bis9 = null,
+                                       $bis10 = null, $bis11 = null, $bis12 = null, $bis13 = null, $bis14 = null, $bis15 = null
+                                       )
     {
+        $count = func_num_args() - 1;
+        $new_count = $count / 2;
         $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
         try
         {
@@ -186,7 +192,7 @@ abstract class listHelper
         {
             $sql = "INSERT INTO notenschluessel (notenschluesselTyp_id, von, bis, entspricht) VALUES (?, ?, ?, ?)";
             $result = $PDO->prepare($sql);
-            for ($i = 1; $i <= 6; $i++)
+            for ($i = 1; $i <= $new_count; $i++)
             {
                 switch ($i)
                 {
@@ -208,6 +214,33 @@ abstract class listHelper
                     case 6:
                         $result->execute(array($id, $von6, $bis6, $i));
                         break;
+                    case 7:
+                        $result->execute(array($id, $von7, $bis7, $i));
+                        break;
+                    case 8:
+                        $result->execute(array($id, $von8, $bis8, $i));
+                        break;
+                    case 9:
+                        $result->execute(array($id, $von9, $bis9, $i));
+                        break;
+                    case 10:
+                        $result->execute(array($id, $von10, $bis10, $i));
+                        break;
+                    case 11:
+                        $result->execute(array($id, $von11, $bis11, $i));
+                        break;
+                    case 12:
+                        $result->execute(array($id, $von12, $bis12, $i));
+                        break;
+                    case 13:
+                        $result->execute(array($id, $von13, $bis13, $i));
+                        break;
+                    case 14:
+                        $result->execute(array($id, $von14, $bis14, $i));
+                        break;
+                    case 15:
+                        $result->execute(array($id, $von15, $bis15, $i));
+                        break;
                     default:
                         return 0;
                         break;
@@ -221,6 +254,15 @@ abstract class listHelper
             return 0;
         }
         return 1;
+    }
+
+    public static function sort($name)
+    {
+        $liste = unserialize($_SESSION[$name]);
+//        var_dump($liste);
+        $newList = $liste->sortList($liste);
+        $_SESSION[$name] = serialize($newList);
+        return $newList;
     }
 //TODO Funktionen neu anpassen
 
