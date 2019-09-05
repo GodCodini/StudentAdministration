@@ -12,7 +12,6 @@ try {
     $create = end($_POST); // get type = Student
     array_pop($_POST); // Remove type from array
 
-    $i = 0; // set loop counter
     $param = []; // set parameter string for object creation
 
     foreach ($_POST as $key => $value) {   // loop over array contents and fill parameter string
@@ -20,9 +19,8 @@ try {
     }
 
     $object = new $create(...$param); // create new object from type variable name and transmit parameters
-    //$object->createStudentOnDB();
-
-    $object->getVorname();
+    $createOnDB = "create".$create."OnDB";
+    $object->$createOnDB();
 
     echo json_encode($param);
     //echo json_encode(0);

@@ -121,6 +121,8 @@ input, select, form > div {
     margin-top: -8px;
     position: relative;
     left: 95px;
+    top: -7px;
+    display: inline;
 }
 
 #logoDots:before {
@@ -192,6 +194,10 @@ input, select, form > div {
     color: var(--elementsOnAccentColor);
 }
 
+.currentPage {
+    font-weight: bold;
+}
+
 /* DEVELOPMENT STYLES */
 
 .takeDump {
@@ -237,6 +243,7 @@ table {
     width: 100%;
     font-family: var(--mainFont);
     text-align: left;
+    margin-bottom: 30px;
 }
 
 table thead {
@@ -268,4 +275,8 @@ tr:not(.tableHead):hover {
 
 th:hover {
     cursor: pointer;
+}
+
+.hiddenElement{
+    display: none;
 }

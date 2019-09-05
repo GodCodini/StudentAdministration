@@ -1,79 +1,112 @@
-// create new class
-
+// add new class
 jQuery(document).ready(function() {
-    jQuery('.submitNeueKlasse').click(function (e) {
+    jQuery('.newClassForm').click(function (e) {
         e.preventDefault();
 
-       // jQuery('.takeDump').remove();
-
         var klassenbezeichnung = jQuery('.neueKlasseInput').val();
-        var notenschluesselFK = jQuery('.dropDownKlasse option:selected').val();
-        var notenschluessel = jQuery('.dropDownKlasse option:selected').text();
+        var notenschluesselFK = jQuery('#notenSchluesselTyp option:selected').val();
+        var notenschluessel = jQuery('#notenSchluesselTyp option:selected').text();
 
         jQuery.ajax({
             method: "POST",
-            url: "ajax_process.php",
+            url: "ajax_process_newClass.php",
             data: {
                 klassenbezeichnung_data: klassenbezeichnung,
                 notenschluesselFK_data: notenschluesselFK,
             },
             dataType: "json",
             success: function () {
-                jQuery(".klassenTabelle").append('<tr class="klassenUebersicht"><td>'+klassenbezeichnung+'</td><td>'+notenschluessel+'</td></tr>');
-                location.reload();
-            }
-        })
-    });
-});
-
-
-// create new Student
-/*
-jQuery(document).ready(function() {
-    jQuery('.formElement').on('submit', function (e) {
-
-        e.preventDefault();
-
-        var myType = jQuery(e.target).attr('id');
-
-        var schuelerVorname = jQuery('.schuelerVornameInput').val();
-        var schuelerNachname = jQuery('.schuelerNachnameInput').val();
-        var schuelerGeburtsdatum = jQuery('.schuelerGeburtsdatumInput').val();
-        var schuelerEMail = jQuery('.schuelerEMailInput').val();
-        var schuelerKlasseFK = jQuery('.schuelerKlasseInput option:selected').val();
-
-        jQuery.ajax({
-            type: "post",
-            url: "ajax_process_student.php",
-            data: jQuery('.formElement').serialize()+'&myType='+myType,
-                /*{
-                schuelerVorname_data: schuelerVorname,
-                schuelerNachname_data: schuelerNachname,
-                schuelerGeburtsdatum_data: schuelerGeburtsdatum,
-                schuelerEMail_data: schuelerEMail,
-                schuelerKlasseFK_data: schuelerKlasseFK,
-                schuelerKlasse_data: schuelerKlasse
-                },
-            dataType: "json",
-            success: function (data) {
-                console.log(data);
-
-                console.log(typeof (data));
-
-                jQuery(".studentTable").append('' +
-                    '<tr class="studentUebersicht">' +
-                        '<td>'+schuelerVorname+'</td>' +
-                        '<td>'+schuelerNachname+'</td>' +
-                        '<td>'+schuelerGeburtsdatum+'</td>' +
-                        '<td>'+schuelerEMail+'</td>' +
-                        '<td>'+dropDownItem+'</td>' +
+                jQuery(".classOutputTable").prepend('' +
+                    '<tr class="klassenUebersicht" style="background-color: var(--softAccentColor)">' +
+                        '<td>'+klassenbezeichnung+'</td>' +
+                        '<td>'+notenschluessel+'</td>' +
                     '</tr>');
             }
         })
     });
 });
-*/
 
+// add new student
+jQuery(document).ready(function() {
+    jQuery('.newStudentForm').on('submit', function (e) {
+
+        e.preventDefault();
+
+        var schuelerVorname = jQuery('.schuelerVornameInput').val();
+        var schuelerNachname = jQuery('.schuelerNachnameInput').val();
+        var schuelerGeburtsdatum = jQuery('.schuelerGeburtsdatumInput').val();
+        var schuelerEMail = jQuery('.schuelerEMailInput').val();
+        var schuelerKlasseFKval = jQuery('.schuelerKlasseInput option:selected').val();
+        var schuelerKlasseFKtext = jQuery('.schuelerKlasseInput option:selected').text();
+
+        jQuery.ajax({
+            type: "post",
+            url: "ajax_process_newStudent.php",
+            data:
+                {
+                schuelerVorname_data: schuelerVorname,
+                schuelerNachname_data: schuelerNachname,
+                schuelerGeburtsdatum_data: schuelerGeburtsdatum,
+                schuelerEMail_data: schuelerEMail,
+                schuelerKlasseFK_data: schuelerKlasseFKval,
+                },
+            dataType: "json",
+            success: function (data) {
+                jQuery(".studentOutputTable").prepend('' +
+                    '<tr class="studentUebersicht" style="background-color: var(--softAccentColor)">' +
+                        '<td class="schuelerVorname">'+schuelerVorname+'</td>' +
+                        '<td class="schuelerNachname">'+schuelerNachname+'</td>' +
+                        '<td class="schuelerGeburtsdatum">'+schuelerGeburtsdatum+'</td>' +
+                        '<td class="schuelerEmail">'+schuelerEMail+'</td>' +
+                        '<td class="schuelerKlasse" id="'+schuelerKlasseFKval+'">'+schuelerKlasseFKtext+'</td>' +
+                    '</tr>');
+            }
+        })
+    });
+});
+
+//update existing student
+jQuery(document).ready(function() {
+    jQuery('.updateStudentForm').on('submit', function (e) {
+
+        e.preventDefault();
+
+        var studentID = jQuery('.studentID').val();
+        var schuelerVorname = jQuery('.schuelerVornameInput').val();
+        var schuelerNachname = jQuery('.schuelerNachnameInput').val();
+        var schuelerGeburtsdatum = jQuery('.schuelerGeburtsdatumInput').val();
+        var schuelerEMail = jQuery('.schuelerEMailInput').val();
+        var schuelerKlasseFKval = jQuery('.schuelerKlasseInput option:selected').val();
+        var schuelerKlasseFKtext = jQuery('.schuelerKlasseInput option:selected').text();
+
+        jQuery.ajax({
+            type: "post",
+            url: "ajax_process_newStudent.php",
+            data:
+                {
+                    studentID_data: studentID,
+                    schuelerVorname_data: schuelerVorname,
+                    schuelerNachname_data: schuelerNachname,
+                    schuelerGeburtsdatum_data: schuelerGeburtsdatum,
+                    schuelerEMail_data: schuelerEMail,
+                    schuelerKlasseFK_data: schuelerKlasseFKval,
+                },
+            dataType: "json",
+            success: function (data) {
+                jQuery(".studentOutputTable").prepend('' +
+                    '<tr class="studentUebersicht" style="background-color: var(--softAccentColor)">' +
+                    '<td class="schuelerVorname">'+schuelerVorname+'</td>' +
+                    '<td class="schuelerNachname">'+schuelerNachname+'</td>' +
+                    '<td class="schuelerGeburtsdatum">'+schuelerGeburtsdatum+'</td>' +
+                    '<td class="schuelerEmail">'+schuelerEMail+'</td>' +
+                    '<td class="schuelerKlasse" id="'+schuelerKlasseFKval+'">'+schuelerKlasseFKtext+'</td>' +
+                    '</tr>');
+            }
+        })
+    });
+});
+
+/*
 // create new dynamic Output
 jQuery(document).ready(function() {
     jQuery('.formElement').on('submit', function (e) {
@@ -82,20 +115,30 @@ jQuery(document).ready(function() {
 
         var myType = jQuery(e.target).attr('id');
 
-        var dropDownItem = jQuery('.dropDownItem option:selected').text();
+        var array = jQuery('.formElement').serializeArray();
+
+        for (let i=0; i<array.length; i++) {
+            jQuery.each(array[i], function (index, value) {
+                console.log(index + ": " + value);
+            });
+        }
+
+        if(jQuery("select").hasClass("FK")){
+            var testVal = jQuery("select option:selected").val();
+            var testText = jQuery("select option:selected").text();
+            console.log(testVal +" is "+ testText);
+        }
 
         jQuery.ajax({
             type: "post",
             url: "ajax_process_student.php",
             data: jQuery('.formElement').serialize()+'&myType='+myType,
             success: function (data) {
-                var output = data.replace(/[^a-z0-9\s,]/gi, '').split(',');
+                //var output = data.replace(/[^a-z0-9\s,@.-]/gi, '').split(',');
 
-                console.log(output);
+                var test = jQuery.parseJSON(data);
+                console.log(test);
 
-                // CREATE TABLE OF OUTPUT AS EX BELOW
-
-/*
                 jQuery(".studentTable").append('' +
                     '<tr class="studentUebersicht">' +
                     '<td>'+schuelerVorname+'</td>' +
@@ -103,8 +146,21 @@ jQuery(document).ready(function() {
                     '<td>'+schuelerGeburtsdatum+'</td>' +
                     '<td>'+schuelerEMail+'</td>' +
                     '<td>'+dropDownItem+'</td>' +
-                    '</tr>');*/
+                    '</tr>');
+
+                /*
+                var myTr = '<tr>';
+                jQuery.each(output, function(key,value){
+                    myTr +='<td>'+value+'</td>';
+                });
+
+                myTr +='</tr>';
+
+                jQuery(".studentTable tbody").append(myTr);
+                */
+                /*
             }
         })
     });
 });
+*/
