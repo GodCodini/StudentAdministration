@@ -9,15 +9,14 @@ abstract class listHelper
 {
     public static function createList($name, $key)
     {
-        $liste = new DoublyLinkedList($name, $key);
-        $_SESSION[$name] = serialize($liste);
+
         try
         {
             $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
             $sql = "INSERT INTO kurs (kursName, NotenschluesselTyp_idNotenschluesselTyp) VALUES (?, ?)";
             $exe = $PDO->prepare($sql);
             $exe->execute(array($name, $key));
-            return 1;
+            $id = $PDO->lastInsertId();
         }
         catch (Exception $e)
         {
@@ -25,11 +24,13 @@ abstract class listHelper
             echo $e->getMessage();
             return 0;
         }
+        $liste = new DoublyLinkedList($name, $key, $id);
+        $_SESSION[$name] = serialize($liste);
     }
 
-    public static function loadList($name, $key)
+    public static function loadList($name, $key, $id)
     {
-        $liste = new DoublyLinkedList($name, $key);
+        $liste = new DoublyLinkedList($name, $key, $id);
         $_SESSION[$name] = serialize($liste);
     }
 
@@ -46,7 +47,11 @@ abstract class listHelper
             $res = $PDO->prepare($keysql);
             $res->execute(array($class));
             $key = $res->fetch(PDO::FETCH_ASSOC);
-            listHelper::loadList($class, $key['NotenschluesselTyp_idNotenschluesselTyp']);
+            $idsql = "SELECT id_Kurs FROM kurs WHERE kursName = ?";
+            $result = $PDO->prepare($idsql);
+            $result->execute(array($class));
+            $id = $result->fetch(PDO::FETCH_ASSOC);
+            listHelper::loadList($class, $key['NotenschluesselTyp_idNotenschluesselTyp'], $id['id_Kurs']);
             $liste = unserialize($_SESSION[$class]);
         }
 

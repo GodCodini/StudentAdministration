@@ -49,7 +49,7 @@ if (isset($_GET['id']))
     }
     $array = $liste->readList();
 
-    echo "<table>";
+    echo "<table id='myTable'>";
     echo "<tr>";
     echo "<th>Nachname</th>";
     echo "<th>Vorname</th>";
@@ -59,14 +59,15 @@ if (isset($_GET['id']))
     foreach ($array as $row)
     {
         echo "<tr>";
-        echo "<td>";
-        echo "<p>".$row[1]."</p>";
+        echo "<td id='id' style='display: none'>".$row[3]."</td>";
+        echo "<td id='last'>";
+        echo $row[1];
         echo "</td>";
-        echo "<td>";
+        echo "<td id='first'>";
         echo "<a href='grades.php?id=".$row[3]."'>".$row[0]."</a>";
         echo "</td>";
-        echo "<td>";
-        echo "<p>".DB::convertDate($row[2])."</p>";
+        echo "<td id='birth'>";
+        echo DB::convertDate($row[2]);
         echo "</td>";
         echo "<td>";
         echo "<a href='newGrade.php?id=".$row[3]."&class=".$kurs."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
@@ -75,9 +76,44 @@ if (isset($_GET['id']))
     }
     echo "</table>";
     ?>
-    <button id="opener">Open Dialog</button>
-    <div id="dialog" title="Basic dialog" style="display: none;">
-        <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+    <div id="dialog" title="Schüler bearbeiten" style="display: none;">
+        <form class="form-style-7" id="updateStudent" method="post" action="">
+            <input type="hidden" name="id" id="id">
+            <ul>
+                <li>
+                    <label for="name">Vorname</label>
+                    <input type="text" name="firstName" autocomplete="off" value="" pattern="^[A-Za-zÖöÄäÜüß -]*$" autofocus id="firstName">
+                    <span>Geben Sie den Vornamen ein</span>
+                </li>
+                <li>
+                    <label for="name">Nachname</label>
+                    <input type="text" name="lastName" autocomplete="off" pattern="^[A-Za-zßÜüÖöäÄ-]*$" id="lastName">
+                    <span>Geben Sie den Nachnamen ein</span>
+                </li>
+                <li>
+                    <label for="name">Geburtstag</label>
+                    <input type="date" name="bday" autocomplete="off" id="bday">
+                    <span>Geben Sie das Geburtsdatum ein</span>
+                </li>
+                <li>
+                    <label for="name">Klasse</label>
+                    <select class="neueKlasseInput" name="class" id="class">
+                        <?php
+                            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+                            $sql = "SELECT id_kurs, kursName FROM kurs";
+                            foreach ($PDO->query($sql) as $row)
+                            {
+                                echo "<option value='".$row['id_kurs']."'>".$row['kursName']."</option>";
+                            }
+                        ?>
+                    </select>
+                    <span>Geben Sie die Klasse an</span>
+                </li>
+                <li>
+                    <input type="submit" name="submit" value="Schüler eintragen" >
+                </li>
+            </ul>
+        </form>
     </div>
 <?php
     echo "<pre>";
@@ -108,7 +144,7 @@ else
             autoOpen: false,
             show: {
                 effect: "blind",
-                duration: 1000
+                duration: 500
             },
             hide: {
                 effect: "explode",
@@ -116,7 +152,14 @@ else
             }
         });
 
-        $( "#opener" ).on( "click", function() {
+        $( "#myTable tr" ).click( function(e) {
+            var date = $(e.currentTarget).find("#birth").text();
+            var newdate = date.split(".").reverse().join("-");
+            $("input#id").val($(e.currentTarget).find("#id").text());
+            $("input#firstName").val($(e.currentTarget).find("#first").text());
+            $("input#lastName").val($(e.currentTarget).find("#last").text());
+            $("input#bday").val(newdate);
+            $("select option[value='<?php echo $liste->getId() ?>']").attr('selected', 'selected');
             $( "#dialog" ).dialog( "open" );
         });
     } );

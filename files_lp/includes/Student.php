@@ -20,7 +20,7 @@ class Student
      * @param $id int id in der db
      * @param $firstName String Vorname Schüler
      * @param $lastName String Nachname Schüler
-     * @param $bday date Geburtstag
+     * @param $bday Date Geburtstag
      * @param $class int id der Klasse
      */
     public function __construct($id, $firstName, $lastName, $bday, $class)
@@ -132,6 +132,22 @@ class Student
         array_push($data, $first, $last, $bd, $id);
 
         return $data;
+    }
+
+    public function updateStudent($id, $first, $last, $bday, $classKey)
+    {
+        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+        try
+        {
+            $sql = "UPDATE schueler SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Kurs_id_Kurs = ? WHERE id_Schueler = ?";
+            $res = $PDO->prepare($sql);
+            $res->execute(array($first, $last, $bday, $classKey, $id));
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+        }
     }
 
 }

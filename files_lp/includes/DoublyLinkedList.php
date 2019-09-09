@@ -15,14 +15,18 @@ class DoublyLinkedList
     private $count;
     private $name;
     private $gradeKey;
+    private $sorted;
+    private $id;
     //TODO Random Picker mich ignorieren lassen :--))
-    public function __construct($name, $key)
+    public function __construct($name, $key, $id)
     {
         $this->name = $name;
         $this->start = null;
         $this->end = null;
         $this->count = 0;
         $this->gradeKey = $key;
+        $this->sorted = false;
+        $this->id = $id;
     }
 
     /**
@@ -36,6 +40,7 @@ class DoublyLinkedList
             $this->start = $element;
             $this->end = $element;
             $this->count++;
+            $this->sorted = false;
             return;
         }
         //ende auf das neue element setzen, wenn schon eins existiert.
@@ -43,14 +48,8 @@ class DoublyLinkedList
         $element->setPrevious($this->end);
         $this->end = $element;
         $this->count++;
+        $this->sorted = false;
     }
-
-    public function getCount()
-    {
-        return $this->count;
-    }
-
-
 
     public function readList()
     {
@@ -66,7 +65,7 @@ class DoublyLinkedList
             echo $this->name;
             echo "<br>";
             for ($i = 0; $i < $this->count; $i++) {
-                array_push($array, $data);
+                $array[] = $data;
                 $start = $start->getNext();
                 if ($start !== null)
                 {
@@ -234,6 +233,7 @@ class DoublyLinkedList
             } //Ende for-Schleife
         }
         while ($swapped);
+        $liste->setSorted(true);
         return $liste;
     }
 
@@ -303,6 +303,26 @@ class DoublyLinkedList
 //        }
 //    }
 
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    public function setSorted($sorted)
+    {
+        $this->sorted = $sorted;
+    }
+
+    public function getSorted()
+    {
+        return $this->sorted;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getStart()
     {
         return $this->start;
@@ -311,5 +331,10 @@ class DoublyLinkedList
     public function getEnd()
     {
         return $this->end;
+    }
+
+    public function findStudent($id)
+    {
+
     }
 }

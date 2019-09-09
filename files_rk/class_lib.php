@@ -2,82 +2,82 @@
 
 require '_config.php';
 
-class Student {
-
-	public $id, $vorname, $nachname, $geburtsdatum, $email, $klasse;
-
-	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse, $id = NULL){
-		$this->id = $id;
-		$this->vorname = $vorname;
-		$this->nachname = $nachname;
-		$this->geburtsdatum = $geburtsdatum;
-		$this->email = $email;
-		$this->klasse = $klasse;
-	}
-	/**
-	 * @param String $vorname
-	 * @param String $nachname
-	 * @param Date $geburtsdatum
-	 * @param Number $klasse
-	 * @return Boolean
-	 */
-
-	public static function  createStudentOnDB($schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval){
-        $PDI = Database::connect();
-        $PDI->query("INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$schuelerVorname."', '".$schuelerNachname."', '".$schuelerGeburtsdatum."', '".$schuelerEMail."','".$schuelerKlasseFKval."')");
-        $id = $PDI->lastInsertId();
-        return $id;
-	}
-
-    public static function  updateStudentOnDB($id, $schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval){
-        $PDI = Database::connect();
-        $PDI->query("UPDATE schueler SET (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$schuelerVorname."', '".$schuelerNachname."', '".$schuelerGeburtsdatum."', '".$schuelerEMail."','".$schuelerKlasseFKval."') WHERE schueler.id_Schueler ='".$id."'");
-    }
-
-    function getID(){
-        return $this->id;
-    }
-
-	function setVorname($neuerVorname){
-		$this->vorname = $neuerVorname;
-	}
-
-	function getVorname(){
-		return $this->vorname;
-	}
-
-	function setNachname($neuerNachname){
-	    $this->nachname = $neuerNachname;
-    }
-
-    function getNachname(){
-	    return $this->nachname;
-    }
-
-    function setGeburtsdatum($neuesGeburtsdatum){
-	    $this->geburtsdatum = $neuesGeburtsdatum;
-    }
-
-    function getGeburtsdatum(){
-	    return $this->geburtsdatum;
-    }
-
-    function setKlasse($neueKlasse){
-	    $this->klasse = $neueKlasse;
-    }
-
-    function getKlasse(){
-	    return $this->klasse;
-    }
-
-    function setFach($neuesFach){
-	    $this->fach = $neuesFach;
-    }
-
-    function getEmail(){
-	    return $this->email;
-    }
-}
+//class Student {
+//
+//	public $id, $vorname, $nachname, $geburtsdatum, $email, $klasse;
+//
+//	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse, $id = NULL){
+//		$this->id = $id;
+//		$this->vorname = $vorname;
+//		$this->nachname = $nachname;
+//		$this->geburtsdatum = $geburtsdatum;
+//		$this->email = $email;
+//		$this->klasse = $klasse;
+//	}
+//	/**
+//	 * @param String $vorname
+//	 * @param String $nachname
+//	 * @param Date $geburtsdatum
+//	 * @param Number $klasse
+//	 * @return Boolean
+//	 */
+//
+//	public static function  createStudentOnDB($schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval){
+//        $PDI = Database::connect();
+//        $PDI->query("INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$schuelerVorname."', '".$schuelerNachname."', '".$schuelerGeburtsdatum."', '".$schuelerEMail."','".$schuelerKlasseFKval."')");
+//        $id = $PDI->lastInsertId();
+//        return $id;
+//	}
+//
+//    public static function  updateStudentOnDB($id, $schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval){
+//        $PDI = Database::connect();
+//        $PDI->query("UPDATE schueler SET (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$schuelerVorname."', '".$schuelerNachname."', '".$schuelerGeburtsdatum."', '".$schuelerEMail."','".$schuelerKlasseFKval."') WHERE schueler.id_Schueler ='".$id."'");
+//    }
+//
+//    function getID(){
+//        return $this->id;
+//    }
+//
+//	function setVorname($neuerVorname){
+//		$this->vorname = $neuerVorname;
+//	}
+//
+//	function getVorname(){
+//		return $this->vorname;
+//	}
+//
+//	function setNachname($neuerNachname){
+//	    $this->nachname = $neuerNachname;
+//    }
+//
+//    function getNachname(){
+//	    return $this->nachname;
+//    }
+//
+//    function setGeburtsdatum($neuesGeburtsdatum){
+//	    $this->geburtsdatum = $neuesGeburtsdatum;
+//    }
+//
+//    function getGeburtsdatum(){
+//	    return $this->geburtsdatum;
+//    }
+//
+//    function setKlasse($neueKlasse){
+//	    $this->klasse = $neueKlasse;
+//    }
+//
+//    function getKlasse(){
+//	    return $this->klasse;
+//    }
+//
+//    function setFach($neuesFach){
+//	    $this->fach = $neuesFach;
+//    }
+//
+//    function getEmail(){
+//	    return $this->email;
+//    }
+//}
 
 // vormals Note (für mich zur Verständlichkeit, 
 // da eine Note kein Objekt ist sondern z.B. die Klassenarbeit)
