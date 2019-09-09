@@ -27,7 +27,7 @@
 //} else {
 //    header("Location: files_lp/liste.php");
 //}
-error_reporting(E_ERROR | E_PARSE);
+//error_reporting(E_ERROR | E_PARSE);
 require_once 'project_files/Database.php';
 require_once 'project_files/_config.php';
 include_once 'files_lp/ui/header.php';
@@ -51,8 +51,8 @@ if (isset($_GET['id']))
 
     echo "<table>";
     echo "<tr>";
-    echo "<th>Vorname</th>";
     echo "<th>Nachname</th>";
+    echo "<th>Vorname</th>";
     echo "<th>Geburtsdatum</th>";
     echo "<th>Note hinzufügen</th>";
     echo "</tr>";
@@ -60,10 +60,10 @@ if (isset($_GET['id']))
     {
         echo "<tr>";
         echo "<td>";
-        echo "<a href='grades.php?id=".$row[3]."'>".$row[0]."</a>";
+        echo "<p>".$row[1]."</p>";
         echo "</td>";
         echo "<td>";
-        echo "<p>".$row[1]."</p>";
+        echo "<a href='grades.php?id=".$row[3]."'>".$row[0]."</a>";
         echo "</td>";
         echo "<td>";
         echo "<p>".DB::convertDate($row[2])."</p>";
@@ -74,6 +74,12 @@ if (isset($_GET['id']))
         echo "</tr>";
     }
     echo "</table>";
+    ?>
+    <button id="opener">Open Dialog</button>
+    <div id="dialog" title="Basic dialog" style="display: none;">
+        <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+    </div>
+<?php
     echo "<pre>";
 /*    highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");*/
     var_dump($liste);
@@ -95,3 +101,23 @@ else
         }
     echo "</table>";
 }
+?>
+<script>
+    $( function() {
+        $( "#dialog" ).dialog({
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+        });
+
+        $( "#opener" ).on( "click", function() {
+            $( "#dialog" ).dialog( "open" );
+        });
+    } );
+</script>

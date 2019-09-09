@@ -50,6 +50,8 @@ class DoublyLinkedList
         return $this->count;
     }
 
+
+
     public function readList()
     {
         $array = array();
@@ -82,110 +84,159 @@ class DoublyLinkedList
 
     public function sortList($liste)
     {
-        for ($i = 0; $i < $liste->count-1; $i++)
+        do
         {
             $start = $liste->getStart();
             $next = $start->getNext();
-            for ($j = 0; $j < $liste->count - $i - 1; $j++)
+            $swapped = false;
+            for ($i = 0; $i < $liste->count - 1; $i++)
             {
                 $firstLastName = $start->getLast();
                 $secondLastName = $next->getLast();
-                if ($liste->start == $start)
+                if ($firstLastName > $secondLastName)
                 {
-                    if (strcasecmp($firstLastName, $secondLastName))
+                    if ($liste->count >= 5)
                     {
-                        $nextNode = $next->getNext();
-                        if ($nextNode == null)
+                        if ($i === 0)
                         {
-                            return $liste;
+                            $nextNext = $next->getNext();
+                            $start->setPrevious($next);
+                            $start->setNext($nextNext);
+                            $next->setPrevious(null);
+                            $next->setNext($start);
+                            $nextNext->setPrevious($start);
+                            $liste->start = $next;
+                            $next = $start->getNext();
+                            $swapped = true;
+                        }
+                        elseif ($liste->end === $next->getNext())
+                        {
+                            $prev = $start->getPrevious();
+                            $nextNode = $next->getNext();
+                            $prev->setNext($next);
+                            $start->setPrevious($next);
+                            $start->setNext($nextNode);
+                            $next->setPrevious($prev);
+                            $next->setNext($start);
+                            $nextNode->setPrevious($start);
+                            $next = $start->getNext();
+                            $swapped = true;
+                        }
+                        elseif($liste->end === $next)
+                        {
+                            $prevNode = $start->getPrevious();
+                            $prevNode->setNext($next);
+                            $start->setPrevious($next);
+                            $start->setNext(null);
+                            $next->setPrevious($prevNode);
+                            $next->setNext($start);
+                            $liste->end = $start;
+                            $swapped = true;
                         }
                         else
                         {
-                            $nextNode->setPrevious($start);
+                            $pre = $start->getPrevious();
+                            $nex = $next->getNext();
+                            $pre->setNext($next);
+                            $start->setPrevious($next);
+                            $start->setNext($nex);
+                            $next->setPrevious($pre);
+                            $next->setNext($start);
+                            $nex->setPrevious($start);
+                            $next = $start->getNext();
+                            $swapped = true;
                         }
-                        $liste->start = $next;
-                        $start->setNext($nextNode);
-                        $start->setPrevious($next);
-                        $next->setNext($start);
-                        $next->setPrevious(null);
-                        $next = $start->getNext();
-
                     }
-                    else
+                    elseif ($liste->count == 1)
                     {
-                        $start = $next;
-                        $next = $next->getNext();
+                        return $liste;
                     }
-                }
-                elseif ($liste->end === $next)
-                {
-                    $prev = $start->getPrevious();
-                    $prev->setNext($next);
-                    $next->setPrevious($prev);
-                    $next->setNext($start);
-                    $start->setPrevious($next);
-                    $start->setNext(null);
-                    $liste->end = $start;
-                    return $liste;
+                    elseif ($liste->count == 2)
+                    {
+                        $start->setNext(null);
+                        $start->setPrevious($next);
+                        $liste->end = $start;
+                        $next->setPrevious(null);
+                        $next->setNext($start);
+                        $liste->start = $next;
+                        $swapped = true;
+                    }
+                    elseif ($liste->count == 3)
+                    {
+                        $prevN = $start->getPrevious();
+                        $nextN = $next->getNext();
+                        if (isset($prevN))
+                        {
+                            $prevN->setNext($next);
+                            $start->setPrevious($next);
+                            $start->setNext(null);
+                            $liste->end = $start;
+                            $next->setPrevious($prevN);
+                            $next->setNext($start);
+                            $swapped = true;
+                        }
+                        elseif (isset($nextN))
+                        {
+                            $start->setNext($nextN);
+                            $start->setPrevious($next);
+                            $next->setNext($start);
+                            $next->setPrevious(null);
+                            $liste->start = $next;
+                            $nextN->setPrevious($start);
+                            $next = $start->getNext();
+                            $swapped = true;
+                        }
+                    }
+                    elseif ($liste->count == 4)
+                    {
+                        $prevNo = $start->getPrevious();
+                        $nextNo = $next->getNext();
+                        if (isset($prevNo) && isset($nextNo))
+                        {
+                            $prevNo->setNext($next);
+                            $start->setPrevious($next);
+                            $start->setNext($nextNo);
+                            $next->setPrevious($prevNo);
+                            $next->setNext($start);
+                            $nextNo->setPrevious($start);
+                            $next = $start->getNext();
+                            $swapped = true;
+                        }
+                        elseif (isset($prevNo) and !isset($nextNo))
+                        {
+                            $prevNo->setNext($next);
+                            $start->setPrevious($next);
+                            $start->setNext(null);
+                            $liste->end = $start;
+                            $next->setPrevious($prevNo);
+                            $next->setNext($start);
+                            $swapped = true;
+                        }
+                        elseif (isset($nextNo) and !isset($prevNo))
+                        {
+                            $start->setPrevious($next);
+                            $start->setNext($nextNo);
+                            $next->setPrevious(null);
+                            $next->setNext($start);
+                            $liste->start = $next;
+                            $nextNo->setPrevious($start);
+                            $next = $start->getNext();
+                            $swapped = true;
+                        }
+                    }
+
                 }
                 else
                 {
-                    if (strcasecmp($firstLastName, $secondLastName))
-                    {
-                        $prevNode = $start->getPrevious();
-                        $nextNode = $next->getNext();
-                        if ($nextNode !== null)
-                        {
-                            $prevNode->setNext($next);
-                            $next->setPrevious($prevNode);
-                            $next->setNext($start);
-                            $start->setPrevious($next);
-                            $start->setNext($nextNode);
-                            $nextNode->setPrevious($start);
-                        }
-                        else
-                        {
-                            $liste->end = $next;
-                        }
-                    }
-                    else
-                    {
-                        $start = $next;
-                        $next = $next->getNext();
-                    }
+                    $start = $next;
+                    $next = $start->getNext();
                 }
-
-            }
+            } //Ende for-Schleife
         }
+        while ($swapped);
         return $liste;
     }
 
-
-//    public function readData($node, $data)
-//    {
-//        $array = array();
-//        if ($node !== null)
-//        {
-//            array_push($array, $data);
-//            $node = $node->getNext();
-//            echo "<pre>";
-//            var_dump($array);
-//            echo "</pre>";
-//            if ($node !== null)
-//            {
-//                $this->readData($node, $node->getData());
-//            }
-//            else
-//            {
-//                return $array;
-//            }
-//        }
-//        else
-//        {
-//            return $array;
-//        }
-//    }
-//
 //    public function resetList()
 //    {
 //        $this->count = 0;
@@ -206,31 +257,6 @@ class DoublyLinkedList
 //            $data = $end->getData();
 //            echo "Verkehrte Liste <br>";
 //            $this->reverseReadData($end, $data);
-//        }
-//    }
-//
-//    /**
-//     * @param $node
-//     * @param $data
-//     */
-//    public function reverseReadData($node, $data)
-//    {
-//        if ($node !== null)
-//        {
-//            echo $data . "<br>";
-//            $node = $node->getPrevious();
-//            if ($node !== null)
-//            {
-//                $this->reverseReadData($node, $node->getData());
-//            }
-//            else
-//            {
-//                return;
-//            }
-//        }
-//        else
-//        {
-//            return;
 //        }
 //    }
 //
