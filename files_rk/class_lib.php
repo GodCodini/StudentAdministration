@@ -2,69 +2,82 @@
 
 require '_config.php';
 
-//class Student {
-//
-//	public $vorname, $nachname, $geburtsdatum, $email, $klasse;
-//
-//	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse){
-//		$this->vorname = $vorname;
-//		$this->nachname = $nachname;
-//		$this->geburtsdatum = $geburtsdatum;
-//		$this->email = $email;
-//		$this->klasse = $klasse;
-//	}
-//	/**
-//	 * @param String $vorname
-//	 * @param String $nachname
-//	 * @param Date $geburtsdatum
-//	 * @param Number $klasse
-//	 * @return Boolean
-//	 */
-//
-//	public function createStudentOnDB(){
-//        Database::connect()->query("INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$this->vorname."', '".$this->nachname."', '".$this->geburtsdatum."', '".$this->email."','".$this->klasse."')");
-//	}
-//
-//	function setVorname($neuerVorname){
-//		$this->vorname = $neuerVorname;
-//	}
-//
-//	function getVorname(){
-//		return $this->vorname;
-//	}
-//
-//	function setNachname($neuerNachname){
-//	    $this->nachname = $neuerNachname;
-//    }
-//
-//    function getNachname(){
-//	    return $this->nachname;
-//    }
-//
-//    function setGeburtsdatum($neuesGeburtsdatum){
-//	    $this->geburtsdatum = $neuesGeburtsdatum;
-//    }
-//
-//    function getGeburtsdatum(){
-//	    return $this->geburtsdatum;
-//    }
-//
-//    function setKlasse($neueKlasse){
-//	    $this->klasse = $neueKlasse;
-//    }
-//
-//    function getKlasse(){
-//	    return $this->klasse;
-//    }
-//
-//    function setFach($neuesFach){
-//	    $this->fach = $neuesFach;
-//    }
-//
-//    function getFach(){
-//	    return $this->fach;
-//    }
-//}
+class Student {
+
+	public $id, $vorname, $nachname, $geburtsdatum, $email, $klasse;
+
+	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse, $id = NULL){
+		$this->id = $id;
+		$this->vorname = $vorname;
+		$this->nachname = $nachname;
+		$this->geburtsdatum = $geburtsdatum;
+		$this->email = $email;
+		$this->klasse = $klasse;
+	}
+	/**
+	 * @param String $vorname
+	 * @param String $nachname
+	 * @param Date $geburtsdatum
+	 * @param Number $klasse
+	 * @return Boolean
+	 */
+
+	public static function  createStudentOnDB($schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval){
+        $PDI = Database::connect();
+        $PDI->query("INSERT INTO schueler (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$schuelerVorname."', '".$schuelerNachname."', '".$schuelerGeburtsdatum."', '".$schuelerEMail."','".$schuelerKlasseFKval."')");
+        $id = $PDI->lastInsertId();
+        return $id;
+	}
+
+    public static function  updateStudentOnDB($id, $schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval){
+        $PDI = Database::connect();
+        $PDI->query("UPDATE schueler SET (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$schuelerVorname."', '".$schuelerNachname."', '".$schuelerGeburtsdatum."', '".$schuelerEMail."','".$schuelerKlasseFKval."') WHERE schueler.id_Schueler ='".$id."'");
+    }
+
+    function getID(){
+        return $this->id;
+    }
+
+	function setVorname($neuerVorname){
+		$this->vorname = $neuerVorname;
+	}
+
+	function getVorname(){
+		return $this->vorname;
+	}
+
+	function setNachname($neuerNachname){
+	    $this->nachname = $neuerNachname;
+    }
+
+    function getNachname(){
+	    return $this->nachname;
+    }
+
+    function setGeburtsdatum($neuesGeburtsdatum){
+	    $this->geburtsdatum = $neuesGeburtsdatum;
+    }
+
+    function getGeburtsdatum(){
+	    return $this->geburtsdatum;
+    }
+
+    function setKlasse($neueKlasse){
+	    $this->klasse = $neueKlasse;
+    }
+
+    function getKlasse(){
+	    return $this->klasse;
+    }
+
+    function setFach($neuesFach){
+	    $this->fach = $neuesFach;
+    }
+
+    function getEmail(){
+	    return $this->email;
+    }
+}
 
 // vormals Note (für mich zur Verständlichkeit, 
 // da eine Note kein Objekt ist sondern z.B. die Klassenarbeit)
@@ -242,7 +255,6 @@ abstract class Database {
 	private $password;
 
 	public function connect(){
-
 		try {
 			$dsn = "mysql:host=".DBHOST.";dbname=".DBNAME.";charset=".DBCHARSET."";
 			$pdo_conn = new PDO($dsn, DBUSERNAME, DBPASSWORD);
@@ -262,7 +274,6 @@ abstract class Database {
 		$stmt = $this->connect()->query("SELECT * FROM schueler");
 
 		echo "<table>";
-
 			echo "<th>studentID</th>";
 			echo "<th>firstName</th>";
 			echo "<th>lastName</th>";
@@ -271,34 +282,46 @@ abstract class Database {
 			while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 				echo "<tr>";
 
-					foreach ($row as $value) {
-					echo "<td>".$value."</td>";
-					}
-
+                foreach ($row as $value) {
+                echo "<td>".$value."</td>";
+                }
 				echo "</tr>";
 			}
-
 		echo "</table>";
 	}
 
-    function getAlleKlassen() {
+	function getAllStudentNodes() {
+        // Revive KnötchenListe
+        if(!isset($studentList)){
+            $studentList = new Nodelist();
+        }
+
+        $stmt = Database::connect()->query("SELECT id_Schueler, Vorname, Nachname, Geburtsdatum, eMail, kursName FROM schueler  JOIN kurs ON kurs.id_Kurs = schueler.Kurs_id_Kurs;");
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            // Revive Knötchen
+            $id = $row["id_Schueler"];
+            $vorname = $row["Vorname"];
+            $nachname = $row["Nachname"];
+            $geburtsdatum = $row["Geburtsdatum"];
+            $email = $row["eMail"];
+            $klasse = $row["kursName"];
+
+            $student = new Student($vorname, $nachname, $geburtsdatum, $email, $klasse, $id);
+            $studentList->add_Node($student);
+        }
+
+        $studentList->sortNodes("up","Nachname", "Vorname");
+    }
+
+    function getAllClasses() {
 
         // Revive KnötchenListe
         if(!isset($klassenListe)){
             $klassenListe = new Nodelist();
         }
-        //
 
         $stmt = Database::connect()->query("SELECT kursName, SchlusselName FROM kurs JOIN notenschluesseltyp ON notenschluesseltyp.idNotenschluesselTyp = kurs.NotenschluesselTyp_idNotenschluesselTyp;");
-
-        echo "<table id='klassenTable' class='klassenTabelle'>";
-        echo  "<thead>";
-        echo  "<tr class='tableHead'>";
-        echo  "<th>Klasse</th>";
-        echo  "<th>Notenschlüssel</th>";
-        echo  "</tr>";
-        echo  "</thead>";
-        echo  "<tbody>";
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             // Revive Knötchen
@@ -307,20 +330,32 @@ abstract class Database {
 
             $klasse = new Klasse($kurs, $notenschluessel);
             $klassenListe->add_Node($klasse);
-            //
-
-            echo  "<tr>";
-            foreach ($row as $value) {
-                echo  "<td>".$value."</td>";
-            }
-            echo  "</tr>";
         }
-        echo  "</tbody>";
-        echo  "</table>";
+       // echo  "Number of Nodes in List: ".$klassenListe->counter."<br><br>";
+        $klassenListe->sortNodes("up","BezeichnungKlasse", "NotenschluesselKlasse");
 
-        echo  "<div><br>Number of Nodes in List: ".$klassenListe->counter."<br><br>";
+        $klassenListe->displayAllNodesKlasseTest();
+    }
+
+    function getAllClassNodes() {
+
+        // Revive KnötchenListe
+        if(!isset($klassenListe)){
+            $klassenListe = new Nodelist();
+        }
+
+        $stmt = Database::connect()->query("SELECT kursName, SchlusselName FROM kurs JOIN notenschluesseltyp ON notenschluesseltyp.idNotenschluesselTyp = kurs.NotenschluesselTyp_idNotenschluesselTyp;");
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            // Revive Knötchen
+            $kurs = $row["kursName"];
+            $notenschluessel = $row["SchlusselName"];
+
+            $klasse = new Klasse($kurs, $notenschluessel);
+            $klassenListe->add_Node($klasse);
+        }
+        // echo  "Number of Nodes in List: ".$klassenListe->counter."<br><br>";
         $klassenListe->displayAllNodesKlasse();
-        echo "</div>";
     }
 
     function getDatabaseData($columnsArr=[], $table) {
@@ -357,6 +392,19 @@ abstract class Database {
     function getAllStudents() {
         $stmt = Database::connect()->query("SELECT Vorname, Nachname, Geburtsdatum, eMail, kursName FROM schueler JOIN kurs ON kurs.id_Kurs = schueler.Kurs_id_Kurs;");
 
+        echo '<table class="studentTable"> <!-- tabelle automatisch durch query auslesen und entsprechend erstellen-->
+            <thead>
+                <tr class="tableHead">
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Geburtsdatum</th>
+                    <th>E-Mail</th>
+                    <th>Klasse</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>';
+
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             echo '<tr onclick="window.location=\'student.php\';">';
             echo '<td>'.$row["Vorname"].'</td>';
@@ -366,6 +414,9 @@ abstract class Database {
             echo '<td>'.$row["kursName"].'</td>';
             echo '</tr>';
         }
+        echo '</tr>
+            </tbody>
+        </table>';
     }
 }
 
@@ -392,6 +443,14 @@ class Node {
 
     function getNextNode(){
 	    return $this->nextNode;
+    }
+
+    function setPrevNode($newPrevNode){
+        $this->prevNode = $newPrevNode;
+    }
+
+    function setNextNode($newNextNode){
+        $this->nextNode = $newNextNode;
     }
 }
 
@@ -449,7 +508,7 @@ class NodeList {
 
                 if ($currentNode->prevNode !== NULL){
                     $pre = $currentNode->prevNode->nodeData->getBezeichnungKlasse();
-                } else {
+                    } else {
                     $pre = NULL;
                 }
 
@@ -469,6 +528,142 @@ class NodeList {
 
                 $currentNode = $currentNode->nextNode;
             }
+        }
+    }
+
+    function displayAllNodesSchueler(){
+
+        if (isset($this->firstNode)){
+
+            $currentNode = $this->firstNode;
+
+            while($currentNode !== NULL){
+
+                if ($currentNode->prevNode !== NULL){
+                    $pre = $currentNode->prevNode->nodeData->getNachname();
+                } else {
+                    $pre = NULL;
+                }
+
+                if($currentNode->nextNode !== NULL){
+                    $nex = $currentNode->nextNode->nodeData->getNachname();
+                } else {
+                    $nex = NULL;
+                }
+
+                $dat = $currentNode->nodeData->getNachname();
+
+                echo "<div class='nodeElement'>";
+                echo "<div class='prevNode'>".$pre." <-- Prev</div>";
+                echo "<div class='nodeIndex'>Node: ".$dat."</div>";
+                echo "<div class='nextNode'>Next --> ".$nex."</div>";
+                echo "</div>";
+
+                $currentNode = $currentNode->nextNode;
+            }
+        }
+    }
+
+    function displayAllNodesKlasseTest(){
+
+        if (isset($this->firstNode)){
+
+            $currentNode = $this->firstNode;
+            echo "<table id='classTable' class='classOutputTable'>";
+            echo  "<thead>";
+            echo  "<tr class='tableHead'>";
+            echo  "<th>Klasse</th>";
+            echo  "<th>Notenschlüssel</th>";
+            echo  "</tr>";
+            echo  "</thead>";
+            echo  "<tbody>";
+
+            while($currentNode !== NULL){
+
+                $dat = $currentNode->nodeData->getBezeichnungKlasse();
+                $datNS = $currentNode->nodeData->getNotenschluesselKlasse();
+                echo "<tr><td>".$dat."</td>";
+                echo "<td>".$datNS."</td></tr>";
+                $currentNode = $currentNode->nextNode;
+            }
+            echo "</tbody></table>";
+        }
+    }
+
+    function displayAllStudentNodes(){
+
+        if (isset($this->firstNode)){
+
+            $currentNode = $this->firstNode;
+            echo "<table id='studentTable' class='studentOutputTable'>";
+            echo  "<thead>";
+            echo  "<tr class='tableHead'>";
+            echo  "<th class='hiddenElement'>ID</th>";
+            echo  "<th>Nachname</th>";
+            echo  "<th>Vorname</th>";
+            echo  "<th>Geburtsdatum</th>";
+            echo  "<th>E-Mail</th>";
+            echo  "<th>Klasse</th>";
+            echo  "</tr>";
+            echo  "</thead>";
+            echo  "<tbody>";
+
+            while($currentNode !== NULL){
+
+                $id = $currentNode->nodeData->getID();
+                $vorname = $currentNode->nodeData->getVorname();
+                $nachname = $currentNode->nodeData->getNachname();
+                $geburtsdatum = $currentNode->nodeData->getGeburtsdatum();
+                $email = $currentNode->nodeData->getEmail();
+                $klasse = $currentNode->nodeData->getKlasse();
+                echo "<tr>";
+                echo "<td class='hiddenElement studentID'>".$id."</td>";
+                echo "<td class='schuelerNachname'>".$nachname."</td>";
+                echo "<td class='schuelerVorname'>".$vorname."</td>";
+                echo "<td class='schuelerGeburtsdatum'>".$geburtsdatum."</td>";
+                echo "<td class='schuelerEmail'>".$email."</td>";
+                echo "<td class='schuelerKlasse'>".$klasse."</td>";
+                echo "</tr>";
+                $currentNode = $currentNode->nextNode;
+            }
+            echo "</tbody></table>";
+        }
+    }
+
+    function displayAllStudentsDescending(){
+
+        if (isset($this->firstNode)){
+
+            $currentNode = $this->lastNode;
+            echo "<table id='studentTable' class='studentOutputTable'>";
+            echo  "<thead>";
+            echo  "<tr class='tableHead'>";
+            echo  "<th>Nachname</th>";
+            echo  "<th>Vorname</th>";
+            echo  "<th>Geburtsdatum</th>";
+            echo  "<th>E-Mail</th>";
+            echo  "<th>Klasse</th>";
+            echo  "</tr>";
+            echo  "</thead>";
+            echo  "<tbody>";
+
+            while($currentNode !== NULL){
+
+                $vorname = $currentNode->nodeData->getVorname();
+                $nachname = $currentNode->nodeData->getNachname();
+                $geburtsdatum = $currentNode->nodeData->getGeburtsdatum();
+                $email = $currentNode->nodeData->getEmail();
+                $klasse = $currentNode->nodeData->getKlasse();
+                echo "<tr>";
+                echo "<td>".$nachname."</td>";
+                echo "<td>".$vorname."</td>";
+                echo "<td>".$geburtsdatum."</td>";
+                echo "<td>".$email."</td>";
+                echo "<td>".$klasse."</td>";
+                echo "</tr>";
+                $currentNode = $currentNode->prevNode;
+            }
+            echo "</tbody></table>";
         }
     }
 
@@ -550,6 +745,232 @@ class NodeList {
         }
     }
 
-    // TODO: Sortierung, Oberfläche, Datenbank Login, Rechteverwaltung und Einschränkungen, Notenberechnung, weitere Listenelemente
+    function sortNodes($sortOrder = "up", $firstValue, $secondValue = NULL)
+    {
+        if (isset($this->firstNode)) {
+
+            $curr = $this->firstNode;
+
+            for($i = 0; $i < $this->counter - 1; $i++){
+
+                while ($curr !== NULL) {
+                    $switched = false;
+                    $prev = $curr->getPrevNode();
+
+                    if ($curr->getNextNode() != NULL) {
+                        $next = $curr->getNextNode();
+                        $nextnext = $next->getNextNode();
+
+                        $sortByFirst = "get".$firstValue;
+                        $sortBySecond = "get".$secondValue;
+
+                        // set srings to compare
+                        $stringOne = $curr->nodeData->$sortByFirst();
+                        $stringTwo = $next->nodeData->$sortByFirst();
+
+                        $elementsToCompare = strnatcmp($stringOne, $stringTwo);
+
+                        if ($elementsToCompare == 1) {
+                     //       echo "<br><br><b> Comparing: " . $curr->nodeData->getNachname() . " with " . $stringTwo . "</b><br>";
+                     //       echo "$stringOne should come after $stringTwo<br><br>";
+
+                            $tempCurrPrev = $prev; //NULL
+                            $tempCurrNext = $next; // Klaßen
+
+                            $curr->prevNode = $next;
+                            $curr->nextNode = $next->nextNode;
+                            /*                            echo "1. switched " . $curr->nodeData->getNachname() . "->prev to " . $next->nodeData->getNachname() . "<br>";
+                            echo "2. switched ";
+                            if ($curr != NULL) {
+                                echo $curr->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "->next to ";
+                            if ($next->nextNode != NULL) {
+                                echo $next->nextNode->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "<br>";*/
+
+                            $next->prevNode = $tempCurrPrev;
+                            $next->nextNode = $curr;
+                            /*echo "3. switched ";
+                            if ($next != NULL) {
+                                echo $next->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "->prev to ";
+                            if ($tempCurrPrev != NULL) {
+                                echo $tempCurrPrev->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "<br>";
+                            echo "4. switched ";
+                            if ($next != NULL) {
+                                echo $next->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "->next to ";
+                            if ($curr != NULL) {
+                                echo $curr->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "<br>";*/
+
+
+                            if ($tempCurrPrev != NULL && $tempCurrPrev->nextNode != NULL) {
+                                $tempCurrPrev->nextNode = $next;
+                            }
+                            /*echo "5. swiched new prev ";
+                            if ($tempCurrPrev != NULL && $tempCurrPrev->nextNode != NULL) {
+                                echo $tempCurrPrev->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "->next to ";
+                            if ($next != NULL) {
+                                echo $next->nodeData->getNachname();
+                            } else {
+                                echo "NULL";
+                            };
+                            echo "<br>";*/
+
+                            if ($nextnext) {
+                                $nextnext->prevNode = $curr;
+                                //echo "6. switched " . $nextnext->nodeData->getNachname() . "->prev to " . $curr->nodeData->getNachname() . "<br>";
+                            }
+
+                            if ($prev == NULL) {
+                                $this->firstNode = $next;
+                                //echo "<i>X. changed first node to " . $next->nodeData->getNachname() . "</i><br>";
+                            }
+
+                            if ($curr->nextNode == NULL) {
+                                $this->lastNode = $curr;
+                                //echo "<i>X. changed last node to " . $curr->nodeData->getNachname() . "</i><br>";
+                            }
+                            $switched = true;
+                        }
+
+                        elseif ($elementsToCompare == 0) {
+                            $stringOneDetail = $curr->nodeData->$sortBySecond();
+                            $stringTwoDetail = $next->nodeData->$sortBySecond();
+
+                            $detailElementsToCompare = strnatcmp($stringOneDetail, $stringTwoDetail);
+
+                            if ($detailElementsToCompare == 1) {
+                                //       echo "<br><br><b> Comparing: " . $curr->nodeData->getNachname() . " with " . $stringTwo . "</b><br>";
+                                //       echo "$stringOne should come after $stringTwo<br><br>";
+
+                                $tempCurrPrev = $prev; //NULL
+                                $tempCurrNext = $next; // Klaßen
+
+                                $curr->prevNode = $next;
+                                $curr->nextNode = $next->nextNode;
+                                /*                            echo "1. switched " . $curr->nodeData->getNachname() . "->prev to " . $next->nodeData->getNachname() . "<br>";
+                                echo "2. switched ";
+                                if ($curr != NULL) {
+                                    echo $curr->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "->next to ";
+                                if ($next->nextNode != NULL) {
+                                    echo $next->nextNode->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "<br>";*/
+
+                                $next->prevNode = $tempCurrPrev;
+                                $next->nextNode = $curr;
+                                /*echo "3. switched ";
+                                if ($next != NULL) {
+                                    echo $next->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "->prev to ";
+                                if ($tempCurrPrev != NULL) {
+                                    echo $tempCurrPrev->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "<br>";
+                                echo "4. switched ";
+                                if ($next != NULL) {
+                                    echo $next->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "->next to ";
+                                if ($curr != NULL) {
+                                    echo $curr->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "<br>";*/
+
+
+                                if ($tempCurrPrev != NULL && $tempCurrPrev->nextNode != NULL) {
+                                    $tempCurrPrev->nextNode = $next;
+                                }
+                                /*echo "5. swiched new prev ";
+                                if ($tempCurrPrev != NULL && $tempCurrPrev->nextNode != NULL) {
+                                    echo $tempCurrPrev->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "->next to ";
+                                if ($next != NULL) {
+                                    echo $next->nodeData->getNachname();
+                                } else {
+                                    echo "NULL";
+                                };
+                                echo "<br>";*/
+
+                                if ($nextnext) {
+                                    $nextnext->prevNode = $curr;
+                                    //echo "6. switched " . $nextnext->nodeData->getNachname() . "->prev to " . $curr->nodeData->getNachname() . "<br>";
+                                }
+
+                                if ($prev == NULL) {
+                                    $this->firstNode = $next;
+                                    //echo "<i>X. changed first node to " . $next->nodeData->getNachname() . "</i><br>";
+                                }
+
+                                if ($curr->nextNode == NULL) {
+                                    $this->lastNode = $curr;
+                                    //echo "<i>X. changed last node to " . $curr->nodeData->getNachname() . "</i><br>";
+                                }
+                                $switched = true;
+                            }
+                           // echo "<br>$stringOne is the same as $stringTwo and needs further ordering";
+                        }
+                        if (!$switched) {
+                            $curr = $curr->nextNode;
+                        }
+                    } else {
+                        $curr = NULL;
+                    }
+                }
+                $curr = $this->firstNode;
+            }
+        }
+
+        if($sortOrder == "down"){
+            NodeList::displayAllStudentsDescending();
+        } else{
+            NodeList::displayAllStudentNodes();
+        }
+    }
+
+    // TODO: Datenbank Login, Rechteverwaltung und Einschränkungen, Notenberechnung, weitere Listenelemente
 }
 ?>

@@ -5,15 +5,12 @@ include 'headerMenu.php';
 <div class="contentContainer">
     <div class="sectionHeader">Neue Klasse anlegen</div>
     <div class="inputArea">
-
-        <div class="inputAreaElement">
+        <form id="Klasse" class="formElement newClassForm">
             <label for="klassenName">Klassebezeichnung:</label>
-            <input id="klassenName" class="neueKlasseInput" type="text" name="klassenName"><br>
-        </div>
+            <input id="klassenName" class="neueKlasseInput" type="text" name="klassenName" required><br>
 
-        <div class="inputAreaElement">
             <label for="notenSchluesselTyp">Notenschlüssel:</label>
-                <select id="notenSchluesselTyp" name="notenSchluessel" class="dropDownKlasse">
+                <select id="notenSchluesselTyp" name="notenSchluessel dropDownItem" class="dropDownKlasse" name="classID" required>
                     <?php
                     $columnsArr=['idNotenschluesselTyp','SchlusselName'];
                     $dbResultArr = Database::getDatabaseData($columnsArr, 'notenschluesseltyp');
@@ -35,13 +32,13 @@ include 'headerMenu.php';
                     ?>
                 </select>
             <a class="addNewElementButton" title="weiteren Notenschlüssel erstellen" href="createGradeKey.php">+</a><br>
-        </div>
 
-        <div class="inputAreaElement">
-            <input class="submitNeueKlasse styledButton" type="button" name="neueKlasse" value="Klasse anlegen">
-        </div>
+            <input class="styledButton" type="submit">
+        </form>
     </div>
+
 <?php
-Database::getAlleKlassen();
+Database::getAllClasses();
+//Database::getAllClassNodes();
 include 'footer.php';
 ?>

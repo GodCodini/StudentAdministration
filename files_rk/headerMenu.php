@@ -18,9 +18,9 @@ require 'includes.php';
 
     <div id="menuContainer">
         <ul>
-            <li><a href="index.php">Übersicht</a></li>
-            <li><a href="erstellungKlasse.php">Klasse erstellen</a></li>
-            <li><a href="erstellungSchueler.php">Schüler anlegen</a></li>
+            <li><a class="currentPage" href="index.php">Übersicht</a></li> <!-- TODO: create JS to change css class to link of current Page-->
+            <li><a href="erstellungKlasse.php">Klassen</a></li>
+            <li><a href="erstellungSchueler.php">Schüler</a></li>
             <li style="cursor: no-drop"><a onclick="return confirm('Bist Du sicher?')" style="cursor: no-drop" href="einstellungen.php"><strong style="color: red">Reset Database</strong></a></li>
         </ul>
     </div>

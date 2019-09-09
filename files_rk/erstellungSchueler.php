@@ -1,7 +1,5 @@
 <?php
-
 include 'headerMenu.php';
-
 /*
 echo "// Test create object BenotungsObjekt with parameters: <br>";
 
@@ -17,79 +15,98 @@ echo $schuelerMax->getVorname() . "<br>";
 // create newstudent object in database
 $schuelerMax->createStudent();
 */
-
 ?>
-<!-- TODO: erst SCHULE erstellen, dann KLASSE anlegen, dann LEHRER, dann FACH, dann NOTENOBJEKT und/oder SCHÜLER -->
-
 <div class="contentContainer">
+    <div class="sectionHeader">Schüler/in anlegen</div>
+    <div class="inputArea">
+        <form id="Student" class="formElement newStudentForm">
+            <label for="schuelerVorname">Vorname:</label>
+            <input id="schuelerVorname" class="schuelerVornameInput" type="text" name="student_Firstname" required><br>
 
-        <div class="sectionHeader">Schüler/in anlegen</div>
-        <div class="inputArea">
-            <form id="Student" class="formElement">
-                <label for="schuelerVorname">Vorname:</label>
-                <input id="schuelerVorname" class="schuelerVornameInput" type="text" name="student_Firstname"><br>
+            <label for="schuelerNachname">Nachname:</label>
+            <input id="schuelerNachname" class="schuelerNachnameInput" type="text" name="student_Lastname" required><br>
 
-                <label for="schuelerNachname">Nachname:</label>
-                <input id="schuelerNachname" class="schuelerNachnameInput" type="text" name="student_Lastname"><br>
+            <label for="schuelerGeburtsdatum">Beburtsdag:</label>
+            <input id="schuelerGeburtsdatum" class="schuelerGeburtsdatumInput" type="date" name="student_Birthdate" required><br>
 
-                <label for="schuelerGeburtsdatum">Beburtsdatum:</label>
-                <input id="schuelerGeburtsdatum" class="schuelerGeburtsdatumInput" type="date" name="student_Birthdate"><br>
+            <label for="schuelerEMail">E-Mail:</label>
+            <input id="schuelerEMail" class="schuelerEMailInput" type="email" name="student_Email" required><br>
 
-                <label for="schuelerEMail">E-Mail:</label>
-                <input id="schuelerEMail" class="schuelerEMailInput" type="email" name="student_Email"><br>
+            <label for="schuelerKlasse">Klasse:</label>
+            <select id="schuelerKlasse" class="schuelerKlasseInput dropDownItem" name="student_ClassID" required>
+                <?php
+                    $paraArr=['id_Kurs','kursName'];
+                    $meineKlassen = Database::getDatabaseData($paraArr, 'kurs');
 
-                <label for="schuelerKlasse">Klasse:</label>
-                <select id="schuelerKlasse" class="schuelerKlasseInput dropDownItem" name="student_ClassID">
-                    <?php
-                        $paraArr=['id_Kurs','kursName'];
-                        $meineKlassen = Database::getDatabaseData($paraArr, 'kurs');
-
-                        foreach($meineKlassen as $entry)
+                    foreach($meineKlassen as $entry)
+                    {
+                        echo'<option';
+                        foreach($entry as $key => $value)
                         {
-                            echo'<option';
-                            foreach($entry as $key => $value)
-                            {
-                                if($key=='id_Kurs'){
-                                    echo' value="'.$value.'">';
-                                }
-                                else{
-                                    echo $value.'';
-                                }
+                            if($key=='id_Kurs'){
+                                echo' value="'.$value.'">';
                             }
-                            echo '</option>';
+                            else{
+                                echo $value.'';
+                            }
                         }
-                    ?>
-                </select>
-                <a class="addNewElementButton" title="weitere Klasse erstellen" href="erstellungKlasse.php">+</a><br>
+                        echo '</option>';
+                    }
+                ?>
+            </select>
 
-                <input class="submitNewStudent styledButton" type="submit" value="Schüler/in anlegen" name="Student">
-            </form>
-        </div>
+            <a class="addNewElementButton" title="weitere Klasse erstellen" href="erstellungKlasse.php">+</a><br>
 
-    <div>
-        <table class="studentTable"> <!-- tabelle automatisch durch query auslesen und entsprechend erstellen-->
-            <thead>
-                <tr class="tableHead">
-                    <th>Vorname</th>
-                    <th>Nachname</th>
-                    <th>Geburtsdatum</th>
-                    <th>E-Mail</th>
-                    <th>Klasse</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <?php
-                    Database::getAllStudents();  // array zurückgeben
-                    ?>
-                </tr>
-            </tbody>
-        </table>
+            <input class="styledButton" type="submit">
+        </form>
     </div>
-</div>
+
+    <div id="editRecord" title="Schüler bearbeiten" style="display: none">
+        <form id="Student" class="formElement updateStudentForm">
+            <label class="hiddenElement" for="schuelerID">ID:</label>
+            <input id="EDITschuelerID" class="schuelerIDInput hiddenElement" type="number" name="studentID" required><br>
+
+            <label for="schuelerVorname">Vorname:</label>
+            <input id="EDITschuelerVorname" class="schuelerVornameInput" type="text" name="student_Firstname" required><br>
+
+            <label for="schuelerNachname">Nachname:</label>
+            <input id="EDITschuelerNachname" class="schuelerNachnameInput" type="text" name="student_Lastname" required><br>
+
+            <label for="schuelerGeburtsdatum">Beburtsdag:</label>
+            <input id="EDITschuelerGeburtsdatum" class="schuelerGeburtsdatumInput" type="date" name="student_Birthdate" required><br>
+
+            <label for="schuelerEMail">E-Mail:</label>
+            <input id="EDITschuelerEMail" class="schuelerEMailInput" type="email" name="student_Email" required><br>
+
+            <label for="schuelerKlasse">Klasse:</label>
+            <select id="EDITschuelerKlasse" class="schuelerKlasseInput dropDownItem" name="student_ClassID" required>
+                <?php
+                $paraArr=['id_Kurs','kursName'];
+                $meineKlassen = Database::getDatabaseData($paraArr, 'kurs');
+
+                foreach($meineKlassen as $entry)
+                {
+                    echo'<option';
+                    foreach($entry as $key => $value)
+                    {
+                        if($key=='id_Kurs'){
+                            echo' value="'.$value.'">';
+                        }
+                        else{
+                            echo $value.'';
+                        }
+                    }
+                    echo '</option>';
+                }
+                ?>
+            </select>
+            <input class="styledButton" value="Schüler ändern" type="submit">
+        </form>
+    </div>
 
 <?php
+//Database::getAllStudents();
+Database::getAllStudentNodes();
 
 include 'footer.php';
-
 ?>
