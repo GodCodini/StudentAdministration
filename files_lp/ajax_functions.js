@@ -21,13 +21,14 @@ $(document).ready( function () {
                 },
             dataType: "json",
             success: function (data) {
-                $(".studentOutputTable").prepend('' +
-                    '<tr>' +
-                    '<td class="last">'+lastName+'</td>' +
-                    '<td class="first">'+firstName+'</td>' +
-                    '<td class="birth">'+bday+'</td>' +
-                    '<td><a href="newGrade.php?id='+id+'&class='+course+'">Noten für '+firstName + lastName+' eintragen</a></td>' +
-                    '</tr>');
+                // $(".studentOutputTable").prepend('' +
+                //     '<tr>' +
+                //     '<td class="last">'+lastName+'</td>' +
+                //     '<td class="first">'+firstName+'</td>' +
+                //     '<td class="birth">'+bday+'</td>' +
+                //     '<td><a href="newGrade.php?id='+id+'&class='+course+'">Noten für '+firstName + lastName+' eintragen</a></td>' +
+                //     '</tr>');
+                console.log(data);
             }
         })
     })

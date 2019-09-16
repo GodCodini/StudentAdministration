@@ -32,6 +32,28 @@ class Student
         $this->class = $class;
     }
 
+    public function save()
+    {
+        $id = $this->id;
+        $first = $this->firstName;
+        $last = $this->lastName;
+        $bday = $this->bday;
+        $class = $this->class;
+
+        try
+        {
+            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+            $sql = "UPDATE schueler SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Kurs_id_Kurs = ? WHERE id_Schueler = ?";
+            $pre = $PDO->prepare($sql);
+            $pre->execute(array($first, $last, $bday, $class, $id));
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+        }
+    }
+
     public function addToDB($first, $last, $bday, $class)
     {
         try
@@ -134,19 +156,19 @@ class Student
         return $data;
     }
 
-    public function updateStudent($id, $first, $last, $bday, $classKey)
+    public function getStudentById($id)
     {
-        $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-        try
+        if ($this->id == $id)
         {
-            $sql = "UPDATE schueler SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Kurs_id_Kurs = ? WHERE id_Schueler = ?";
-            $res = $PDO->prepare($sql);
-            $res->execute(array($first, $last, $bday, $classKey, $id));
+            echo "Student gefunden";
+            return $this;
         }
-        catch (Exception $e)
+        else
         {
-            echo $e->getCode();
-            echo $e->getMessage();
+            $error = array();
+            $error[] = "Student nicht gefunden :(";
+            echo "student nicht gefunden :(";
+            return $error;
         }
     }
 

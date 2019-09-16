@@ -69,4 +69,22 @@ class Element
         return $this->data->getLastName();
     }
 
+    public function getStudent($id)
+    {
+        $data = $this->data;
+        if ($data == $this->data->getStudentById($id))
+        {
+            echo "Element gefunden";
+            return $data;
+        }
+        else
+        {
+            $error = $this->data->getStudentById($id);
+            $error[] = "Element nicht gefunden";
+            echo "element nicht gefunden";
+            return $error;
+        }
+
+    }
+
 }

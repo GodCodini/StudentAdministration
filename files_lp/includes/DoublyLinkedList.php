@@ -335,6 +335,22 @@ class DoublyLinkedList
 
     public function findStudent($id)
     {
-
+        $start = $this->start;
+        $error = array();
+        for ($i = 0; $i < $this->count; $i++)
+        {
+            if ($start->getStudent($id) == $id)
+            {
+                echo "gefunden: ".$i;
+                return $start->getStudent($id);
+            }
+            else
+            {
+                $error = $start->getStudent($id);
+                $error[] = "Liste nicht gefunden ".$i;
+                $start = $start->getNext();
+            }
+        }
+        return $error;
     }
 }

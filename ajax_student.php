@@ -20,5 +20,15 @@ $result = $res->fetch(PDO::FETCH_ASSOC);
 $className = $result['kursName'];
 $liste = unserialize($_SESSION[$className]);
 $student = $liste->findStudent($id);
-
-$student->updateStudent($id, $first, $last, $birth, $class);
+if (gettype($student) === "object")
+{
+    $student->setFirstName($first);
+    $student->setLastName($last);
+    $student->setBday($birth);
+    $student->setClass($class);
+    $student->save();
+}
+else
+{
+    echo json_encode($student);
+}
