@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once 'project_files/Database.php';
 include_once "files_lp/includes/DoublyLinkedList.php";
 include_once "files_lp/includes/Element.php";

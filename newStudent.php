@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
     $lastName = $_POST['lastName'];
     $bday = $_POST['bday'];
     $class = $_POST['class'];
-    listHelper::addStudent($firstName, $lastName, $bday, $class);
+    addStudent($firstName, $lastName, $bday, $class);
     header("Location: ./newStudent.php?succsess=student");
 }
 ?>

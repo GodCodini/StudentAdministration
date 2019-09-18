@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
     $gradeKey = $_POST['gradeKey'];
     $comment = $_POST['comment'];
 
-    $return = listHelper::addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $comment);
+    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $comment);
     if ($return)
     {
         header("Location: ./newGrade.php?id=".$id."&class=".$class."&succsess=grade");
