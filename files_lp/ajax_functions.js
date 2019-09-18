@@ -1,6 +1,5 @@
 $(document).ready( function () {
-    $("#updateStudent").on('submit', function (e) {
-        e.preventDefault();
+    function updateStudent() {
         var id = $("#id").val();
         var firstName = $("#firstName").val();
         var lastName = $("#lastName").val();
@@ -28,8 +27,13 @@ $(document).ready( function () {
                 //     '<td class="birth">'+bday+'</td>' +
                 //     '<td><a href="newGrade.php?id='+id+'&class='+course+'">Noten für '+firstName + lastName+' eintragen</a></td>' +
                 //     '</tr>');
+                console.log("yay");
+                console.log(data);
+            },
+            error: function (data) {
+                console.log("fail");
                 console.log(data);
             }
         })
-    })
+    }
 });

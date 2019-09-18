@@ -62,8 +62,7 @@ class DoublyLinkedList
         {
             $start = $this->getStart();
             $data = $start->getData();
-            echo $this->name;
-            echo "<br>";
+            echo "<p id='class'>".$this->name."</p>";
             for ($i = 0; $i < $this->count; $i++) {
                 $array[] = $data;
                 $start = $start->getNext();
@@ -81,7 +80,7 @@ class DoublyLinkedList
         }
     }
 
-    public function sortList($liste)
+    public function ListSorter($liste)
     {
         do
         {
@@ -96,6 +95,7 @@ class DoublyLinkedList
                 {
                     if ($liste->count >= 5)
                     {
+                        //Wenn es der erste Durchlauf ist, muss der startknoten geändert werden
                         if ($i === 0)
                         {
                             $nextNext = $next->getNext();
@@ -108,6 +108,7 @@ class DoublyLinkedList
                             $next = $start->getNext();
                             $swapped = true;
                         }
+                        //2 knoten vor ende muss auch das bedacht werden
                         elseif ($liste->end === $next->getNext())
                         {
                             $prev = $start->getPrevious();
@@ -121,6 +122,7 @@ class DoublyLinkedList
                             $next = $start->getNext();
                             $swapped = true;
                         }
+                        //1 knoten vor ende muss das beedacht werden
                         elseif($liste->end === $next)
                         {
                             $prevNode = $start->getPrevious();
@@ -132,6 +134,7 @@ class DoublyLinkedList
                             $liste->end = $start;
                             $swapped = true;
                         }
+                        //ansonsten einfach fröhlich tauschen :)
                         else
                         {
                             $pre = $start->getPrevious();
@@ -146,10 +149,13 @@ class DoublyLinkedList
                             $swapped = true;
                         }
                     }
+                    //Bei nur einem knoten muss nix getauscht werden
                     elseif ($liste->count == 1)
                     {
+                        $liste->setSorted(true);
                         return $liste;
                     }
+                    //bei zwei muss an start und ende zeiger gedacht werden
                     elseif ($liste->count == 2)
                     {
                         $start->setNext(null);
@@ -160,6 +166,7 @@ class DoublyLinkedList
                         $liste->start = $next;
                         $swapped = true;
                     }
+                    //bei 3 muss geprüft werden, ob prev oder next gesetzt ist und start und ende beachten
                     elseif ($liste->count == 3)
                     {
                         $prevN = $start->getPrevious();
@@ -186,6 +193,7 @@ class DoublyLinkedList
                             $swapped = true;
                         }
                     }
+                    //dasselbe wie bei 3, nur etwas mehr
                     elseif ($liste->count == 4)
                     {
                         $prevNo = $start->getPrevious();
@@ -233,7 +241,7 @@ class DoublyLinkedList
             } //Ende for-Schleife
         }
         while ($swapped);
-        $liste->setSorted(true);
+        $this->setSorted(true);
         return $liste;
     }
 

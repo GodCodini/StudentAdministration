@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
     $bis5 = $_POST['bis5'];
     $bis6 = $_POST['bis6'];
     $keyName = $_POST['keyName'];
-    $return = listHelper::addgradeKey($keyName, $von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6);
+    $return = addgradeKey($keyName, $von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6);
     if ($return)
     {
         header("Location: ./newGradeKey.php?succsess=succsess");
@@ -73,7 +73,7 @@ if (isset($_POST['senden'])) {
     $bis15 = $_POST['bis15'];
 
     $keyName = $_POST['keyName'];
-    $return = listHelper::addgradeKey($keyName, $von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6,
+    $return = addgradeKey($keyName, $von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6,
         $von7, $von8, $von9, $von10, $von11, $von12, $von13, $von14, $von15, $bis7 ,$bis8, $bis9, $bis10, $bis11, $bis12,
         $bis13, $bis14, $bis15);
     if ($return)
@@ -142,7 +142,7 @@ if (isset($_POST['senden'])) {
                 <li><label>Von/bis 9 <span class="required">*</span></label><input type="text" name="von9" class="field-divided" placeholder="Von" /> <input type="text" name="bis9" class="field-divided" placeholder="Bis" /></li>
                 <li><label>Von/bis 10 <span class="required">*</span></label><input type="text" name="von10" class="field-divided" placeholder="Von" /> <input type="text" name="bis10" class="field-divided" placeholder="Bis" /></li>
                 <li><label>Von/bis 11 <span class="required">*</span></label><input type="text" name="von11" class="field-divided" placeholder="Von" /> <input type="text" name="bis11" class="field-divided" placeholder="Bis" /></li>
-                <li><label>Von/bis 12<span class="required">*</span></label><input type="text" name="von12" class="field-divided" placeholder="Von" /> <input type="text" name="bis12" class="field-divided" placeholder="Bis" /></li>
+                <li><label>Von/bis 12 <span class="required">*</span></label><input type="text" name="von12" class="field-divided" placeholder="Von" /> <input type="text" name="bis12" class="field-divided" placeholder="Bis" /></li>
                 <li><label>Von/bis 13 <span class="required">*</span></label><input type="text" name="von13" class="field-divided" placeholder="Von" /> <input type="text" name="bis13" class="field-divided" placeholder="Bis" /></li>
                 <li><label>Von/bis 14 <span class="required">*</span></label><input type="text" name="von14" class="field-divided" placeholder="Von" /> <input type="text" name="bis14" class="field-divided" placeholder="Bis" /></li>
                 <li><label>Von/bis 15 <span class="required">*</span></label><input type="text" name="von15" class="field-divided" placeholder="Von" /> <input type="text" name="bis15" class="field-divided" placeholder="Bis" /></li>
@@ -157,6 +157,6 @@ if (isset($_POST['senden'])) {
         </form>
     </div>
     <div id="tabs-3">
-        tab 3
+        Die magische Miesmuschel sagt: Eines Tages vielleicht.
     </div>
 </div>

@@ -23,7 +23,7 @@ if (isset($_POST['senden'])) {
     $name = $_POST['liste'];
     $gradeKey = $_POST['gradeKey'];
 
-    $return = listHelper::createList($name, $gradeKey);
+    $return = createList($name, $gradeKey);
     if ($return)
     {
         header("Location: ./newClass.php?succsess=class");
