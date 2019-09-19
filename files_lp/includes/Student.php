@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: pamperin
- * Date: 13.08.2019
- * Time: 16:11
+ * Copyright (c) 2019. Ralf Klaßen & Lennart Pamperin
+ * This Software is licensed under GPL 3.0.
+ * This program comes with ABSOLUTELY NO WARRANTY!
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions:
+ * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
 require_once 'Element.php';
 require_once 'DoublyLinkedList.php';
@@ -145,14 +147,12 @@ class Student
 
     public function getStudentData()
     {
-
         $data = array();
         $id = $this->getId();
         $first = $this->getFirstName();
         $last = $this->getLastName();
         $bd = $this->getBday();
         array_push($data, $first, $last, $bd, $id);
-
         return $data;
     }
 
@@ -161,15 +161,14 @@ class Student
         if ($this->id == $id)
         {
             echo "Student gefunden";
-            return $this;
+            $return[0] = $this->id;
+            $return[1] = $this;
+            return $return;
         }
         else
         {
-            $error = array();
-            $error[] = "Student nicht gefunden :(";
-            echo "student nicht gefunden :(";
+            $error = "[Student nicht gefunden, such-id: ".$id." ist-id: ".$this->id."]";
             return $error;
         }
     }
-
 }

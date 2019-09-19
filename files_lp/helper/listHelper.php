@@ -5,6 +5,13 @@ require_once 'files_lp/includes/Student.php';
 require_once 'project_files/Database.php';
 require_once 'project_files/_config.php';
 
+/**
+ * Funktion die ein leeres Listenobjekt erstellt und in der Session speichert.
+ *
+ * @param $name
+ * @param $key
+ * @return int
+ */
 function createList($name, $key)
 {
 
@@ -26,32 +33,25 @@ function createList($name, $key)
     $_SESSION[$name] = serialize($liste);
 }
 
-function loadList($name, $key, $id)
-{
-    $liste = new DoublyLinkedList($name, $key, $id);
-    $_SESSION[$name] = serialize($liste);
-}
 
+/**
+ * Funktion um Listenobjekt zu erstellen und mit Werten aus der DB zu füllen. Speichert Objekt in der Session.
+ *
+ * @param $class
+ */
 function buildList($class)
 {
     $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-    if (isset($_SESSION[$class]))
-    {
-        $liste = unserialize($_SESSION[$class]);
-    }
-    else
-    {
-        $keysql = "SELECT NotenschluesselTyp_idNotenschluesselTyp FROM kurs WHERE kursName = ?";
-        $res = $PDO->prepare($keysql);
-        $res->execute(array($class));
-        $key = $res->fetch(PDO::FETCH_ASSOC);
-        $idsql = "SELECT id_Kurs FROM kurs WHERE kursName = ?";
-        $result = $PDO->prepare($idsql);
-        $result->execute(array($class));
-        $id = $result->fetch(PDO::FETCH_ASSOC);
-        loadList($class, $key['NotenschluesselTyp_idNotenschluesselTyp'], $id['id_Kurs']);
-        $liste = unserialize($_SESSION[$class]);
-    }
+
+    $keysql = "SELECT NotenschluesselTyp_idNotenschluesselTyp FROM kurs WHERE kursName = ?";
+    $res = $PDO->prepare($keysql);
+    $res->execute(array($class));
+    $key = $res->fetch(PDO::FETCH_ASSOC);
+    $idsql = "SELECT id_Kurs FROM kurs WHERE kursName = ?";
+    $result = $PDO->prepare($idsql);
+    $result->execute(array($class));
+    $id = $result->fetch(PDO::FETCH_ASSOC);
+    $liste = new DoublyLinkedList($class, $key['NotenschluesselTyp_idNotenschluesselTyp'], $id['id_Kurs']);
 
     $search = "SELECT s.id_Schueler, s.Vorname, s.Nachname, s.Geburtsdatum FROM kurs
                LEFT JOIN schueler s on kurs.id_Kurs = s.Kurs_id_Kurs
@@ -72,6 +72,14 @@ function buildList($class)
     }
 }
 
+/**
+ * Funktion um Schüler in der DB zu speichern.
+ *
+ * @param $firstName
+ * @param $lastName
+ * @param $bday
+ * @param $class
+ */
 function addStudent($firstName, $lastName, $bday, $class)
 {
     $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
@@ -119,6 +127,8 @@ function addStudent($firstName, $lastName, $bday, $class)
 }
 
 /**
+ * Funktion, um die Note anhand Prozentwerte zu ermitteln und in der DB zu speichern.
+ *
  * @param $percent
  * @param $date
  * @param $studentID
@@ -126,9 +136,10 @@ function addStudent($firstName, $lastName, $bday, $class)
  * @param $gradeTypID
  * @param $gradeKey
  * @param null $comment
- * @return int
+ * @return bool
  */
-function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $comment = null) {
+function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $comment = null)
+{
     $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
     try
     {
@@ -168,11 +179,75 @@ function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey,
     }
 }
 
-function addgradeKey($gradeKey, $von1, $von2, $von3, $von4, $von5, $von6, $bis1, $bis2, $bis3, $bis4, $bis5, $bis6,
-                                   $von7 = null, $von8 = null, $von9 = null, $von10 = null, $von11 = null, $von12 = null,
-                                   $von13 = null, $von14 = null, $von15 = null, $bis7 = null, $bis8 = null, $bis9 = null,
-                                   $bis10 = null, $bis11 = null, $bis12 = null, $bis13 = null, $bis14 = null, $bis15 = null
-                                   )
+/**
+ * Funktion um Notenschlüssel in der DB zu speichern. Kann 6 Noten System und 15 Punkte System speichern.
+ *
+ * @param $gradeKey
+ * @param $von1
+ * @param $von2
+ * @param $von3
+ * @param $von4
+ * @param $von5
+ * @param $von6
+ * @param $bis1
+ * @param $bis2
+ * @param $bis3
+ * @param $bis4
+ * @param $bis5
+ * @param $bis6
+ * @param null $von7
+ * @param null $von8
+ * @param null $von9
+ * @param null $von10
+ * @param null $von11
+ * @param null $von12
+ * @param null $von13
+ * @param null $von14
+ * @param null $von15
+ * @param null $bis7
+ * @param null $bis8
+ * @param null $bis9
+ * @param null $bis10
+ * @param null $bis11
+ * @param null $bis12
+ * @param null $bis13
+ * @param null $bis14
+ * @param null $bis15
+ * @return int
+ */
+
+function addgradeKey($gradeKey,
+                     $von1,
+                     $von2,
+                     $von3,
+                     $von4,
+                     $von5,
+                     $von6,
+                     $bis1,
+                     $bis2,
+                     $bis3,
+                     $bis4,
+                     $bis5,
+                     $bis6,
+                     $von7 = null,
+                     $von8 = null,
+                     $von9 = null,
+                     $von10 = null,
+                     $von11 = null,
+                     $von12 = null,
+                     $von13 = null,
+                     $von14 = null,
+                     $von15 = null,
+                     $bis7 = null,
+                     $bis8 = null,
+                     $bis9 = null,
+                     $bis10 = null,
+                     $bis11 = null,
+                     $bis12 = null,
+                     $bis13 = null,
+                     $bis14 = null,
+                     $bis15 = null
+                     )
 {
     $count = func_num_args() - 1;
     $new_count = $count / 2;
@@ -259,16 +334,21 @@ function addgradeKey($gradeKey, $von1, $von2, $von3, $von4, $von5, $von6, $bis1,
     return 1;
 }
 
+/**
+ * Funktion um eine Liste zu sortieren und wieder in der Session zu speichern.
+ *
+ * @param $name
+ * @return DoublyLinkedList
+ */
 function sortList($name):DoublyLinkedList
 {
     $liste = unserialize($_SESSION[$name]);
-//        var_dump($liste);
     $newList = $liste->ListSorter($liste);
     $_SESSION[$name] = serialize($newList);
     return $newList;
 }
-//TODO Funktionen neu anpassen
-
+// TODO funktionen neu anpassen
+//
 //function delete($data, $listName)
 //{
 //    $liste = unserialize($_SESSION[$listName]);

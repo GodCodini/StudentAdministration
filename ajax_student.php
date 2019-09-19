@@ -9,26 +9,22 @@ include_once "files_lp/helper/listHelper.php";
 $first = $_POST['first'];
 $last = $_POST['last'];
 $birth = $_POST['birth'];
-$class = $_POST['class'];
+$course = $_POST['course'];
 $id = $_POST['studentID'];
 
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 $sql = "SELECT kursName FROM kurs WHERE id_Kurs = ?";
 $res = $PDO->prepare($sql);
-$res->execute(array($class));
+$res->execute(array($course));
 $result = $res->fetch(PDO::FETCH_ASSOC);
 $className = $result['kursName'];
 $liste = unserialize($_SESSION[$className]);
 $student = $liste->findStudent($id);
-if (gettype($student) === "object")
-{
-    $student->setFirstName($first);
-    $student->setLastName($last);
-    $student->setBday($birth);
-    $student->setClass($class);
-    $student->save();
-}
-else
-{
-    echo json_encode($student);
-}
+
+$student[1]->setFirstName($first);
+$student[1]->setLastName($last);
+$student[1]->setBday($birth);
+$student[1]->setClass($course);
+$student[1]->save();
+
+echo json_encode($student[1]);

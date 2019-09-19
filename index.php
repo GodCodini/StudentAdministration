@@ -7,8 +7,6 @@
  * under certain conditions:
  * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
-require_once 'project_files/Database.php';
-require_once 'project_files/_config.php';
 include_once 'files_lp/ui/header.php';
 
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
@@ -49,7 +47,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 if (isset($_GET['id']) AND isset($_GET['sort']))
 {
-    $kurs = $_GET['id'];
+    $kurs = strtoupper($_GET['id']);
     $sort = $_GET['sort'];
     if (isset($_SESSION[$kurs]))
     {
@@ -60,10 +58,9 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
         buildList($kurs);
         $liste = unserialize($_SESSION[$kurs]);
     }
+
     $list = sortList($kurs);
     $array = $list->readList();
-
-    echo "<button class='ui-button' onclick=\"location.href='?id=".$kurs."&sort=true'\">Sortieren</button>";
 
     echo "<table id='myTable'>";
     echo "<tr>";
@@ -98,7 +95,7 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
 }
 elseif (isset($_GET['id']))
 {
-    $kurs = $_GET['id'];
+    $kurs = strtoupper($_GET['id']);
     if (isset($_SESSION[$kurs]))
     {
         $liste = unserialize($_SESSION[$kurs]);
@@ -226,14 +223,13 @@ else
             $( "#dialog" ).dialog( "open" );
         });
     } );
-
+    //fuck this shit, returnt unerklärlicherweise nix
     function updateStudent() {
-        var id = $("#id").val();
-        var firstName = $("#firstName").val();
-        var lastName = $("#lastName").val();
-        var bday = $("#bday").val();
-        var courseKey = $("#class option:selected").val();
-        var course = $("#class option:selected").text();
+        const id = $("input[type=hidden]#id").val();
+        const firstName = $("#firstName").val();
+        const lastName = $("#lastName").val();
+        const bday = $("#bday").val();
+        const courseKey = $("select[name=class]").val();
 
         $.ajax({
             type: "post",
@@ -243,7 +239,7 @@ else
                     first: firstName,
                     last: lastName,
                     birth: bday,
-                    class: courseKey,
+                    course: courseKey,
                     studentID: id
                 },
             dataType: "json",

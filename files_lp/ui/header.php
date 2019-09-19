@@ -1,12 +1,16 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: pamperin
- * Date: 14.08.2019
- * Time: 07:45
+ * Copyright (c) 2019. Ralf Klaßen & Lennart Pamperin
+ * This Software is licensed under GPL 3.0.
+ * This program comes with ABSOLUTELY NO WARRANTY!
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions:
+ * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
+
 session_start();
 require_once 'project_files/Database.php';
+require_once 'project_files/_config.php';
 include_once "files_lp/includes/DoublyLinkedList.php";
 include_once "files_lp/includes/Element.php";
 include_once "files_lp/includes/Student.php";
