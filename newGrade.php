@@ -1,7 +1,15 @@
 <?php
+/**
+ * Copyright (c) 2019. Ralf Klaßen & Lennart Pamperin
+ * This Software is licensed under GPL 3.0.
+ * This program comes with ABSOLUTELY NO WARRANTY!
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions:
+ * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
+ */
+
 include_once 'files_lp/ui/header.php';
-include_once 'project_files/Database.php';
-include_once 'project_files/_config.php';
+
 
 if (isset($_GET))
 {
@@ -38,7 +46,7 @@ if (isset($_POST['submit'])) {
     $gradeKey = $_POST['gradeKey'];
     $comment = $_POST['comment'];
 
-    $return = listHelper::addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $comment);
+    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $comment);
     if ($return)
     {
         header("Location: ./newGrade.php?id=".$id."&class=".$class."&succsess=grade");
@@ -57,7 +65,7 @@ $sql = "SELECT typ.Fachname FROM typ
 <div class="centerThis">
     <a href="index.php?id=<?= $class ?>">Zurück zur Übersicht</a>
     <form class="form-style-7" method="post" action="">
-        <input name="id" type="hidden" value="<?php echo $id; ?>">
+        <input name="id" type="hidden" value="<?= $id; ?>">
         <ul>
             <li>
                 <label for="name">Prozent</label>

@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: pamperin
- * Date: 13.08.2019
- * Time: 16:11
+ * Copyright (c) 2019. Ralf Klaßen & Lennart Pamperin
+ * This Software is licensed under GPL 3.0.
+ * This program comes with ABSOLUTELY NO WARRANTY!
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions:
+ * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
 require_once 'Element.php';
 require_once 'DoublyLinkedList.php';
@@ -20,7 +22,7 @@ class Student
      * @param $id int id in der db
      * @param $firstName String Vorname Schüler
      * @param $lastName String Nachname Schüler
-     * @param $bday date Geburtstag
+     * @param $bday Date Geburtstag
      * @param $class int id der Klasse
      */
     public function __construct($id, $firstName, $lastName, $bday, $class)
@@ -30,6 +32,28 @@ class Student
         $this->lastName = $lastName;
         $this->bday = $bday;
         $this->class = $class;
+    }
+
+    public function save()
+    {
+        $id = $this->id;
+        $first = $this->firstName;
+        $last = $this->lastName;
+        $bday = $this->bday;
+        $class = $this->class;
+
+        try
+        {
+            $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+            $sql = "UPDATE schueler SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Kurs_id_Kurs = ? WHERE id_Schueler = ?";
+            $pre = $PDO->prepare($sql);
+            $pre->execute(array($first, $last, $bday, $class, $id));
+        }
+        catch (Exception $e)
+        {
+            echo $e->getCode();
+            echo $e->getMessage();
+        }
     }
 
     public function addToDB($first, $last, $bday, $class)
@@ -123,15 +147,28 @@ class Student
 
     public function getStudentData()
     {
-
         $data = array();
         $id = $this->getId();
         $first = $this->getFirstName();
         $last = $this->getLastName();
         $bd = $this->getBday();
         array_push($data, $first, $last, $bd, $id);
-
         return $data;
     }
 
+    public function getStudentById($id)
+    {
+        if ($this->id == $id)
+        {
+            echo "Student gefunden";
+            $return[0] = $this->id;
+            $return[1] = $this;
+            return $return;
+        }
+        else
+        {
+            $error = "[Student nicht gefunden, such-id: ".$id." ist-id: ".$this->id."]";
+            return $error;
+        }
+    }
 }

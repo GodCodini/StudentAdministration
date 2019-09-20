@@ -1,10 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: pamperin
- * Date: 13.08.2019
- * Time: 16:12
+ * Copyright (c) 2019. Ralf Klaßen & Lennart Pamperin
+ * This Software is licensed under GPL 3.0.
+ * This program comes with ABSOLUTELY NO WARRANTY!
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions:
+ * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
+
 require_once 'Student.php';
 require_once 'DoublyLinkedList.php';
 
@@ -67,6 +70,23 @@ class Element
     public function getLast()
     {
         return $this->data->getLastName();
+    }
+
+    public function getStudent($id)
+    {
+        $data = $this->data;
+        $test_id = $data->getStudentById($id);
+        if ($id == $test_id[0])
+        {
+            echo "Element gefunden";
+            return $test_id;
+        }
+        else
+        {
+            $error[] = $data->getStudentById($id);
+            return $error;
+        }
+
     }
 
 }

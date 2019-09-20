@@ -1,7 +1,5 @@
 <?php
 include_once 'files_lp/ui/header.php';
-include_once 'project_files/Database.php';
-include_once 'project_files/_config.php';
 
 if (isset($_GET["id"]))
 {

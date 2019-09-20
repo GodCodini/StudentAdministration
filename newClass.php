@@ -1,13 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: pamperin
- * Date: 14.08.2019
- * Time: 08:27
+ * Copyright (c) 2019. Ralf Klaßen & Lennart Pamperin
+ * This Software is licensed under GPL 3.0.
+ * This program comes with ABSOLUTELY NO WARRANTY!
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions:
+ * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
-include_once 'files_lp/ui/header.php';
-include_once 'project_files/Database.php';
-include_once 'project_files/_config.php';
+
+include_once 'files_lp/ui/header.php';;
 if (isset($_GET["succsess"])) {
     if ($_GET["succsess"] == "class") {
         echo "<span class='succsess'>Klasse erfolgreich angelegt.</span><br><br>";
@@ -23,7 +24,7 @@ if (isset($_POST['senden'])) {
     $name = $_POST['liste'];
     $gradeKey = $_POST['gradeKey'];
 
-    $return = listHelper::createList($name, $gradeKey);
+    $return = createList($name, $gradeKey);
     if ($return)
     {
         header("Location: ./newClass.php?succsess=class");
