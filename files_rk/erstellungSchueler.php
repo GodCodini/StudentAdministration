@@ -67,19 +67,19 @@ $schuelerMax->createStudent();
             <input id="EDITschuelerID" class="schuelerIDInput hiddenElement" type="number" name="studentID" required><br>
 
             <label for="schuelerVorname">Vorname:</label>
-            <input id="EDITschuelerVorname" class="schuelerVornameInput" type="text" name="student_Firstname" required><br>
+            <input onchange="checkForUpdate()" id="EDITschuelerVorname" class="schuelerVornameInput" type="text" name="student_Firstname" required><br>
 
             <label for="schuelerNachname">Nachname:</label>
-            <input id="EDITschuelerNachname" class="schuelerNachnameInput" type="text" name="student_Lastname" required><br>
+            <input onchange="checkForUpdate()" id="EDITschuelerNachname" class="schuelerNachnameInput" type="text" name="student_Lastname" required><br>
 
-            <label for="schuelerGeburtsdatum">Beburtsdag:</label>
-            <input id="EDITschuelerGeburtsdatum" class="schuelerGeburtsdatumInput" type="date" name="student_Birthdate" required><br>
+            <label for="schuelerGeburtsdatum">Geburtstag:</label>
+            <input onchange="checkForUpdate()" id="EDITschuelerGeburtsdatum" class="schuelerGeburtsdatumInput" type="date" name="student_Birthdate" required><br>
 
             <label for="schuelerEMail">E-Mail:</label>
-            <input id="EDITschuelerEMail" class="schuelerEMailInput" type="email" name="student_Email" required><br>
+            <input onchange="checkForUpdate()" id="EDITschuelerEMail" class="schuelerEMailInput" type="email" name="student_Email" required><br>
 
             <label for="schuelerKlasse">Klasse:</label>
-            <select id="EDITschuelerKlasse" class="schuelerKlasseInput dropDownItem" name="student_ClassID" required>
+            <select onchange="checkForUpdate()" id="EDITschuelerKlasse" class="schuelerKlasseInput dropDownItem" name="student_ClassID" required>
                 <?php
                 $paraArr=['id_Kurs','kursName'];
                 $meineKlassen = Database::getDatabaseData($paraArr, 'kurs');
@@ -100,7 +100,8 @@ $schuelerMax->createStudent();
                 }
                 ?>
             </select>
-            <input class="styledButton" value="Schüler ändern" type="submit">
+            <input class="styledButton updateButton" value="ändern" type="submit">
+            <input class="styledButton deleteButton" value="löschen" type="button" onclick="return confirm('Schüler wirklich endgültig löschen?')">
         </form>
     </div>
 

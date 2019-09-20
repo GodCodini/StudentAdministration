@@ -4,15 +4,16 @@ require '_config.php';
 
 class Student {
 
-	public $id, $vorname, $nachname, $geburtsdatum, $email, $klasse;
+	public $id, $vorname, $nachname, $geburtsdatum, $email, $klasse, $schuelerKlasseFKval;
 
-	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse, $id = NULL){
+	function __construct($vorname, $nachname, $geburtsdatum, $email, $klasse, $schuelerKlasseFKval, $id = NULL){
 		$this->id = $id;
 		$this->vorname = $vorname;
 		$this->nachname = $nachname;
 		$this->geburtsdatum = $geburtsdatum;
 		$this->email = $email;
 		$this->klasse = $klasse;
+		$this->schuelerKlasseFKval = $schuelerKlasseFKval;
 	}
 	/**
 	 * @param String $vorname
@@ -31,7 +32,12 @@ class Student {
 
     public static function  updateStudentOnDB($id, $schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval){
         $PDI = Database::connect();
-        $PDI->query("UPDATE schueler SET (Vorname, Nachname, Geburtsdatum, eMail, Kurs_id_Kurs) VALUES ('".$schuelerVorname."', '".$schuelerNachname."', '".$schuelerGeburtsdatum."', '".$schuelerEMail."','".$schuelerKlasseFKval."') WHERE schueler.id_Schueler ='".$id."'");
+        $PDI->query("UPDATE schueler SET Vorname = '".$schuelerVorname."', Nachname = '".$schuelerNachname."', Geburtsdatum = '".$schuelerGeburtsdatum."', eMail = '".$schuelerEMail."' , Kurs_id_Kurs = '".$schuelerKlasseFKval."' WHERE schueler.id_Schueler ='".$id."'");
+    }
+
+    public static function  deleteStudentOnDB($id){
+        $PDI = Database::connect();
+        $PDI->query("DELETE FROM schueler WHERE schueler.id_Schueler ='".$id."'");
     }
 
     function getID(){
@@ -68,6 +74,10 @@ class Student {
 
     function getKlasse(){
 	    return $this->klasse;
+    }
+
+    function getKlasseFK(){
+	    return $this->schuelerKlasseFKval;
     }
 
     function setFach($neuesFach){
@@ -248,12 +258,6 @@ class Notenschluessel {
 
 abstract class Database {
 
-	private $hostname;
-	private $dbname;
-	private $charset;
-	private $username;
-	private $password;
-
 	public function connect(){
 		try {
 			$dsn = "mysql:host=".DBHOST.";dbname=".DBNAME.";charset=".DBCHARSET."";
@@ -296,7 +300,7 @@ abstract class Database {
             $studentList = new Nodelist();
         }
 
-        $stmt = Database::connect()->query("SELECT id_Schueler, Vorname, Nachname, Geburtsdatum, eMail, kursName FROM schueler  JOIN kurs ON kurs.id_Kurs = schueler.Kurs_id_Kurs;");
+        $stmt = Database::connect()->query("SELECT id_Schueler, Vorname, Nachname, Geburtsdatum, eMail, kursName, Kurs_id_Kurs FROM schueler  JOIN kurs ON kurs.id_Kurs = schueler.Kurs_id_Kurs;");
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             // Revive Knötchen
@@ -306,8 +310,9 @@ abstract class Database {
             $geburtsdatum = $row["Geburtsdatum"];
             $email = $row["eMail"];
             $klasse = $row["kursName"];
+            $klasseFK = $row["Kurs_id_Kurs"];
 
-            $student = new Student($vorname, $nachname, $geburtsdatum, $email, $klasse, $id);
+            $student = new Student($vorname, $nachname, $geburtsdatum, $email, $klasse, $klasseFK, $id);
             $studentList->add_Node($student);
         }
 
@@ -616,13 +621,14 @@ class NodeList {
                 $geburtsdatum = $currentNode->nodeData->getGeburtsdatum();
                 $email = $currentNode->nodeData->getEmail();
                 $klasse = $currentNode->nodeData->getKlasse();
-                echo "<tr>";
+                $klasseFK = $currentNode->nodeData->getKlasseFK();
+                echo "<tr class='studentRow'>";
                 echo "<td class='hiddenElement studentID'>".$id."</td>";
                 echo "<td class='schuelerNachname'>".$nachname."</td>";
                 echo "<td class='schuelerVorname'>".$vorname."</td>";
                 echo "<td class='schuelerGeburtsdatum'>".$geburtsdatum."</td>";
                 echo "<td class='schuelerEmail'>".$email."</td>";
-                echo "<td class='schuelerKlasse'>".$klasse."</td>";
+                echo "<td id='".$klasseFK."' class='schuelerKlasse'>".$klasse."</td>";
                 echo "</tr>";
                 $currentNode = $currentNode->nextNode;
             }

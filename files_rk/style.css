@@ -280,3 +280,189 @@ th:hover {
 .hiddenElement{
     display: none;
 }
+
+/* EDIT DIALOG */
+.ui-dialog {
+    width: auto !important;
+    box-shadow: rgba(0, 0, 0, 0.6) 0 0 0 10000px;
+    padding: 0 !important;
+}
+
+.ui-dialog .styledButton {
+    display: inline;
+    margin-top: 10px !important;
+    margin-bottom: 5px !important;
+}
+
+.ui-widget-content,
+.ui-widget.ui-widget-content {
+    border: none !important;
+}
+
+.ui-widget-header {
+    background: var(--accentColor) !important;
+    color: var(--elementsOnAccentColor) !important;
+    border: none !important;
+}
+
+.updateStudentForm {
+    margin-block-end: 0 !important;
+}
+
+.ui-corner-all {
+    border-radius: 5px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 0.6em 1em !important;
+    border-radius: 5px 5px 0 0 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close{
+    right: 0.6em !important;
+}
+
+.ui-button {
+    border: none !important;
+}
+
+.updateButton{
+    width: calc(75% - 10px);
+    margin-right: 10px;
+}
+
+.deleteButton{
+    width: calc(25% - 5px);
+}
+
+.deleteButton:hover{
+    background-color: red !important;
+}
+
+/* LOGIN SCREEN */
+.loginBox {
+    width: 500px;
+    height: 300px;
+    position:absolute;
+    left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+    max-width:100%;
+    max-height:100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.loginButton {
+    width: 100%;
+    margin-bottom: 0 !important;
+    height: 50px;
+}
+
+.loginInput {
+    border: none;
+    width: 100%;
+    padding: 5px 17px;
+    border-radius: 3px;
+    height: 50px;
+    background-color: #ffffff20;
+    color: var(--elementsOnAccentColor);
+    font-family: Montserrat, sans-serif;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+    background-color: lightgray;
+    margin: 0 auto 40px auto;
+    border-radius: 10px;
+    opacity: 0.33;
+}
+
+.loginForm {
+    margin-block-end: 0 !important;
+}
+
+.loginContainer {
+    background: #111111;
+    height: 100%;
+}
+
+.loginContainer::before {
+    content: "";
+    background: url("images/blackboard.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    opacity: 0.33;
+    position: absolute;
+    z-index: 0;
+}
+
+.logoLoginContainer{
+    background: none !important;
+    padding: 0 0 30px 0 !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--elementsOnAccentColor);
+    background-color: #ffffff20;
+    transition: background-color 5000s ease-in-out 0s;
+    color: var(--elementsOnAccentColor);
+    font-family: Montserrat, sans-serif;
+}
+
+.usernameInput,
+.passwordInput {
+    padding-left: 80px;
+}
+
+input{
+    font-family: Montserrat, sans-serif;
+}
+
+#usernameInputElement,
+#passwordInputElement {
+    width: 60px;
+    padding: 7px 0 7px 22px;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+#registerAccount{
+    float:left;
+    padding-top: 10px;
+}
+
+#resetPassword{
+    float:right;
+    padding-top: 10px;
+}
+
+.loginSublink{
+    text-decoration: none;
+    color: dimgray;
+    font-size: 75%;
+}
+
+.loginSublink:hover{
+    color: var(--accentColor);
+}
+
+#copyrightArea {
+    position: fixed;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+    color: dimgray;
+    font-size: 75%;
+    font-family: Montserrat, sans-serif;
+}

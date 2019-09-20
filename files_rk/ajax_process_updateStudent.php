@@ -14,8 +14,8 @@ try {
     $schuelerGeburtsdatum = $_POST["schuelerGeburtsdatum_data"];
     $schuelerEMail = $_POST["schuelerEMail_data"];
     $schuelerKlasseFKval = $_POST["schuelerKlasseFK_data"];
-    $id = Student::updateStudentOnDB($studentID, $schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval);
-    $student = new Student($schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval, $studentID);
+    Student::updateStudentOnDB($studentID, $schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval);
+    //$student = new Student($schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval, $studentID);
 
     echo json_encode(0);
 }

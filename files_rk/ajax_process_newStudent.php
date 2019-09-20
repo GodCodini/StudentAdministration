@@ -16,7 +16,8 @@ try {
     $id = Student::createStudentOnDB($schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval);
     $student = new Student($schuelerVorname, $schuelerNachname, $schuelerGeburtsdatum, $schuelerEMail, $schuelerKlasseFKval, $id);
 
-    echo json_encode(0);
+    echo json_encode($id);
+   // echo json_encode(0);
 }
 catch(Exception $e) {
     echo json_encode($e->getMessage());

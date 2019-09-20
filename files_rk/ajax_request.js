@@ -32,12 +32,14 @@ jQuery(document).ready(function() {
 
         e.preventDefault();
 
+        //var studentID = jQuery('#studentID').val();
         var schuelerVorname = jQuery('.schuelerVornameInput').val();
         var schuelerNachname = jQuery('.schuelerNachnameInput').val();
         var schuelerGeburtsdatum = jQuery('.schuelerGeburtsdatumInput').val();
         var schuelerEMail = jQuery('.schuelerEMailInput').val();
         var schuelerKlasseFKval = jQuery('.schuelerKlasseInput option:selected').val();
         var schuelerKlasseFKtext = jQuery('.schuelerKlasseInput option:selected').text();
+        console.log(schuelerKlasseFKtext);
 
         jQuery.ajax({
             type: "post",
@@ -51,9 +53,10 @@ jQuery(document).ready(function() {
                 schuelerKlasseFK_data: schuelerKlasseFKval,
                 },
             dataType: "json",
-            success: function (data) {
+            success: function (studentID) {
                 jQuery(".studentOutputTable").prepend('' +
-                    '<tr class="studentUebersicht" style="background-color: var(--softAccentColor)">' +
+                    '<tr class="studentUebersicht studentRow" style="background-color: var(--softAccentColor)">' +
+                        '<td class="hiddenElement studentID">' + studentID + '</td>' +
                         '<td class="schuelerVorname">'+schuelerVorname+'</td>' +
                         '<td class="schuelerNachname">'+schuelerNachname+'</td>' +
                         '<td class="schuelerGeburtsdatum">'+schuelerGeburtsdatum+'</td>' +
@@ -66,45 +69,81 @@ jQuery(document).ready(function() {
 });
 
 //update existing student
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+
     jQuery('.updateStudentForm').on('submit', function (e) {
+
+        if (window.updateNeeded == true) {
+
+            e.preventDefault();
+
+            var studentID = jQuery('#EDITschuelerID').val();
+            var schuelerVorname = jQuery('#EDITschuelerVorname').val();
+            var schuelerNachname = jQuery('#EDITschuelerNachname').val();
+            var schuelerGeburtsdatum = jQuery('#EDITschuelerGeburtsdatum').val();
+            var schuelerEMail = jQuery('#EDITschuelerEMail').val();
+            var schuelerKlasseFKval = jQuery('#EDITschuelerKlasse option:selected').val();
+            var schuelerKlasseFKtext = jQuery('#EDITschuelerKlasse option:selected').text();
+
+            jQuery.ajax({
+                type: "post",
+                url: "ajax_process_updateStudent.php",
+                data:
+                    {
+                        studentID_data: studentID,
+                        schuelerVorname_data: schuelerVorname,
+                        schuelerNachname_data: schuelerNachname,
+                        schuelerGeburtsdatum_data: schuelerGeburtsdatum,
+                        schuelerEMail_data: schuelerEMail,
+                        schuelerKlasseFK_data: schuelerKlasseFKval,
+                    },
+                dataType: "json",
+                success: function (data) {
+                    jQuery("#activeElement").remove();
+                    jQuery("#editRecord").dialog("close");
+
+                    jQuery(".studentOutputTable").prepend('' +
+                        '<tr class="studentUebersicht studentRow" style="background-color: var(--softAccentColor)">' +
+                        '<td class="hiddenElement studentID">' + studentID + '</td>' +
+                        '<td class="schuelerVorname">' + schuelerVorname + '</td>' +
+                        '<td class="schuelerNachname">' + schuelerNachname + '</td>' +
+                        '<td class="schuelerGeburtsdatum">' + schuelerGeburtsdatum + '</td>' +
+                        '<td class="schuelerEmail">' + schuelerEMail + '</td>' +
+                        '<td class="schuelerKlasse" id="' + schuelerKlasseFKval + '">' + schuelerKlasseFKtext + '</td>' +
+                        '</tr>');
+                }
+            })
+        } else {
+            e.preventDefault();
+            jQuery("#editRecord").dialog("close");
+        }
+    });
+});
+
+//delete existing student
+jQuery(document).ready(function() {
+    jQuery('.updateStudentForm').on('click', '.deleteButton', function (e) {
 
         e.preventDefault();
 
-        var studentID = jQuery('.studentID').val();
-        var schuelerVorname = jQuery('.schuelerVornameInput').val();
-        var schuelerNachname = jQuery('.schuelerNachnameInput').val();
-        var schuelerGeburtsdatum = jQuery('.schuelerGeburtsdatumInput').val();
-        var schuelerEMail = jQuery('.schuelerEMailInput').val();
-        var schuelerKlasseFKval = jQuery('.schuelerKlasseInput option:selected').val();
-        var schuelerKlasseFKtext = jQuery('.schuelerKlasseInput option:selected').text();
+        var studentID = jQuery('#EDITschuelerID').val();
 
         jQuery.ajax({
             type: "post",
-            url: "ajax_process_newStudent.php",
+            url: "ajax_process_deleteStudent.php",
             data:
                 {
-                    studentID_data: studentID,
-                    schuelerVorname_data: schuelerVorname,
-                    schuelerNachname_data: schuelerNachname,
-                    schuelerGeburtsdatum_data: schuelerGeburtsdatum,
-                    schuelerEMail_data: schuelerEMail,
-                    schuelerKlasseFK_data: schuelerKlasseFKval,
+                    studentID_data: studentID
                 },
             dataType: "json",
             success: function (data) {
-                jQuery(".studentOutputTable").prepend('' +
-                    '<tr class="studentUebersicht" style="background-color: var(--softAccentColor)">' +
-                    '<td class="schuelerVorname">'+schuelerVorname+'</td>' +
-                    '<td class="schuelerNachname">'+schuelerNachname+'</td>' +
-                    '<td class="schuelerGeburtsdatum">'+schuelerGeburtsdatum+'</td>' +
-                    '<td class="schuelerEmail">'+schuelerEMail+'</td>' +
-                    '<td class="schuelerKlasse" id="'+schuelerKlasseFKval+'">'+schuelerKlasseFKtext+'</td>' +
-                    '</tr>');
+                jQuery("#activeElement").remove();
+                jQuery( "#editRecord" ).dialog("close");
             }
         })
     });
 });
+
 
 /*
 // create new dynamic Output
