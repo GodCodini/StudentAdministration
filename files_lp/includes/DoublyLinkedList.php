@@ -357,7 +357,7 @@ class DoublyLinkedList
             else
             {
                 $error[] = $start->getStudent($id);
-                $error[] = "Liste nicht gefunden ".$i;
+                $error[] = "in Liste nicht gefunden ".$i;
                 $start = $start->getNext();
             }
         }

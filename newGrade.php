@@ -7,9 +7,7 @@
  * under certain conditions:
  * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
-
 include_once 'files_lp/ui/header.php';
-
 
 if (isset($_GET))
 {
@@ -37,7 +35,6 @@ if (isset($_GET))
     }
 }
 
-
 if (isset($_POST['submit'])) {
     $percent = $_POST['percent'];
     $date = $_POST['date'];
@@ -45,8 +42,10 @@ if (isset($_POST['submit'])) {
     $gradeType = $_POST['gradeType'];
     $gradeKey = $_POST['gradeKey'];
     $comment = $_POST['comment'];
+    $scored = $_POST['scored'];
+    $max = $_POST['max'];
 
-    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $comment);
+    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $scored, $max, $comment);
     if ($return)
     {
         header("Location: ./newGrade.php?id=".$id."&class=".$class."&succsess=grade");
@@ -62,20 +61,24 @@ $sql = "SELECT typ.Fachname FROM typ
         LEFT JOIN schueler s ON k.id_Kurs = s.Kurs_id_Kurs
         WHERE s.id_Schueler = ?";
 ?>
+
 <div class="centerThis">
     <a href="index.php?id=<?= $class ?>">Zurück zur Übersicht</a>
-    <form class="form-style-7" method="post" action="">
+    <form method="post" action="">
         <input name="id" type="hidden" value="<?= $id; ?>">
-        <ul>
+        <ul class="form-style-1">
+            <li><label>Erreichte/Maximale Punkte</label><input type="number" step="0.5" id="scored" name="scored" class="field-divided calc" placeholder="Erreicht" />/<input type="number" step="0.5" id="max" name="max" class="field-divided calc" placeholder="Maximal" /></li>
             <li>
                 <label for="name">Prozent</label>
-                <input type="number" min="0" max="100" name="percent" autocomplete="off" autofocus id="percent">
-                <span>Geben Sie den Prozentwert ein</span>
+                <input type="number" min="0" max="100" name="percent" autocomplete="off" id="percent">
+            </li>
+            <li>
+                <label for="name">Note</label>
+                <input type="number" min="1" max="6" name="grade" autocomplete="off" id="grade">
             </li>
             <li>
                 <label for="name">Datum</label>
                 <input type="date" name="date" autocomplete="off" id="date">
-                <span>Geben Sie das Datum ein</span>
             </li>
             <li>
                 <label for="name">Fach</label>
@@ -101,7 +104,6 @@ $sql = "SELECT typ.Fachname FROM typ
                     }
                     ?>
                 </select>
-                <span>Geben Sie das Fach an</span>
             </li>
             <li>
                 <label for="name">Notentyp</label>
@@ -120,7 +122,6 @@ $sql = "SELECT typ.Fachname FROM typ
                     }
                     ?>
                 </select>
-                <span>Geben Sie den Notentyp an</span>
             </li>
             <li>
                 <label for="name">Notenschlüssel</label>
@@ -139,12 +140,10 @@ $sql = "SELECT typ.Fachname FROM typ
                     }
                     ?>
                 </select>
-                <span>Geben Sie den Notentyp an</span>
             </li>
             <li>
                 <label for="name">Kommentar</label>
                 <input type="text" name="comment" autocomplete="off" pattern="^[A-Za-z][A-Za-z0-9,:%/ ÄäÜüÖö]*$" id="comment">
-                <span>Geben Sie einen optionalen Kommentar ab</span>
             </li>
             <li>
                 <input type="submit" name="submit" value="Note eintragen" >
@@ -152,3 +151,45 @@ $sql = "SELECT typ.Fachname FROM typ
         </ul>
     </form>
 </div>
+
+<script>
+    //ändert Note/prozent aufgrund der Punktzahl
+    $("#scored, #max, select[name=gradeKey]").change(function () {
+        let score = parseInt($("#scored").val());
+        let max = parseInt($("#max").val());
+
+        if (score <= max)
+        {
+            let calc = Math.round((score / max) * 100);
+            $("#percent").val(calc);
+            getGrade();
+        }
+        else
+        {
+            $("#percent").val(100);
+            $("#grade").val(1);
+        }
+    });
+
+    function getGrade () {
+        let percent = $("#percent").val();
+        let gradeKey = $("select[name=gradeKey]").val();
+
+        $.ajax({
+            url: "ajax_grades.php",
+            method: "post",
+            data: {
+                percent: percent,
+                key: gradeKey
+            },
+            dataType: "html",
+            success: function (grade) {
+                $("#grade").val(grade);
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+            }
+        })
+    }
+</script>

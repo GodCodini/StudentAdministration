@@ -242,7 +242,7 @@ else
                     course: courseKey,
                     studentID: id
                 },
-            dataType: "json",
+            dataType: "html",
             success: function (data) {
                 // $(".studentOutputTable").prepend('' +
                 //     '<tr>' +

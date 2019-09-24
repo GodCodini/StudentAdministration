@@ -135,15 +135,17 @@ function addStudent($firstName, $lastName, $bday, $class)
  * @param $classID
  * @param $gradeTypID
  * @param $gradeKey
+ * @param $scored
+ * @param $max
  * @param null $comment
  * @return bool
  */
-function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $comment = null)
+function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $comment = null)
 {
     $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
     try
     {
-        $sql = "SELECT entspricht FROM notenschluessel WHERE notenschluesselTyp_id = ? AND von <= ? AND bis > ?";
+        $sql = "SELECT entspricht FROM notenschluessel WHERE notenschluesselTyp_id = ? AND von <= ? AND bis >= ?";
         $exe = $PDO->prepare($sql);
         $exe->execute(array($gradeTypID, $percent, $percent));
         $grade = $exe->fetchAll(PDO::FETCH_ASSOC);
@@ -158,10 +160,10 @@ function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey,
 
     try
     {
-        $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp, notenschluesselTyp_Id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp, notenschluesselTyp_Id, scoredPoints, maxPoints)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $exe = $PDO->prepare($sql);
-        $return = $exe->execute(array($comment, $grade[0]['entspricht'], $percent, $date, $studentID, $classID, $gradeTypID, $gradeKey));
+        $return = $exe->execute(array($comment, $grade[0]['entspricht'], $percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max));
         if ($return)
         {
             return 1;
@@ -368,14 +370,6 @@ function sortList($name):DoublyLinkedList
 //    }
 //}
 //
-//function listHelperData()
-//{
-//    $name = $_SESSION['name'];
-//    $liste = unserialize($_SESSION[$name]);
-//    $liste->readList();
-//    $_SESSION[$name] = serialize($liste);
-//}
-//
 //function listHelperReverse()
 //{
 //    $name = $_SESSION['name'];
@@ -391,10 +385,4 @@ function sortList($name):DoublyLinkedList
 //    $liste->resetList();
 //    $liste->readList();
 //    $_SESSION[$name] = serialize($liste);
-//}
-//
-//function setListName($listName)
-//{
-//    $_SESSION['name'] = $listName;
-//
 //}

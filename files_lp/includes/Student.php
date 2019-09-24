@@ -160,7 +160,7 @@ class Student
     {
         if ($this->id == $id)
         {
-            echo "Student gefunden";
+            echo "Student gefunden ".$this->id;
             $return[0] = $this->id;
             $return[1] = $this;
             return $return;

@@ -86,7 +86,5 @@ class Element
             $error[] = $data->getStudentById($id);
             return $error;
         }
-
     }
-
 }

@@ -27,4 +27,6 @@ $student[1]->setBday($birth);
 $student[1]->setClass($course);
 $student[1]->save();
 
+
+
 echo json_encode($student[1]);
