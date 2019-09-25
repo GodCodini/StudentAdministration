@@ -15,6 +15,45 @@ include_once "files_lp/includes/DoublyLinkedList.php";
 include_once "files_lp/includes/Element.php";
 include_once "files_lp/includes/Student.php";
 include_once "files_lp/helper/listHelper.php";
+
+$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+//$pw = $_COOKIE['password'];
+//var_dump($pw);
+//$redirect_after_login = 'index.php';
+//
+//$sql = "SELECT (aktuellesPW) FROM passwort";
+//$statement = $PDO->query($sql);
+//$result = $statement->fetch(PDO::FETCH_ASSOC);
+//$aktuellesPW = $result['aktuellesPW'];
+////wenn das passwort geändert wurde, cookie aktualisieren
+//if (isset($_GET['succsess']))
+//{
+//    if ($_GET['succsess'] == "pwupdated")
+//    {
+//        $remember_password = strtotime('+1 days');
+//        $sql = "SELECT (aktuellesPW) FROM passwort";
+//        $statement = $PDO->query($sql);
+//        $result = $statement->fetch(PDO::FETCH_ASSOC);
+//        $aktuellePW = $result['aktuellesPW'];
+//        setcookie("password", $aktuellePW, $remember_password);
+//        header('Refresh:5;url=./admin.php?succsess=pwupdate');
+//    }
+//}
+//elseif (empty($_COOKIE['password']))
+//{
+//    //Wenn der Cookie leer ist oder das falsche Passwort hat, redirect zur login.php
+//    header('Location: ./login.php');
+//    exit;
+//}
+//elseif ($pw != $aktuellesPW)
+//{
+//    header('Location: ./login.php');
+//    exit;
+//}
+//else
+//{
+//    header("Location: index.php");
+//}
 ?>
 
 <head>

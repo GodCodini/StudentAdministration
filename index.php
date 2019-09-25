@@ -9,9 +9,10 @@
  */
 include_once 'files_lp/ui/header.php';
 
-$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+//$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 //$pw = $_COOKIE['password'];
-//$redirect_after_login = 'files_lp/liste.php';
+//var_dump($pw);
+//$redirect_after_login = 'index.php';
 //
 //$sql = "SELECT (aktuellesPW) FROM passwort";
 //$statement = $PDO->query($sql);
@@ -19,7 +20,7 @@ $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 //$aktuellesPW = $result['aktuellesPW'];
 ////wenn das passwort geändert wurde, cookie aktualisieren
 //if (isset($_GET['succsess']))
-// {
+//{
 //    if ($_GET['succsess'] == "pwupdated")
 //    {
 //        $remember_password = strtotime('+1 days');
@@ -30,18 +31,21 @@ $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 //        setcookie("password", $aktuellePW, $remember_password);
 //        header('Refresh:5;url=./admin.php?succsess=pwupdate');
 //    }
-//} elseif (empty($_COOKIE['password']))
+//}
+//elseif (empty($_COOKIE['password']))
 //{
 //    //Wenn der Cookie leer ist oder das falsche Passwort hat, redirect zur login.php
-//    header('Location: files_lp/login.php');
+//    header('Location: ./login.php');
 //    exit;
-//} elseif ($pw != $aktuellesPW)
+//}
+//elseif ($pw != $aktuellesPW)
 //{
-//    header('Location: files_lp/login.php');
+//    header('Location: ./login.php');
 //    exit;
-//} else
+//}
+//else
 //    {
-//        header("Location: files_lp/liste.php");
+//        header("Location: index.php");
 //    }
 error_reporting(E_ERROR | E_PARSE);
 
@@ -74,7 +78,7 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
         echo "<tr>";
         echo "<td id='id' style='display: none'>".$row[3]."</td>";
         echo "<td id='last' class='dontTouchThis'>";
-        echo "<a href='grades.php?id=".$row[3]."'>".$row[1]."</a>";
+        echo "<a href='grades.php?id=".$row[3]."&class=".$kurs."'>".$row[1]."</a>";
         echo "</td>";
         echo "<td id='first'>";
         echo $row[0];
@@ -107,7 +111,7 @@ elseif (isset($_GET['id']))
     }
     $array = $liste->readList();
     ?>
-    <button class='ui-button' onclick="location.href='?id=<?php echo $kurs ?>&sort=true'">Sortieren</button>
+    <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
     <?php
     echo "<table id='myTable'>";
     echo "<tr>";
@@ -121,7 +125,7 @@ elseif (isset($_GET['id']))
         echo "<tr>";
         echo "<td id='id' style='display: none'>".$row[3]."</td>";
         echo "<td id='last' class='dontTouchThis'>";
-        echo "<a href='grades.php?id=".$row[3]."'>".$row[1]."</a>";
+        echo "<a href='grades.php?id=".$row[3]."&class=".$kurs."'>".$row[1]."</a>";
         echo "</td>";
         echo "<td id='first'>";
         echo $row[0];
@@ -212,7 +216,7 @@ else
             }
         });
 
-        $( "#myTable tr" ).not(':first, tr > td.dontTouchThis').click( function(e) {
+        $( "#myTable tr" ).not(':first, tr > td.dontTouchThis > a').click( function(e) {
             var date = $(e.currentTarget).find("#birth").text();
             var newdate = date.split(".").reverse().join("-");
             $("input#id").val($(e.currentTarget).find("#id").text());
@@ -222,8 +226,8 @@ else
             $("select option[value='<?php echo $liste->getId() ?>']").attr('selected', 'selected');
             $( "#dialog" ).dialog( "open" );
         });
-    } );
-    //fuck this shit, returnt unerklärlicherweise nix
+    });
+
     function updateStudent() {
         const id = $("input[type=hidden]#id").val();
         const firstName = $("#firstName").val();
@@ -253,6 +257,7 @@ else
                 //     '</tr>');
                 console.log("yay");
                 console.log(data);
+                $( "#dialog" ).dialog( "close" );
             },
             error: function (data) {
                 console.log("fail");

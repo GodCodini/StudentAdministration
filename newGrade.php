@@ -63,26 +63,26 @@ $sql = "SELECT typ.Fachname FROM typ
 ?>
 
 <div class="centerThis">
-    <a href="index.php?id=<?= $class ?>">Zurück zur Übersicht</a>
+    <a href="index.php?id=<?= $class ?>">Zurück zur Klasse <?= $class ?></a>
     <form method="post" action="">
         <input name="id" type="hidden" value="<?= $id; ?>">
         <ul class="form-style-1">
-            <li><label>Erreichte/Maximale Punkte</label><input type="number" step="0.5" id="scored" name="scored" class="field-divided calc" placeholder="Erreicht" />/<input type="number" step="0.5" id="max" name="max" class="field-divided calc" placeholder="Maximal" /></li>
+            <li><label>Erreichte/Maximale Punkte</label><input type="number" required step="0.5" id="scored" name="scored" class="field-divided calc" placeholder="Erreicht" />/<input type="number" step="0.5" id="max" name="max" class="field-divided calc" placeholder="Maximal" /></li>
             <li>
                 <label for="name">Prozent</label>
-                <input type="number" min="0" max="100" name="percent" autocomplete="off" id="percent">
+                <input type="number" min="0" max="100" name="percent" required autocomplete="off" id="percent">
             </li>
             <li>
                 <label for="name">Note</label>
-                <input type="number" min="1" max="6" name="grade" autocomplete="off" id="grade">
+                <input type="number" min="1" max="15" name="grade" required autocomplete="off" id="grade">
             </li>
             <li>
                 <label for="name">Datum</label>
-                <input type="date" name="date" autocomplete="off" id="date">
+                <input type="date" name="date" autocomplete="off" required id="date">
             </li>
             <li>
                 <label for="name">Fach</label>
-                <select name="course" id="course">
+                <select name="course" required id="course">
                     <?php
                     try {
                         $sql = "SELECT typ.idTyp, typ.Fachname, f.id_Fach FROM typ 
@@ -107,7 +107,7 @@ $sql = "SELECT typ.Fachname FROM typ
             </li>
             <li>
                 <label for="name">Notentyp</label>
-                <select name="gradeType" id="gradeType">
+                <select name="gradeType" required id="gradeType">
                     <?php
                     try {
                         $sqlGrade = "SELECT idNotenTyp, NotenTyp FROM notentyp";
@@ -125,7 +125,7 @@ $sql = "SELECT typ.Fachname FROM typ
             </li>
             <li>
                 <label for="name">Notenschlüssel</label>
-                <select name="gradeKey" id="gradeKey">
+                <select name="gradeKey" required id="gradeKey">
                     <?php
                     try {
                         $sqlGrade = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
@@ -154,24 +154,28 @@ $sql = "SELECT typ.Fachname FROM typ
 
 <script>
     //ändert Note/prozent aufgrund der Punktzahl
-    $("#scored, #max, select[name=gradeKey]").change(function () {
+    $("#scored, #max, select[name=gradeKey]").change(function ()
+    {
         let score = parseInt($("#scored").val());
         let max = parseInt($("#max").val());
-
-        if (score <= max)
+        if (max)
         {
-            let calc = Math.round((score / max) * 100);
-            $("#percent").val(calc);
-            getGrade();
-        }
-        else
-        {
-            $("#percent").val(100);
-            $("#grade").val(1);
+            if (score <= max)
+            {
+                let calc = Math.round((score / max) * 100);
+                $("#percent").val(calc);
+                getGrade();
+            }
+            else
+            {
+                $("#percent").val(100);
+                $("#grade").val(1);
+            }
         }
     });
 
-    function getGrade () {
+    function getGrade ()
+    {
         let percent = $("#percent").val();
         let gradeKey = $("select[name=gradeKey]").val();
 
@@ -183,10 +187,12 @@ $sql = "SELECT typ.Fachname FROM typ
                 key: gradeKey
             },
             dataType: "html",
-            success: function (grade) {
+            success: function (grade)
+            {
                 $("#grade").val(grade);
             },
-            error: function (data) {
+            error: function (data)
+            {
                 console.log(data);
                 alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
             }

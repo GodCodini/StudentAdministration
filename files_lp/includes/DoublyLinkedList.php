@@ -1,10 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: pamperin
- * Date: 13.08.2019
- * Time: 16:12
+ * Copyright (c) 2019. Ralf Klaßen & Lennart Pamperin
+ * This Software is licensed under GPL 3.0.
+ * This program comes with ABSOLUTELY NO WARRANTY!
+ * This is free software, and you are welcome to redistribute it
+ * under certain conditions:
+ * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
+
 require_once 'Student.php';
 require_once 'Element.php';
 
@@ -17,7 +20,7 @@ class DoublyLinkedList
     private $gradeKey;
     private $sorted;
     private $id;
-    //TODO Random Picker mich ignorieren lassen :--))
+    //TODO Random Picker mich ignorieren lassen :-)
     public function __construct($name, $key, $id)
     {
         $this->name = $name;
@@ -231,8 +234,154 @@ class DoublyLinkedList
                             $swapped = true;
                         }
                     }
-
                 }
+                //TODO anhand Vornamen bei gleichen Nachnamen sortieren
+//                elseif ($firstLastName == $secondLastName)
+//                {
+//                    $firstFirstName = $start->getFirst();
+//                    $secondFirstName = $next->getFirst();
+//                    if ($firstFirstName > $secondFirstName)
+//                    {
+//                        if ($liste->count >= 5)
+//                        {
+//                            //Wenn es der erste Durchlauf ist, muss der startknoten geändert werden
+//                            if ($i === 0)
+//                            {
+//                                $nextNext = $next->getNext();
+//                                $start->setPrevious($next);
+//                                $start->setNext($nextNext);
+//                                $next->setPrevious(null);
+//                                $next->setNext($start);
+//                                $nextNext->setPrevious($start);
+//                                $liste->start = $next;
+//                                $next = $start->getNext();
+//                                $swapped = true;
+//                            }
+//                            //2 knoten vor ende muss auch das bedacht werden
+//                            elseif ($liste->end === $next->getNext())
+//                            {
+//                                $prev = $start->getPrevious();
+//                                $nextNode = $next->getNext();
+//                                $prev->setNext($next);
+//                                $start->setPrevious($next);
+//                                $start->setNext($nextNode);
+//                                $next->setPrevious($prev);
+//                                $next->setNext($start);
+//                                $nextNode->setPrevious($start);
+//                                $next = $start->getNext();
+//                                $swapped = true;
+//                            }
+//                            //1 knoten vor ende muss das beedacht werden
+//                            elseif($liste->end === $next)
+//                            {
+//                                $prevNode = $start->getPrevious();
+//                                $prevNode->setNext($next);
+//                                $start->setPrevious($next);
+//                                $start->setNext(null);
+//                                $next->setPrevious($prevNode);
+//                                $next->setNext($start);
+//                                $liste->end = $start;
+//                                $swapped = true;
+//                            }
+//                            //ansonsten einfach fröhlich tauschen :)
+//                            else
+//                            {
+//                                $pre = $start->getPrevious();
+//                                $nex = $next->getNext();
+//                                $pre->setNext($next);
+//                                $start->setPrevious($next);
+//                                $start->setNext($nex);
+//                                $next->setPrevious($pre);
+//                                $next->setNext($start);
+//                                $nex->setPrevious($start);
+//                                $next = $start->getNext();
+//                                $swapped = true;
+//                            }
+//                        }
+//                        //Bei nur einem knoten muss nix getauscht werden
+//                        elseif ($liste->count == 1)
+//                        {
+//                            $liste->setSorted(true);
+//                            return $liste;
+//                        }
+//                        //bei zwei muss an start und ende zeiger gedacht werden
+//                        elseif ($liste->count == 2)
+//                        {
+//                            $start->setNext(null);
+//                            $start->setPrevious($next);
+//                            $liste->end = $start;
+//                            $next->setPrevious(null);
+//                            $next->setNext($start);
+//                            $liste->start = $next;
+//                            $swapped = true;
+//                        }
+//                        //bei 3 muss geprüft werden, ob prev oder next gesetzt ist und start und ende beachten
+//                        elseif ($liste->count == 3)
+//                        {
+//                            $prevN = $start->getPrevious();
+//                            $nextN = $next->getNext();
+//                            if (isset($prevN))
+//                            {
+//                                $prevN->setNext($next);
+//                                $start->setPrevious($next);
+//                                $start->setNext(null);
+//                                $liste->end = $start;
+//                                $next->setPrevious($prevN);
+//                                $next->setNext($start);
+//                                $swapped = true;
+//                            }
+//                            elseif (isset($nextN))
+//                            {
+//                                $start->setNext($nextN);
+//                                $start->setPrevious($next);
+//                                $next->setNext($start);
+//                                $next->setPrevious(null);
+//                                $liste->start = $next;
+//                                $nextN->setPrevious($start);
+//                                $next = $start->getNext();
+//                                $swapped = true;
+//                            }
+//                        }
+//                        //dasselbe wie bei 3, nur etwas mehr
+//                        elseif ($liste->count == 4)
+//                        {
+//                            $prevNo = $start->getPrevious();
+//                            $nextNo = $next->getNext();
+//                            if (isset($prevNo) && isset($nextNo))
+//                            {
+//                                $prevNo->setNext($next);
+//                                $start->setPrevious($next);
+//                                $start->setNext($nextNo);
+//                                $next->setPrevious($prevNo);
+//                                $next->setNext($start);
+//                                $nextNo->setPrevious($start);
+//                                $next = $start->getNext();
+//                                $swapped = true;
+//                            }
+//                            elseif (isset($prevNo) and !isset($nextNo))
+//                            {
+//                                $prevNo->setNext($next);
+//                                $start->setPrevious($next);
+//                                $start->setNext(null);
+//                                $liste->end = $start;
+//                                $next->setPrevious($prevNo);
+//                                $next->setNext($start);
+//                                $swapped = true;
+//                            }
+//                            elseif (isset($nextNo) and !isset($prevNo))
+//                            {
+//                                $start->setPrevious($next);
+//                                $start->setNext($nextNo);
+//                                $next->setPrevious(null);
+//                                $next->setNext($start);
+//                                $liste->start = $next;
+//                                $nextNo->setPrevious($start);
+//                                $next = $start->getNext();
+//                                $swapped = true;
+//                            }
+//                        }
+//                    }
+//                }
                 else
                 {
                     $start = $next;

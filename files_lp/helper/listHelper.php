@@ -14,7 +14,6 @@ require_once 'project_files/_config.php';
  */
 function createList($name, $key)
 {
-
     try
     {
         $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
@@ -32,7 +31,6 @@ function createList($name, $key)
     $liste = new DoublyLinkedList($name, $key, $id);
     $_SESSION[$name] = serialize($liste);
 }
-
 
 /**
  * Funktion um Listenobjekt zu erstellen und mit Werten aus der DB zu füllen. Speichert Objekt in der Session.
@@ -217,7 +215,6 @@ function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey,
  * @param null $bis15
  * @return int
  */
-
 function addgradeKey($gradeKey,
                      $von1,
                      $von2,

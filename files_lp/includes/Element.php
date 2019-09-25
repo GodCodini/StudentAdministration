@@ -72,6 +72,11 @@ class Element
         return $this->data->getLastName();
     }
 
+    public function getFirst()
+    {
+        return $this->data->getFirstName();
+    }
+
     public function getStudent($id)
     {
         $data = $this->data;

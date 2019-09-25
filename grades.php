@@ -1,9 +1,10 @@
 <?php
 include_once 'files_lp/ui/header.php';
 
-if (isset($_GET["id"]))
+if (isset($_GET["id"]) AND isset($_GET['class']))
 {
     $id = $_GET["id"];
+    $class = $_GET["class"];
 }
 
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
@@ -16,6 +17,7 @@ $sql = "SELECT note.Kommentar, note.Note, note.Prozent, note.Datum, note.scoredP
 $pre = $PDO->prepare($sql);
 $pre->execute(array($id));
 $result = $pre->fetchAll(PDO::FETCH_ASSOC);
+echo "<a href='index.php?id=$class'>Zurück zur Klasse $class</a><br><br>";
 echo "Notentabelle für ".$result[0]['Vorname']." ".$result[0]['Nachname'];
 echo "<table>";
 echo "<tr>";

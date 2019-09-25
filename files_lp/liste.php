@@ -39,7 +39,7 @@ if (isset($_POST['senden'])) {
     $name = $_POST['liste'];
     $gradeKey = $_POST['gradeKey'];
 
-    listHelper::createList($name, $gradeKey);
+    createList($name, $gradeKey);
 }
 
 ?>
@@ -125,7 +125,7 @@ if (isset($_POST['laden'])) {
 if (isset($_POST['delete'])) {
     $data = $_POST['data'];
     $name = $_SESSION['name'];
-    listHelper::delete($data, $name);
+    delete($data, $name);
 }
 //NEUEN SCHÜLER HINZUFÜGEN
 if (isset($_POST['submit'])) {
@@ -134,19 +134,19 @@ if (isset($_POST['submit'])) {
     $bday = $_POST['bday'];
     $class = $_POST['class'];
     $listNa = $_SESSION['name'];
-    listHelper::addStudent($firstName, $lastName, $bday, $class, $listNa);
+    addStudent($firstName, $lastName, $bday, $class, $listNa);
 }
 //LISTE AUSGEBEN
 if (array_key_exists('listData', $_POST)) {
-    listHelper::listHelperData();
+    listHelperData();
 }
 //LISTE VERKEHRT AUSGEBEN
 if (array_key_exists('reverseListData', $_POST)) {
-    listHelper::listHelperReverse();
+    listHelperReverse();
 }
 //LISTE ZURÜCKSETZEN
 if (array_key_exists('resetList', $_POST)) {
-    listHelper::listReset();
+    listReset();
 }
 
 //echo "<h3> PHP List All Session Variables</h3>";
