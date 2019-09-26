@@ -82,8 +82,8 @@ $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
         <ul>
             <li><a href="index.php">Übersicht</a></li>
             <li><a href="newClass.php">Klasse erstellen</a></li>
-            <li><a href="newGradeKey.php">Notenschlüssel bearbeiten</a></li>
             <li><a href="newStudent.php">Schüler anlegen</a></li>
+            <li><a href="newGradeKey.php">Notenschlüssel bearbeiten</a></li>
             <li><a href="debug.php">Debugseite</a></li>
         </ul>
     </div>

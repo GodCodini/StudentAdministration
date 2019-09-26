@@ -117,6 +117,7 @@ if (isset($_POST['senden'])) {
             }
         }
         ?>
+        Geben Sie die Grenzen der Noten in Prozent an.
         <form action="" method="post">
         <ul class="form-style-1">
             <li><label>Von/bis 1 <span class="required">*</span></label><input type="text" name="von1" class="field-divided" placeholder="Von" /> <input type="text" name="bis1" class="field-divided" placeholder="Bis" /></li>
@@ -136,6 +137,7 @@ if (isset($_POST['senden'])) {
         </form>
     </div>
     <div id="tabs-2">
+        Geben Sie die Grenzen der Noten in Prozent an.
         <form action="" method="post">
             <ul class="form-style-1">
                 <li><label>Von/bis 1 <span class="required">*</span></label><input type="text" name="von1" class="field-divided" placeholder="Von" /> <input type="text" name="bis1" class="field-divided" placeholder="Bis" /></li>

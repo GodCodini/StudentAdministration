@@ -47,7 +47,7 @@ include_once 'files_lp/ui/header.php';
 //    {
 //        header("Location: index.php");
 //    }
-error_reporting(E_ERROR | E_PARSE);
+//error_reporting(E_ERROR | E_PARSE);
 
 if (isset($_GET['id']) AND isset($_GET['sort']))
 {
@@ -62,104 +62,68 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
         buildList($kurs);
         $liste = unserialize($_SESSION[$kurs]);
     }
-
-    $list = sortList($kurs);
-    $array = $list->readList();
-
+    echo "<p id='class'>".$kurs."</p>";
     echo "<table id='myTable'>";
+    echo "<thead>";
     echo "<tr>";
     echo "<th>Nachname</th>";
     echo "<th>Vorname</th>";
     echo "<th>Geburtsdatum</th>";
     echo "<th>Note hinzufügen</th>";
     echo "</tr>";
-    foreach ($array as $row)
-    {
-        echo "<tr>";
-        echo "<td id='id' style='display: none'>".$row[3]."</td>";
-        echo "<td id='last' class='dontTouchThis'>";
-        echo "<a href='grades.php?id=".$row[3]."&class=".$kurs."'>".$row[1]."</a>";
-        echo "</td>";
-        echo "<td id='first'>";
-        echo $row[0];
-        echo "</td>";
-        echo "<td id='birth'>";
-        echo DB::convertDate($row[2]);
-        echo "</td>";
-        echo "<td class='dontTouchThis'>";
-        echo "<a href='newGrade.php?id=".$row[3]."&class=".$kurs."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
-        echo "</td>";
-        echo "</tr>";
-    }
+    echo "</thead>";
+
+
+    sortList($kurs);
+
     echo "</table>";
-    echo "<pre>";
-/*    highlight_string("<?php\n\$liste =\n" . var_export($list, true) . ";\n?>");*/
-    var_dump($list);
-    echo "</pre>";
 }
-elseif (isset($_GET['id']))
-{
-    $kurs = strtoupper($_GET['id']);
-    if (isset($_SESSION[$kurs]))
+    elseif (isset($_GET['id']))
     {
-        $liste = unserialize($_SESSION[$kurs]);
+        $kurs = strtoupper($_GET['id']);
+        if (isset($_SESSION[$kurs]))
+        {
+            $liste = unserialize($_SESSION[$kurs]);
+        }
+        else
+        {
+            buildList($kurs);
+            $liste = unserialize($_SESSION[$kurs]);
+        }
+        ?>
+        <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
+        <?php
+        echo "<p id='class'>".$kurs."</p>";
+        echo "<table id='myTable'>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th>Nachname</th>";
+        echo "<th>Vorname</th>";
+        echo "<th>Geburtsdatum</th>";
+        echo "<th>Note hinzufügen</th>";
+        echo "</tr>";
+        echo "</thead>";
+
+        test($liste, $kurs);
+
+        echo "</table>";
     }
     else
-    {
-        buildList($kurs);
-        $liste = unserialize($_SESSION[$kurs]);
-    }
-    $array = $liste->readList();
-    ?>
-    <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
-    <?php
-    echo "<table id='myTable'>";
-    echo "<tr>";
-    echo "<th>Nachname</th>";
-    echo "<th>Vorname</th>";
-    echo "<th>Geburtsdatum</th>";
-    echo "<th>Note hinzufügen</th>";
-    echo "</tr>";
-    foreach ($array as $row)
-    {
-        echo "<tr>";
-        echo "<td id='id' style='display: none'>".$row[3]."</td>";
-        echo "<td id='last' class='dontTouchThis'>";
-        echo "<a href='grades.php?id=".$row[3]."&class=".$kurs."'>".$row[1]."</a>";
-        echo "</td>";
-        echo "<td id='first'>";
-        echo $row[0];
-        echo "</td>";
-        echo "<td id='birth'>";
-        echo DB::convertDate($row[2]);
-        echo "</td>";
-        echo "<td class='dontTouchThis'>";
-        echo "<a href='newGrade.php?id=".$row[3]."&class=".$kurs."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
-        echo "</td>";
-        echo "</tr>";
-    }
-    echo "</table>";
-    echo "<pre>";
-/*    highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");*/
-    var_dump($liste);
-    echo "</pre>";
-}
-else
-    {
-    $sql = "SELECT kursName FROM kurs";
-    $result = $PDO->query($sql);
-    echo "<table id='myTable'>";
-        echo "<th>Klasse</th>";
-        foreach ($result as $item)
         {
-            echo "<tr>";
-            echo "<td>";
-            echo "<a href='index.php?id=" . $item['kursName'] . "'>" . $item['kursName'] . "</a>";
-            echo "</td>";
-            echo "</tr>";
-        }
-    echo "</table>";
-}
+        $sql = "SELECT kursName FROM kurs";
+        $result = $PDO->query($sql);
+        echo "<table id='Table'>";
+            echo "<th>Klasse</th>";
+            foreach ($result as $item)
+            {
+                echo "<tr>";
+                echo "<td>";
+                echo "<a href='index.php?id=" . $item['kursName'] . "'>" . $item['kursName'] . "</a>";
+                echo "</td>";
+                echo "</tr>";
+            }
+        echo "</table>";
+    }
 ?>
 
 <div id="dialog" title="Schüler bearbeiten" style="display: none;">
@@ -215,18 +179,19 @@ else
                 duration: 1000
             }
         });
+    });
 
-        $( "#myTable tr" ).not(':first, tr > td.dontTouchThis > a').click( function(e) {
-            var date = $(e.currentTarget).find("#birth").text();
+    function makeTrClickableAgain(e){
+
+            var date = $(e).find("#birth").text();
             var newdate = date.split(".").reverse().join("-");
-            $("input#id").val($(e.currentTarget).find("#id").text());
-            $("input#firstName").val($(e.currentTarget).find("#first").text());
-            $("input#lastName").val($(e.currentTarget).find("#last").text());
+            $("input#id").val($(e).find("#id").text());
+            $("input#firstName").val($(e).find("#first").text());
+            $("input#lastName").val($(e).find("#last").text());
             $("input#bday").val(newdate);
             $("select option[value='<?php echo $liste->getId() ?>']").attr('selected', 'selected');
             $( "#dialog" ).dialog( "open" );
-        });
-    });
+    }
 
     function updateStudent() {
         const id = $("input[type=hidden]#id").val();
@@ -244,17 +209,13 @@ else
                     last: lastName,
                     birth: bday,
                     course: courseKey,
-                    studentID: id
+                    studentID: id,
+                    submit: 'submit'
                 },
             dataType: "html",
             success: function (data) {
-                // $(".studentOutputTable").prepend('' +
-                //     '<tr>' +
-                //     '<td class="last">'+lastName+'</td>' +
-                //     '<td class="first">'+firstName+'</td>' +
-                //     '<td class="birth">'+bday+'</td>' +
-                //     '<td><a href="newGrade.php?id='+id+'&class='+course+'">Noten für '+firstName + lastName+' eintragen</a></td>' +
-                //     '</tr>');
+                $("#myTbody").remove();
+                $("#myTable").append(data);
                 console.log("yay");
                 console.log(data);
                 $( "#dialog" ).dialog( "close" );

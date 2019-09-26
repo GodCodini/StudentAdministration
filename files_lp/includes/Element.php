@@ -18,7 +18,7 @@ class Element
     private $next;
     private $data;
 
-    public function __construct($data)
+    public function __construct(Student $data)
     {
         $this->data = $data;
     }
@@ -83,7 +83,6 @@ class Element
         $test_id = $data->getStudentById($id);
         if ($id == $test_id[0])
         {
-            echo "Element gefunden";
             return $test_id;
         }
         else

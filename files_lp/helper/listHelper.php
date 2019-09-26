@@ -337,14 +337,53 @@ function addgradeKey($gradeKey,
  * Funktion um eine Liste zu sortieren und wieder in der Session zu speichern.
  *
  * @param $name
- * @return DoublyLinkedList
  */
-function sortList($name):DoublyLinkedList
+function sortList($name)
 {
+    /**
+     * @var $liste DoublyLinkedList
+     */
     $liste = unserialize($_SESSION[$name]);
     $newList = $liste->ListSorter($liste);
     $_SESSION[$name] = serialize($newList);
-    return $newList;
+    test($newList, $name);
+}
+
+/**
+ * @param $liste DoublyLinkedList
+ * @param $kurs
+ */
+function test($liste, $kurs)
+{
+
+    $array = $liste->readList();
+    echo "<tbody id='myTbody'>";
+    foreach ($array as $row)
+    {
+
+        echo "<tr onclick='makeTrClickableAgain(this)'>";
+        echo "<td id='id' style='display: none'>".$row[3]."</td>";
+        echo "<td id='last' class='dontTouchThis'>";
+        echo "<a href='grades.php?id=".$row[3]."&class=".$kurs."'>".$row[1]."</a>";
+        echo "</td>";
+        echo "<td id='first'>";
+        echo $row[0];
+        echo "</td>";
+        echo "<td id='birth'>";
+        echo DB::convertDate($row[2]);
+        echo "</td>";
+        echo "<td class='dontTouchThis'>";
+        echo "<a href='newGrade.php?id=".$row[3]."&class=".$kurs."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
+        echo "</td>";
+        echo "</tr>";
+
+    }
+    echo "</tbody>";
+    echo "<pre>";
+    /*    highlight_string("<?php\n\$liste =\n" . var_export($list, true) . ";\n?>");*/
+    var_dump("wurde aufgerufen");
+    echo "<br>";
+    echo "</pre>";
 }
 // TODO funktionen neu anpassen
 //

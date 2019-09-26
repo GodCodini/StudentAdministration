@@ -5,6 +5,7 @@ include_once "files_lp/includes/DoublyLinkedList.php";
 include_once "files_lp/includes/Element.php";
 include_once "files_lp/includes/Student.php";
 include_once "files_lp/helper/listHelper.php";
+/* @var $liste DoublyLinkedList */
 
 $first = $_POST['first'];
 $last = $_POST['last'];
@@ -27,6 +28,8 @@ $student[1]->setBday($birth);
 $student[1]->setClass($course);
 $student[1]->save();
 
+$liste->setSorted(false);
 $_SESSION[$className] = serialize($liste);
 
-echo json_encode($student[1]);
+
+echo test($className);
