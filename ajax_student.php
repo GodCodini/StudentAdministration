@@ -32,4 +32,4 @@ $liste->setSorted(false);
 $_SESSION[$className] = serialize($liste);
 
 
-echo test($className);
+echo test($liste, $className);

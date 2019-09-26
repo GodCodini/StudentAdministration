@@ -55,15 +55,16 @@ if (isset($_POST['submit'])) {
     }
 }
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-$sql = "SELECT typ.Fachname FROM typ
-        LEFT JOIN fach f ON typ.idTyp = f.Typ_idTyp
-        LEFT JOIN kurs k ON f.Kurs_id_Kurs = k.id_Kurs
-        LEFT JOIN schueler s ON k.id_Kurs = s.Kurs_id_Kurs
-        WHERE s.id_Schueler = ?";
+$sql = "SELECT Vorname, Nachname FROM schueler
+        WHERE id_Schueler = ?";
+$pre = $PDO->prepare($sql);
+$pre->execute(array($id));
+$result = $pre->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="centerThis">
     <a href="index.php?id=<?= $class ?>">Zurück zur Klasse <?= $class ?></a>
+    <p>Noten für <?= $result[0]['Vorname'] ?> <?= $result[0]['Nachname']?></p>
     <form method="post" action="">
         <input name="id" type="hidden" value="<?= $id; ?>">
         <ul class="form-style-1">
