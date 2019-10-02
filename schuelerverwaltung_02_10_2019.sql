@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 25. Sep 2019 um 10:44
+-- Erstellungszeit: 02. Okt 2019 um 16:24
 -- Server-Version: 10.1.25-MariaDB
 -- PHP-Version: 7.1.7
 
@@ -23,6 +23,29 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `schuelerverwaltung` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `schuelerverwaltung`;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `classes`
+--
+
+CREATE TABLE `classes` (
+  `id_classes` int(11) NOT NULL,
+  `fachFK` int(11) NOT NULL,
+  `teacherFK` int(11) NOT NULL,
+  `kursFK` int(11) NOT NULL,
+  `privilegFK` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `classes`
+--
+
+INSERT INTO `classes` (`id_classes`, `fachFK`, `teacherFK`, `kursFK`, `privilegFK`) VALUES
+(2, 1, 2, 1, 3),
+(3, 2, 3, 1, 3),
+(4, 1, 3, 25, 2);
 
 -- --------------------------------------------------------
 
@@ -69,18 +92,6 @@ INSERT INTO `kurs` (`id_Kurs`, `kursName`, `NotenschluesselTyp_idNotenschluessel
 -- --------------------------------------------------------
 
 --
--- Stellvertreter-Struktur des Views `loadallstudents`
--- (Siehe unten für die tatsächliche Ansicht)
---
-CREATE TABLE `loadallstudents` (
-`Vorname` varchar(45)
-,`Nachname` varchar(45)
-,`Geburtsdatum` date
-);
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `note`
 --
 
@@ -117,7 +128,8 @@ INSERT INTO `note` (`id_Note`, `Kommentar`, `Note`, `Prozent`, `Datum`, `Schuele
 (14, '', 3, 77, '2019-09-09', 7, 1, 1, 1, 0, 0),
 (15, 'test', 3, 68, '2019-05-14', 7, 1, 1, 1, 0, 0),
 (16, '', 2, 90, '2019-09-20', 1, 1, 1, 1, 90, 100),
-(17, '', 1, 92, '0000-00-00', 3, 1, 1, 1, 12, 13);
+(17, '', 1, 92, '0000-00-00', 3, 1, 1, 1, 12, 13),
+(18, '', 2, 84, '2019-05-12', 7, 1, 1, 1, 87, 103);
 
 -- --------------------------------------------------------
 
@@ -244,6 +256,26 @@ INSERT INTO `passwort` (`id`, `aktuellesPW`, `altesPW`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `privileg`
+--
+
+CREATE TABLE `privileg` (
+  `id_privileg` int(11) NOT NULL,
+  `privName` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `privileg`
+--
+
+INSERT INTO `privileg` (`id_privileg`, `privName`) VALUES
+(1, 'ADMIN'),
+(2, 'KLASSENLEHRER'),
+(3, 'STANDART');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `schueler`
 --
 
@@ -261,27 +293,53 @@ CREATE TABLE `schueler` (
 
 INSERT INTO `schueler` (`id_Schueler`, `Vorname`, `Nachname`, `Geburtsdatum`, `Kurs_id_Kurs`) VALUES
 (1, 'Lennart', 'Pamperin', '1996-10-11', 1),
-(2, 'Miladasdasd', 'Alshahaf', '1994-12-11', 25),
+(2, 'Milad', 'Alshahaf', '1994-12-11', 25),
 (3, 'Ralf', 'KlaÃŸen', '1979-12-26', 1),
-(4, 'Alexadsasd', 'Scheibe', '1998-04-05', 25),
+(4, 'Alex', 'Scheibe', '1998-04-05', 25),
 (5, 'Ralf', 'Klassen', '1979-12-26', 24),
-(6, 'Ralf', 'KloÃŸen', '1979-12-26', 24),
+(6, 'Ralf der 1', 'KloÃŸen', '1979-12-26', 24),
 (7, 'Milad', 'Alshahaf', '1994-12-11', 1),
-(8, 'Dominik', 'Fladung', '2019-09-10', 1),
-(9, 'Simon', 'Ulrich', '2019-08-26', 1),
-(10, 'Orhan', 'Dietze', '1997-05-12', 1),
+(8, 'Dominic', 'Fladen', '1997-09-10', 1),
+(9, 'Somin', 'Ullreich', '2019-08-26', 1),
+(10, 'Orkhan', 'Mietze', '1997-05-12', 1),
 (11, 'Tekekin', 'Yilmazka', '1996-08-28', 1),
-(12, 'Vincent', 'Pich', '1998-01-07', 1),
+(12, 'Vincente', 'Pisch', '1998-01-07', 1),
 (13, 'Milad', 'Alshahaf', '1994-12-11', 24),
 (14, 'Lennart', 'Pamperin', '1996-10-11', 24),
 (15, 'Tobias', 'Brinker', '1997-09-15', 24),
-(16, 'Ralf', 'KlaÃŸen', '1979-12-26', 25),
+(16, 'Ralfo', 'KlaÃŸen', '1979-12-26', 25),
 (17, 'Lennart', 'Pamperin', '1996-10-11', 25),
 (18, 'Tonyyyyy', 'Stark', '1970-05-29', 26),
 (19, 'Bruce', 'Banner', '1969-12-18', 26),
 (20, 'Rolf', 'KlaÃŸen', '1979-12-26', 25),
 (21, 'Relf', 'KlaÃŸen', '1979-12-26', 25),
 (22, 'Relf', 'KloÃŸen', '1979-12-26', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `teacher`
+--
+
+CREATE TABLE `teacher` (
+  `id_Teacher` int(11) NOT NULL,
+  `FirstName` varchar(200) NOT NULL,
+  `LastName` varchar(200) NOT NULL,
+  `Birthday` date NOT NULL,
+  `privileg` int(11) NOT NULL,
+  `short` varchar(5) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `teacher`
+--
+
+INSERT INTO `teacher` (`id_Teacher`, `FirstName`, `LastName`, `Birthday`, `privileg`, `short`, `login`, `password`, `email`) VALUES
+(2, 'Lennart', 'Pamperin', '1996-10-11', 1, 'PAM', 'pamplenn', '$2y$10$KHFf6vwAJIeAHJMl8VAucOUqrkUG5oQSsiR9TTLsgICeEx93FNSIy', 'pamperin@pmg.de'),
+(3, 'Ralf', 'KlaÃŸen', '1979-12-26', 3, 'KLA', 'klasralf', '$2y$10$BNWaDzsYjPAn5vX4WltNv.KMXXH69fnDJ5Z9GtnUgNHZ4JmADg7Yu', 'klassen@pmg.de');
 
 -- --------------------------------------------------------
 
@@ -302,18 +360,19 @@ INSERT INTO `typ` (`idTyp`, `Fachname`) VALUES
 (1, 'Anwendungsentwicklung'),
 (2, 'ITSY');
 
--- --------------------------------------------------------
-
---
--- Struktur des Views `loadallstudents`
---
-DROP TABLE IF EXISTS `loadallstudents`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`pamperin`@`%` SQL SECURITY DEFINER VIEW `loadallstudents`  AS  select `s`.`Vorname` AS `Vorname`,`s`.`Nachname` AS `Nachname`,`s`.`Geburtsdatum` AS `Geburtsdatum` from (`kurs` left join `schueler` `s` on((`kurs`.`id_Kurs` = `s`.`Kurs_id_Kurs`))) where (`kurs`.`kursName` = 'FI7S') ;
-
 --
 -- Indizes der exportierten Tabellen
 --
+
+--
+-- Indizes für die Tabelle `classes`
+--
+ALTER TABLE `classes`
+  ADD PRIMARY KEY (`id_classes`),
+  ADD KEY `FachFK` (`fachFK`),
+  ADD KEY `KursFK` (`kursFK`),
+  ADD KEY `TeacherFK` (`teacherFK`),
+  ADD KEY `FKPrivileg` (`privilegFK`);
 
 --
 -- Indizes für die Tabelle `fach`
@@ -366,11 +425,26 @@ ALTER TABLE `passwort`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indizes für die Tabelle `privileg`
+--
+ALTER TABLE `privileg`
+  ADD PRIMARY KEY (`id_privileg`);
+
+--
 -- Indizes für die Tabelle `schueler`
 --
 ALTER TABLE `schueler`
   ADD PRIMARY KEY (`id_Schueler`),
   ADD KEY `fk_Schueler_Kurs1_idx` (`Kurs_id_Kurs`);
+
+--
+-- Indizes für die Tabelle `teacher`
+--
+ALTER TABLE `teacher`
+  ADD PRIMARY KEY (`id_Teacher`),
+  ADD UNIQUE KEY `teacherEmail` (`email`),
+  ADD UNIQUE KEY `login` (`login`),
+  ADD KEY `privilegFK` (`privileg`);
 
 --
 -- Indizes für die Tabelle `typ`
@@ -382,6 +456,11 @@ ALTER TABLE `typ`
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
+--
+-- AUTO_INCREMENT für Tabelle `classes`
+--
+ALTER TABLE `classes`
+  MODIFY `id_classes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT für Tabelle `fach`
 --
@@ -396,7 +475,7 @@ ALTER TABLE `kurs`
 -- AUTO_INCREMENT für Tabelle `note`
 --
 ALTER TABLE `note`
-  MODIFY `id_Note` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_Note` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT für Tabelle `notenschluessel`
 --
@@ -418,10 +497,20 @@ ALTER TABLE `notentyp`
 ALTER TABLE `passwort`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT für Tabelle `privileg`
+--
+ALTER TABLE `privileg`
+  MODIFY `id_privileg` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT für Tabelle `schueler`
 --
 ALTER TABLE `schueler`
   MODIFY `id_Schueler` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT für Tabelle `teacher`
+--
+ALTER TABLE `teacher`
+  MODIFY `id_Teacher` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT für Tabelle `typ`
 --
@@ -430,6 +519,15 @@ ALTER TABLE `typ`
 --
 -- Constraints der exportierten Tabellen
 --
+
+--
+-- Constraints der Tabelle `classes`
+--
+ALTER TABLE `classes`
+  ADD CONSTRAINT `FKPrivileg` FOREIGN KEY (`privilegFK`) REFERENCES `privileg` (`id_privileg`),
+  ADD CONSTRAINT `FachFK` FOREIGN KEY (`fachFK`) REFERENCES `fach` (`id_Fach`),
+  ADD CONSTRAINT `KursFK` FOREIGN KEY (`kursFK`) REFERENCES `kurs` (`id_Kurs`),
+  ADD CONSTRAINT `TeacherFK` FOREIGN KEY (`teacherFK`) REFERENCES `teacher` (`id_Teacher`);
 
 --
 -- Constraints der Tabelle `fach`
@@ -464,6 +562,12 @@ ALTER TABLE `notenschluessel`
 --
 ALTER TABLE `schueler`
   ADD CONSTRAINT `fk_Schueler_Kurs1` FOREIGN KEY (`Kurs_id_Kurs`) REFERENCES `kurs` (`id_Kurs`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints der Tabelle `teacher`
+--
+ALTER TABLE `teacher`
+  ADD CONSTRAINT `privilegFK` FOREIGN KEY (`privileg`) REFERENCES `privileg` (`id_privileg`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
