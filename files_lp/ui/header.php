@@ -14,7 +14,7 @@ require_once 'project_files/_config.php';
 include_once "files_lp/includes/DoublyLinkedList.php";
 include_once "files_lp/includes/Element.php";
 include_once "files_lp/includes/Student.php";
-include_once "files_lp/helper/listHelper.php";
+include_once "files_lp/functions/listHelper.php";
 
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 //$pw = $_COOKIE['password'];
@@ -57,9 +57,9 @@ $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 ?>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.css">
 
     <script type="text/javascript">
         //auto expand textarea
@@ -84,8 +84,9 @@ $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
             <li><a href="newClass.php">Klasse erstellen</a></li>
             <li><a href="newStudent.php">Schüler anlegen</a></li>
             <li><a href="newGradeKey.php">Notenschlüssel bearbeiten</a></li>
+            <li><a href="newUser.php">Lehrer hinzufügen</a></li>
+            <li><a href="logout.php">Ausloggen</a></li>
             <li><a href="debug.php">Debugseite</a></li>
         </ul>
     </div>
 </div>
-

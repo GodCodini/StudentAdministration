@@ -64,7 +64,7 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="centerThis">
     <a href="index.php?id=<?= $class ?>">Zurück zur Klasse <?= $class ?></a>
-    <p>Noten für <?= $result[0]['Vorname'] ?> <?= $result[0]['Nachname']?></p>
+    <p>Noten für <?= $result[0]['Vorname'] ?> <?= $result[0]['Nachname']?> eintragen</p>
     <form method="post" action="">
         <input name="id" type="hidden" value="<?= $id; ?>">
         <ul class="form-style-1">
@@ -175,7 +175,7 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
         }
     });
 
-    function getGrade ()
+    function getGrade()
     {
         let percent = $("#percent").val();
         let gradeKey = $("select[name=gradeKey]").val();

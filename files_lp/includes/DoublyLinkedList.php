@@ -82,6 +82,10 @@ class DoublyLinkedList
         }
     }
 
+    /**
+     * @param DoublyLinkedList $liste
+     * @return DoublyLinkedList
+     */
     public function ListSorter(DoublyLinkedList $liste)
     {
         /**

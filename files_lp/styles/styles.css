@@ -1,7 +1,19 @@
-@import url('https://fonts.googleapis.com/css?family=Orbitron&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Caveat|Khand&display=swap');
+/*@import url('https://fonts.googleapis.com/css?family=Orbitron&display=swap');*/
+/*@import url('https://fonts.googleapis.com/css?family=Caveat|Khand&display=swap');*/
 
 /* COLOR SCHEME */
+
+@font-face {
+    font-family: "Khand";
+    src: url("../../fonts/Khand-Regular.ttf");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Caveat";
+    src: url("../../fonts/Caveat-Regular.ttf");
+    font-style: italic;
+}
 
 :root {
     --mainColor: dimgray;
@@ -275,6 +287,7 @@ table thead {
 
 td, th {
     padding: 10px;
+    color: #666;
 }
 
 tr {
@@ -489,4 +502,12 @@ select{
 }
 .form-style-1 .required{
     color:red;
+}
+
+#className {
+    margin-left: 50%;
+    margin-right: 40%;
+    font-size: 30px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
 }

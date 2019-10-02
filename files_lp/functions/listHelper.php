@@ -337,6 +337,8 @@ function addgradeKey($gradeKey,
  * Funktion um eine Liste zu sortieren und wieder in der Session zu speichern.
  *
  * @param $name
+ *
+ * @return DoublyLinkedList
  */
 function sortList($name)
 {
@@ -346,23 +348,34 @@ function sortList($name)
     $liste = unserialize($_SESSION[$name]);
     $newList = $liste->ListSorter($liste);
     $_SESSION[$name] = serialize($newList);
-    test($newList, $name);
+    return $newList;
 }
 
 /**
  * @param $liste DoublyLinkedList
  * @param $kurs
+ * @param $sort
  */
-function test($liste, $kurs)
+function printList($liste, $kurs, $sort = false)
 {
+    if ($sort == true)
+    {
+        $sorted = sortList($kurs);
+        $array = $sorted->readList();
+        $sortVal = 1;
+    }
+    else
+    {
+        $array = $liste->readList();
+        $sortVal = 0;
+    }
 
-    $array = $liste->readList();
     echo "<tbody id='myTbody'>";
     foreach ($array as $row)
     {
-
         echo "<tr onclick='makeTrClickableAgain(this)'>";
         echo "<td id='id' style='display: none'>".$row[3]."</td>";
+        echo "<td id='sorted' style='display: none'>".$sortVal."</td>";
         echo "<td id='last' class='dontTouchThis'>";
         echo "<a href='grades.php?id=".$row[3]."&class=".$kurs."'>".$row[1]."</a>";
         echo "</td>";
@@ -376,12 +389,19 @@ function test($liste, $kurs)
         echo "<a href='newGrade.php?id=".$row[3]."&class=".$kurs."'>Noten für ".$row[0]." ".$row[1]." eintragen</a>";
         echo "</td>";
         echo "</tr>";
-
     }
     echo "</tbody>";
+//    echo "<pre>";
+/*        highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");*/
+//    var_dump($liste);
+//    echo "<br>";
+//    echo "</pre>";
+}
+
+function dump($param)
+{
     echo "<pre>";
-    /*    highlight_string("<?php\n\$liste =\n" . var_export($list, true) . ";\n?>");*/
-    var_dump("wurde aufgerufen");
+    var_dump($param);
     echo "<br>";
     echo "</pre>";
 }

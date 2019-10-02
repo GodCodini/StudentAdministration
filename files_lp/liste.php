@@ -4,7 +4,7 @@ session_start();
 include_once 'includes/DoublyLinkedList.php';
 include_once 'includes/Student.php';
 include_once 'includes/Element.php';
-include_once 'helper/listHelper.php';
+include_once 'functions/listHelper.php';
 include_once '../project_files/_config.php';
 //$pw = $_COOKIE['password'];
 //$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');

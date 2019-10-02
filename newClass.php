@@ -34,6 +34,8 @@ if (isset($_POST['senden'])) {
     }
 
 }
+
+//TODO Fächer zu Klassen hinzufügen
 ?>
 
 <form class="form-style-7" method="post" action="">
@@ -49,7 +51,6 @@ if (isset($_POST['senden'])) {
             <select name="gradeKey" id="gradeKey">
                 <?php
                 try {
-                    $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
                     $sql = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
                     foreach ($PDO->query($sql) as $row) {
                         echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";

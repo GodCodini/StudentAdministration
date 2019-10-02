@@ -9,110 +9,75 @@
  */
 include_once 'files_lp/ui/header.php';
 
-//$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-//$pw = $_COOKIE['password'];
-//var_dump($pw);
-//$redirect_after_login = 'index.php';
-//
-//$sql = "SELECT (aktuellesPW) FROM passwort";
-//$statement = $PDO->query($sql);
-//$result = $statement->fetch(PDO::FETCH_ASSOC);
-//$aktuellesPW = $result['aktuellesPW'];
-////wenn das passwort geändert wurde, cookie aktualisieren
-//if (isset($_GET['succsess']))
-//{
-//    if ($_GET['succsess'] == "pwupdated")
-//    {
-//        $remember_password = strtotime('+1 days');
-//        $sql = "SELECT (aktuellesPW) FROM passwort";
-//        $statement = $PDO->query($sql);
-//        $result = $statement->fetch(PDO::FETCH_ASSOC);
-//        $aktuellePW = $result['aktuellesPW'];
-//        setcookie("password", $aktuellePW, $remember_password);
-//        header('Refresh:5;url=./admin.php?succsess=pwupdate');
-//    }
-//}
-//elseif (empty($_COOKIE['password']))
-//{
-//    //Wenn der Cookie leer ist oder das falsche Passwort hat, redirect zur login.php
-//    header('Location: ./login.php');
-//    exit;
-//}
-//elseif ($pw != $aktuellesPW)
-//{
-//    header('Location: ./login.php');
-//    exit;
-//}
-//else
-//    {
-//        header("Location: index.php");
-//    }
-//error_reporting(E_ERROR | E_PARSE);
-
-if (isset($_GET['id']) AND isset($_GET['sort']))
+error_reporting(E_ERROR | E_PARSE);
+if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
 {
-    $kurs = strtoupper($_GET['id']);
-    $sort = $_GET['sort'];
-    if (isset($_SESSION[$kurs]))
-    {
-        $liste = unserialize($_SESSION[$kurs]);
-    }
-    else
-    {
-        buildList($kurs);
-        $liste = unserialize($_SESSION[$kurs]);
-    }
-    echo "<p id='class'>".$kurs."</p>";
-    echo "<table id='myTable'>";
-    echo "<thead>";
-    echo "<tr>";
-    echo "<th>Nachname</th>";
-    echo "<th>Vorname</th>";
-    echo "<th>Geburtsdatum</th>";
-    echo "<th>Note hinzufügen</th>";
-    echo "</tr>";
-    echo "</thead>";
+    $userRight = $_SESSION['UserRight'];
+    $userLogin = $_SESSION['UserLogin'];
 
-
-    sortList($kurs);
-
-    echo "</table>";
-}
-    elseif (isset($_GET['id']))
+    if ($userRight == "ADMIN")
     {
-        $kurs = strtoupper($_GET['id']);
-        if (isset($_SESSION[$kurs]))
+        if (isset($_GET['id']) AND isset($_GET['sort']))
         {
-            $liste = unserialize($_SESSION[$kurs]);
+            $kurs = strtoupper($_GET['id']);
+            $sort = $_GET['sort'];
+            if (isset($_SESSION[$kurs]))
+            {
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            else
+            {
+                buildList($kurs);
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            echo "<p id='className'> Klasse ".$kurs."</p>";
+            echo "<table id='myTable'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Nachname</th>";
+            echo "<th>Vorname</th>";
+            echo "<th>Geburtsdatum</th>";
+            echo "<th>Note hinzufügen</th>";
+            echo "</tr>";
+            echo "</thead>";
+            printList($liste, $kurs, true);
+            echo "</table>";
+        }
+        elseif (isset($_GET['id']))
+        {
+            $kurs = strtoupper($_GET['id']);
+            if (isset($_SESSION[$kurs]))
+            {
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            else
+            {
+                buildList($kurs);
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            ?>
+            <p id='className'>Klasse <?= $kurs ?></p>
+            <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
+            <?php
+            echo "<table id='myTable'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Nachname</th>";
+            echo "<th>Vorname</th>";
+            echo "<th>Geburtsdatum</th>";
+            echo "<th>Note hinzufügen</th>";
+            echo "</tr>";
+            echo "</thead>";
+
+            printList($liste, $kurs);
+
+            echo "</table>";
         }
         else
         {
-            buildList($kurs);
-            $liste = unserialize($_SESSION[$kurs]);
-        }
-        ?>
-        <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
-        <?php
-        echo "<p id='class'>".$kurs."</p>";
-        echo "<table id='myTable'>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th>Nachname</th>";
-        echo "<th>Vorname</th>";
-        echo "<th>Geburtsdatum</th>";
-        echo "<th>Note hinzufügen</th>";
-        echo "</tr>";
-        echo "</thead>";
-
-        test($liste, $kurs);
-
-        echo "</table>";
-    }
-    else
-        {
-        $sql = "SELECT kursName FROM kurs";
-        $result = $PDO->query($sql);
-        echo "<table id='Table'>";
+            $sql = "SELECT kursName FROM kurs";
+            $result = $PDO->query($sql);
+            echo "<table id='Table'>";
             echo "<th>Klasse</th>";
             foreach ($result as $item)
             {
@@ -122,13 +87,103 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
                 echo "</td>";
                 echo "</tr>";
             }
-        echo "</table>";
+            echo "</table>";
+        }
     }
+    else
+    {
+        if (isset($_GET['id']) AND isset($_GET['sort']))
+        {
+            $kurs = strtoupper($_GET['id']);
+            $sort = $_GET['sort'];
+            if (isset($_SESSION[$kurs]))
+            {
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            else
+            {
+                buildList($kurs);
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            echo "<p id='className'> Klasse ".$kurs."</p>";
+            echo "<table id='myTable'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Nachname</th>";
+            echo "<th>Vorname</th>";
+            echo "<th>Geburtsdatum</th>";
+            echo "<th>Note hinzufügen</th>";
+            echo "</tr>";
+            echo "</thead>";
+            printList($liste, $kurs, true);
+            echo "</table>";
+        }
+        elseif (isset($_GET['id']))
+        {
+            $kurs = strtoupper($_GET['id']);
+            if (isset($_SESSION[$kurs]))
+            {
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            else
+            {
+                buildList($kurs);
+                $liste = unserialize($_SESSION[$kurs]);
+            }
+            ?>
+            <p id='className'>Klasse <?= $kurs ?></p>
+            <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
+            <?php
+            echo "<table id='myTable'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Nachname</th>";
+            echo "<th>Vorname</th>";
+            echo "<th>Geburtsdatum</th>";
+            echo "<th>Note hinzufügen</th>";
+            echo "</tr>";
+            echo "</thead>";
+
+            printList($liste, $kurs);
+
+            echo "</table>";
+        }
+        else
+        {
+            //TODO Query nach benutzerrecht anpassen (= zugriff beschränken)
+            $sql = "SELECT kursName FROM kurs
+                    LEFT JOIN classes c on kurs.id_Kurs = c.kursFK
+                    LEFT JOIN teacher t on c.teacherFK = t.id_Teacher
+                    WHERE t.login = ?";
+            $result = $PDO->prepare($sql);
+            $result->execute(array($userLogin));
+            $array = $result->fetchAll(PDO::FETCH_ASSOC);
+            echo "<table id='Table'>";
+            echo "<th>Klasse</th>";
+            foreach ($array as $item)
+            {
+                echo "<tr>";
+                echo "<td>";
+                echo "<a href='index.php?id=" . $item["kursName"] . "'>" . $item["kursName"] . "</a>";
+                echo "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        }
+    }
+}
+else
+{
+    header("Location: login.php");
+}
+
+
 ?>
 
 <div id="dialog" title="Schüler bearbeiten" style="display: none;">
     <form class="form-style-7" id="updateStudent" method="post" action="">
         <input type="hidden" name="id" id="id">
+        <input type="hidden" name="sorted" id="sorted">
         <ul>
             <li>
                 <label for="name">Vorname</label>
@@ -149,7 +204,6 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
                 <label for="name">Klasse</label>
                 <select class="neueKlasseInput" name="class" id="class">
                     <?php
-                    $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
                     $sql = "SELECT id_kurs, kursName FROM kurs";
                     foreach ($PDO->query($sql) as $row)
                     {
@@ -181,11 +235,12 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
         });
     });
 
-    function makeTrClickableAgain(e){
-
+    function makeTrClickableAgain(e)
+    {
             var date = $(e).find("#birth").text();
             var newdate = date.split(".").reverse().join("-");
             $("input#id").val($(e).find("#id").text());
+            $("input#sorted").val($(e).find("#sorted").text());
             $("input#firstName").val($(e).find("#first").text());
             $("input#lastName").val($(e).find("#last").text());
             $("input#bday").val(newdate);
@@ -193,8 +248,10 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
             $( "#dialog" ).dialog( "open" );
     }
 
-    function updateStudent() {
+    function updateStudent()
+    {
         const id = $("input[type=hidden]#id").val();
+        const sorted = $("input[type=hidden]#sorted").val();
         const firstName = $("#firstName").val();
         const lastName = $("#lastName").val();
         const bday = $("#bday").val();
@@ -210,7 +267,7 @@ if (isset($_GET['id']) AND isset($_GET['sort']))
                     birth: bday,
                     course: courseKey,
                     studentID: id,
-                    submit: 'submit'
+                    sorted: sorted
                 },
             dataType: "html",
             success: function (data) {

@@ -53,7 +53,6 @@ if (isset($_POST['submit'])) {
                 <label for="name">Klasse</label>
                 <select class="neueKlasseInput" name="class" id="class">
                     <?php
-                    $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
                     $sql = "SELECT id_kurs, kursName FROM kurs";
                     foreach ($PDO->query($sql) as $row)
                     {
