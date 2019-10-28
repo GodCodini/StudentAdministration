@@ -176,8 +176,6 @@ else
 {
     header("Location: login.php");
 }
-
-
 ?>
 
 <div id="dialog" title="Schüler bearbeiten" style="display: none;">

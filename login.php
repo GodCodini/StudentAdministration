@@ -1,24 +1,4 @@
 <?php
-//$pdo = new PDO('mysql:host=localhost;dbname=schuelerverwaltung', 'root', '');
-//$redirect_after_login = 'index.php';
-//$remember_password = strtotime('+1 days');
-////Wenn passwort korrekt, speichert cookie mit passwort für einen Tag
-//
-//if (isset($_POST['password'])) {
-//
-//    $pw = $_POST['password'];
-//    $sql = "SELECT (aktuellesPW) FROM passwort";
-//    $statement = $pdo->query($sql);
-//    $result = $statement->fetch(PDO::FETCH_ASSOC);
-//    $aktuellesPW = $result['aktuellesPW'];
-//    $pw_check = password_verify($pw, $aktuellesPW);
-//
-//    if ($pw_check == true) {
-//        setcookie("password", $aktuellesPW, $remember_password);
-//        header('Location: ' . $redirect_after_login);
-//        exit;
-//    }
-//}
 
 include_once 'project_files/Database.php';
 include_once 'project_files/_config.php';
@@ -70,4 +50,3 @@ if (isset($_POST['submit']))
 </div>
 </body>
 </html>
-
