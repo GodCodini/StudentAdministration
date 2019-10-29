@@ -8,7 +8,7 @@ if (isset($_GET["id"]) AND isset($_GET['class']))
 }
 
 $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-$sql = "SELECT note.Kommentar, note.Note, note.Prozent, note.Datum, note.scoredPoints, note.maxPoints, t.Fachname, n.NotenTyp, s.Vorname, s.Nachname FROM note
+$sql = "SELECT note.Kommentar, note.Note, note.Prozent, note.Datum, note.scoredPoints, note.maxPoints, note.lehrer, f.id_Fach, t.Fachname, n.NotenTyp, s.Vorname, s.Nachname FROM note
         LEFT JOIN fach f on note.Fach_id_Fach = f.id_Fach
         LEFT JOIN typ t on f.Typ_idTyp = t.idTyp
         LEFT JOIN notentyp n on note.NotenTyp_idNotenTyp = n.idNotenTyp
@@ -28,6 +28,7 @@ echo "<th>Datum</th>";
 echo "<th>Fachname</th>";
 echo "<th>Notentyp</th>";
 echo "<th>Kommentar</th>";
+echo "<th>Lehrer/Kürzel</th>";
 echo "</tr>";
 foreach ($result as $row) {
     echo "<tr>";
@@ -52,6 +53,31 @@ foreach ($result as $row) {
     echo "<td>";
     echo "<p>".$row['Kommentar']."</p>";
     echo "</td>";
+    echo "<td>";
+    echo "<p>".$row['lehrer']."</p>";
+    echo "</td>";
     echo "</tr>";
 }
 echo "</table>";
+
+$daten = "SELECT note, prozent FROM note WHERE Schueler_id_Schueler = ? AND Fach_id_Fach = ?";
+$prepare = $PDO->prepare($daten);
+$prepare->execute(array($id, $result[0]['id_Fach']));
+$data = $prepare->fetchAll(PDO::FETCH_ASSOC);
+$anzahl = count($data);
+$percent = 0;
+$grade = 0;
+for($i = 0; $i < $anzahl; $i++)
+{
+    $percent += $data[$i]['prozent'];
+}
+for($i = 0; $i < $anzahl; $i++)
+{
+    $grade += $data[$i]['note'];
+}
+
+$finalPercent = round($percent / $anzahl, 2, PHP_ROUND_HALF_UP);
+$finalGrade = round($grade / $anzahl, 0, PHP_ROUND_HALF_UP);
+
+echo "Durchschnittlicher Prozentwert: ".$finalPercent."<br>";
+echo "Durchschnittliche Note: ".$finalGrade;

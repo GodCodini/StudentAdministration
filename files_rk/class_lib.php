@@ -2,7 +2,7 @@
 
 require '_config.php';
 
-class Student {
+class Schueler {
 
 	public $id, $vorname, $nachname, $geburtsdatum, $email, $klasse, $schuelerKlasseFKval;
 

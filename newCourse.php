@@ -10,7 +10,7 @@
 
 include_once 'files_lp/ui/header.php';
 
-
+//TODO neuen Kurs anlegen und von grade ändern
 if (isset($_GET))
 {
     if (isset($_GET['class']))

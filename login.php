@@ -9,7 +9,7 @@ if (isset($_POST['submit']))
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $sql = "SELECT password, privileg, privName from teacher
+    $sql = "SELECT password, privileg, privName, short from teacher
         LEFT JOIN privileg ON teacher.privileg = privileg.id_privileg
         WHERE login = ?";
 
@@ -24,6 +24,7 @@ if (isset($_POST['submit']))
         session_start();
         $_SESSION['UserLogin'] = $username;
         $_SESSION['UserRight'] = $fetch[0]['privName'];
+        $_SESSION['UserShort'] = $fetch[0]['short'];
         header('Location: index.php?login=sucsess');
     }
     else

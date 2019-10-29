@@ -44,8 +44,9 @@ if (isset($_POST['submit'])) {
     $comment = $_POST['comment'];
     $scored = $_POST['scored'];
     $max = $_POST['max'];
+    $short = $_SESSION['UserShort'];
 
-    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $scored, $max, $comment);
+    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $scored, $max, $short, $comment);
     if ($return)
     {
         header("Location: ./newGrade.php?id=".$id."&class=".$class."&succsess=grade");
@@ -66,16 +67,15 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
     <a href="index.php?id=<?= $class ?>">Zurück zur Klasse <?= $class ?></a>
     <p>Noten für <?= $result[0]['Vorname'] ?> <?= $result[0]['Nachname']?> eintragen</p>
     <form method="post" action="">
-        <input name="id" type="hidden" value="<?= $id; ?>">
         <ul class="form-style-1">
             <li><label>Erreichte/Maximale Punkte</label><input type="number" required step="0.5" id="scored" name="scored" class="field-divided calc" placeholder="Erreicht" />/<input type="number" step="0.5" id="max" name="max" class="field-divided calc" placeholder="Maximal" /></li>
             <li>
                 <label for="name">Prozent</label>
-                <input type="number" min="0" max="100" name="percent" required autocomplete="off" id="percent">
+                <input type="number" min="0" max="100" name="percent" step="0.5" required autocomplete="off" id="percent">
             </li>
             <li>
-                <label for="name">Note</label>
-                <input type="number" min="1" max="15" name="grade" required autocomplete="off" id="grade">
+                <label id="labelGrade" for="grade">Note</label>
+                <input type="number" min="1" max="15" name="grade" step="0.5" required autocomplete="off" id="grade">
             </li>
             <li>
                 <label for="name">Datum</label>
@@ -129,9 +129,9 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
                 <select name="gradeKey" required id="gradeKey">
                     <?php
                     try {
-                        $sqlGrade = "SELECT idNotenschluesselTyp, SchlusselName FROM notenschluesseltyp";
+                        $sqlGrade = "SELECT idNotenschluesselTyp, SchlusselName, is15 FROM notenschluesseltyp";
                         foreach ($PDO->query($sqlGrade) as $row) {
-                            echo "<option value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
+                            echo "<option class='".$row['is15']."' value='".$row['idNotenschluesselTyp']."'>".$row['SchlusselName']."</option>";
                         }
                     }
                     catch (Exception $e)
@@ -159,13 +159,34 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
     {
         let score = parseInt($("#scored").val());
         let max = parseInt($("#max").val());
+        let is15 = $("select[name=gradeKey] :selected").attr('class');
+        console.log(is15);
+        if (is15 == 1)
+        {
+            console.log("if");
+            $("label[for='grade']").text('Punkte')
+        }
+        else
+        {
+            console.log("else");
+            $("label[for='grade']").text('Note')
+        }
         if (max)
         {
-            if (score <= max)
+            if (score < max)
             {
-                let calc = Math.round((score / max) * 100);
-                $("#percent").val(calc);
-                getGrade();
+                if (score > 0)
+                {
+                    let calc = Math.round((score / max) * 100);
+                    $("#percent").val(calc);
+                    getGrade();
+                }
+                else
+                {
+                    $("#percent").val(0);
+                    getGrade()
+                }
+
             }
             else
             {
@@ -179,6 +200,7 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
     {
         let percent = $("#percent").val();
         let gradeKey = $("select[name=gradeKey]").val();
+
 
         $.ajax({
             url: "ajax_grades.php",
@@ -195,7 +217,7 @@ $result = $pre->fetchAll(PDO::FETCH_ASSOC);
             error: function (data)
             {
                 console.log(data);
-                alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+                alert("Ein Fehler beim errechnen der Note ist aufgetreten. Bitte versuchen Sie es erneut.");
             }
         })
     }

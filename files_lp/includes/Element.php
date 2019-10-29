@@ -11,7 +11,6 @@
 require_once 'Student.php';
 require_once 'DoublyLinkedList.php';
 
-
 class Element
 {
     private $prev;

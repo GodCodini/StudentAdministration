@@ -8,8 +8,8 @@ require_once 'project_files/_config.php';
 /**
  * Funktion die ein leeres Listenobjekt erstellt und in der Session speichert.
  *
- * @param $name
- * @param $key
+ * @param $name, Name der Klasse
+ * @param $key, NotenschlüsselID
  * @return int
  */
 function createList($name, $key)
@@ -30,6 +30,7 @@ function createList($name, $key)
     }
     $liste = new DoublyLinkedList($name, $key, $id);
     $_SESSION[$name] = serialize($liste);
+    return 1;
 }
 
 /**
@@ -135,10 +136,11 @@ function addStudent($firstName, $lastName, $bday, $class)
  * @param $gradeKey
  * @param $scored
  * @param $max
+ * @param $short
  * @param null $comment
  * @return bool
  */
-function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $comment = null)
+function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $short,  $comment = null)
 {
     $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
     try
@@ -158,10 +160,10 @@ function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey,
 
     try
     {
-        $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp, notenschluesselTyp_Id, scoredPoints, maxPoints)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp, notenschluesselTyp_Id, scoredPoints, maxPoints, lehrer)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $exe = $PDO->prepare($sql);
-        $return = $exe->execute(array($comment, $grade[0]['entspricht'], $percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max));
+        $return = $exe->execute(array($comment, $grade[0]['entspricht'], $percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $short));
         if ($return)
         {
             return 1;
@@ -251,11 +253,12 @@ function addgradeKey($gradeKey,
     $count = func_num_args() - 1;
     $new_count = $count / 2;
     $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+    $is15 = ($count > 6 ? 1 : 0);
     try
     {
-        $sql = "INSERT INTO notenschluesseltyp (SchlusselName, isGlobal) VALUES (?, ?)";
+        $sql = "INSERT INTO notenschluesseltyp (SchlusselName, is15) VALUES (?, ?)";
         $exe = $PDO->prepare($sql);
-        $exe->execute(array($gradeKey, 0));
+        $exe->execute(array($gradeKey, $is15));
         $id = $PDO->lastInsertId();
     }
     catch (Exception $e)
@@ -369,6 +372,8 @@ function printList($liste, $kurs, $sort = false)
         $array = $liste->readList();
         $sortVal = 0;
     }
+
+
 
     echo "<tbody id='myTbody'>";
     foreach ($array as $row)

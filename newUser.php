@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
                 <span>Geben Sie die Email an</span>
             </li>
             <li>
-                <input type="submit" name="submit" value="Lehrer eintragen" >
+                <input type="submit" name="submit" value="Lehrer eintragen">
             </li>
         </ul>
     </form>

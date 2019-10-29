@@ -9,7 +9,7 @@
  */
 include_once 'files_lp/ui/header.php';
 
-error_reporting(E_ERROR | E_PARSE);
+//error_reporting(E_ERROR | E_PARSE);
 if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
 {
     $userRight = $_SESSION['UserRight'];
@@ -152,8 +152,8 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
         {
             //TODO Query nach benutzerrecht anpassen (= zugriff beschränken)
             $sql = "SELECT kursName FROM kurs
-                    LEFT JOIN classes c on kurs.id_Kurs = c.kursFK
-                    LEFT JOIN teacher t on c.teacherFK = t.id_Teacher
+                    JOIN classes c on kurs.id_Kurs = c.kursFK
+                    JOIN teacher t on c.teacherFK = t.id_Teacher
                     WHERE t.login = ?";
             $result = $PDO->prepare($sql);
             $result->execute(array($userLogin));

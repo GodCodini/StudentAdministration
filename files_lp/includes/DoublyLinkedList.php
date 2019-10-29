@@ -60,6 +60,7 @@ class DoublyLinkedList
         if ($this->count === 0)
         {
             echo "Noch keine Einträge vorhanden.<br>";
+            return $array;
         }
         else
         {
@@ -176,7 +177,7 @@ class DoublyLinkedList
                         $liste->start = $next;
                         $swapped = true;
                     }
-                    //bei 3 muss geprüft werden, ob prev oder next gesetzt ist und start und ende beachten
+                    //bei 3 muss geprüft werden, ob prev und/oder next gesetzt ist und start und ende beachten
                     elseif ($liste->count == 3)
                     {
                         $prevN = $start->getPrevious();
@@ -206,6 +207,10 @@ class DoublyLinkedList
                     //dasselbe wie bei 3, nur etwas mehr
                     elseif ($liste->count == 4)
                     {
+                        /**
+                         * @var $prevNo Element
+                         * @var $nextNo Element
+                         */
                         $prevNo = $start->getPrevious();
                         $nextNo = $next->getNext();
                         if (isset($prevNo) && isset($nextNo))
