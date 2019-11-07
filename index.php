@@ -30,7 +30,12 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
                 buildList($kurs);
                 $liste = unserialize($_SESSION[$kurs]);
             }
+
             echo "<p id='className'> Klasse ".$kurs."</p>";
+            ?>
+            <button class='ui-button' onclick="pickStudent('<?= $kurs ?>')">Zufälligen Schüler auswählen</button>
+            <p id="random"></p>
+            <?php
             echo "<table id='myTable'>";
             echo "<thead>";
             echo "<tr>";
@@ -58,6 +63,8 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
             ?>
             <p id='className'>Klasse <?= $kurs ?></p>
             <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
+            <button class='ui-button' onclick="pickStudent('<?= $kurs ?>')">Zufälligen Schüler auswählen</button>
+            <p id="random"></p>
             <?php
             echo "<table id='myTable'>";
             echo "<thead>";
@@ -68,9 +75,7 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
             echo "<th>Note hinzufügen</th>";
             echo "</tr>";
             echo "</thead>";
-
             printList($liste, $kurs);
-
             echo "</table>";
         }
         else
@@ -106,6 +111,11 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
                 $liste = unserialize($_SESSION[$kurs]);
             }
             echo "<p id='className'> Klasse ".$kurs."</p>";
+            ?>
+            <button class='ui-button' onclick="pickStudent('<?= $kurs ?>')">Zufälligen Schüler auswählen</button>
+            <p id="random"></p>
+            <?php
+
             echo "<table id='myTable'>";
             echo "<thead>";
             echo "<tr>";
@@ -133,6 +143,8 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
             ?>
             <p id='className'>Klasse <?= $kurs ?></p>
             <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
+            <button class='ui-button' onclick="pickStudent('<?= $kurs ?>')">Zufälligen Schüler auswählen</button>
+            <p id="random"></p>
             <?php
             echo "<table id='myTable'>";
             echo "<thead>";
@@ -232,6 +244,28 @@ else
             }
         });
     });
+
+    function pickStudent(name)
+    {
+        $.ajax({
+            type: "post",
+            url: "ajax_random.php",
+            data:
+                {
+                    name: name
+                },
+            dataType: "html",
+            success: function (data) {
+                $("#random").html("Der Zufallsgenerator hat <b>" + data + "</b> ausgewählt. Herzlichen Glückwunsch!");
+                console.log("yay");
+                console.log(data);
+            },
+            error: function (data) {
+                console.log("fail");
+                console.log(data);
+            }
+        })
+    }
 
     function makeTrClickableAgain(e)
     {

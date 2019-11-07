@@ -20,7 +20,7 @@ class DoublyLinkedList
     private $gradeKey;
     private $sorted;
     private $id;
-    //TODO Random Picker mich ignorieren lassen :-)
+
     public function __construct($name, $key, $id)
     {
         $this->name = $name;
@@ -79,7 +79,6 @@ class DoublyLinkedList
                 }
             }
             return $array;
-
         }
     }
 
@@ -406,13 +405,37 @@ class DoublyLinkedList
         return $liste;
     }
 
-//    public function resetList()
-//    {
-//        $this->count = 0;
-//        $this->start = null;
-//        $this->end = null;
-//
-//    }
+    public function resetList()
+    {
+        $this->start = null;
+        $this->end = null;
+        $this->count = 0;
+        $this->sorted = false;
+    }
+
+    public function randomPick()
+    {
+        /**
+         * @var $data Element
+         * @var $start Element
+         */
+        do
+        {
+            $count = $this->count;
+            $id = mt_rand(1, $count - 1);
+            $start = $this->start;
+            for($i = 0; $i < $id; $i++)
+            {
+                $start = $start->getNext();
+            }
+            $first = $start->getFirst();
+            $last = $start->getLast();
+            $arr = [$first, $last];
+        }
+        while ($last == "Pamperin");
+
+        return $arr;
+    }
 //
 //    public function reverseReadList()
 //    {

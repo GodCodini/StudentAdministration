@@ -339,7 +339,7 @@ function addgradeKey($gradeKey,
 /**
  * Funktion um eine Liste zu sortieren und wieder in der Session zu speichern.
  *
- * @param $name
+ * @param $name, Name der Liste
  *
  * @return DoublyLinkedList
  */
@@ -357,11 +357,11 @@ function sortList($name)
 /**
  * @param $liste DoublyLinkedList
  * @param $kurs
- * @param $sort
+ * @param $sort bool
  */
 function printList($liste, $kurs, $sort = false)
 {
-    if ($sort == true)
+    if ($sort === true)
     {
         $sorted = sortList($kurs);
         $array = $sorted->readList();
@@ -372,8 +372,6 @@ function printList($liste, $kurs, $sort = false)
         $array = $liste->readList();
         $sortVal = 0;
     }
-
-
 
     echo "<tbody id='myTbody'>";
     foreach ($array as $row)
@@ -396,13 +394,11 @@ function printList($liste, $kurs, $sort = false)
         echo "</tr>";
     }
     echo "</tbody>";
-//    echo "<pre>";
-/*        highlight_string("<?php\n\$liste =\n" . var_export($liste, true) . ";\n?>");*/
-//    var_dump($liste);
-//    echo "<br>";
-//    echo "</pre>";
 }
 
+/**
+ * @param $param, etwas was gedumpt werden soll
+ */
 function dump($param)
 {
     echo "<pre>";
@@ -410,6 +406,62 @@ function dump($param)
     echo "<br>";
     echo "</pre>";
 }
+
+/**
+ * @param $name,  Name der Liste
+ * @return string, Name des Schülers
+ */
+function randomStudent($name)
+{
+    /**
+     * @var $liste DoublyLinkedList
+     */
+    $liste = unserialize($_SESSION[$name]);
+    $student = $liste->randomPick();
+    return "".$student[0]." ".$student[1]."";
+}
+
+/**
+ * @param $name, Name der Liste
+ */
+function listReset($name)
+{
+    $liste = unserialize($_SESSION[$name]);
+    $liste->resetList();
+    $liste->readList();
+    $_SESSION[$name] = serialize($liste);
+}
+
+/**
+ * @param $id, Id des Schülers
+ * @return array, Durchschnittsnoten und Prozentzahl
+ */
+function avgGrades($id)
+{
+    $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+    $daten = "SELECT note, prozent FROM note WHERE Schueler_id_Schueler = ?";
+    $prepare = $PDO->prepare($daten);
+    $prepare->execute(array($id));
+    $data = $prepare->fetchAll(PDO::FETCH_ASSOC);
+    $anzahl = count($data);
+    $percent = 0;
+    $grade = 0;
+    for($i = 0; $i < $anzahl; $i++)
+    {
+        $percent += $data[$i]['prozent'];
+    }
+
+    for($i = 0; $i < $anzahl; $i++)
+    {
+        $grade += $data[$i]['note'];
+    }
+    $finalPercent = round($percent / $anzahl, 2);
+    $finalGrade = round($grade / $anzahl, 0);
+
+    $arr = [$finalPercent, $finalGrade];
+    return $arr;
+}
+
 // TODO funktionen neu anpassen
 //
 //function delete($data, $listName)
@@ -436,14 +488,5 @@ function dump($param)
 //    $name = $_SESSION['name'];
 //    $liste = unserialize($_SESSION[$name]);
 //    $liste->reverseReadList();
-//    $_SESSION[$name] = serialize($liste);
-//}
-//
-//function listReset()
-//{
-//    $name = $_SESSION['name'];
-//    $liste = unserialize($_SESSION[$name]);
-//    $liste->resetList();
-//    $liste->readList();
 //    $_SESSION[$name] = serialize($liste);
 //}

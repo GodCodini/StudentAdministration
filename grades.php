@@ -60,24 +60,7 @@ foreach ($result as $row) {
 }
 echo "</table>";
 
-$daten = "SELECT note, prozent FROM note WHERE Schueler_id_Schueler = ? AND Fach_id_Fach = ?";
-$prepare = $PDO->prepare($daten);
-$prepare->execute(array($id, $result[0]['id_Fach']));
-$data = $prepare->fetchAll(PDO::FETCH_ASSOC);
-$anzahl = count($data);
-$percent = 0;
-$grade = 0;
-for($i = 0; $i < $anzahl; $i++)
-{
-    $percent += $data[$i]['prozent'];
-}
-for($i = 0; $i < $anzahl; $i++)
-{
-    $grade += $data[$i]['note'];
-}
+$average = avgGrades($id);
 
-$finalPercent = round($percent / $anzahl, 2, PHP_ROUND_HALF_UP);
-$finalGrade = round($grade / $anzahl, 0, PHP_ROUND_HALF_UP);
-
-echo "Durchschnittlicher Prozentwert: ".$finalPercent."<br>";
-echo "Durchschnittliche Note: ".$finalGrade;
+echo "Durchschnittlicher Prozentwert: ".$average[0]."<br>";
+echo "Durchschnittliche Note: ".$average[1];
