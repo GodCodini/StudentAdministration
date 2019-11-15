@@ -140,7 +140,7 @@ function addStudent($firstName, $lastName, $bday, $class)
  * @param null $comment
  * @return bool
  */
-function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $short,  $comment = null)
+function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $Tid,  $comment = null)
 {
     $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
     try
@@ -160,10 +160,10 @@ function addGrade($percent, $date, $studentID, $classID, $gradeTypID, $gradeKey,
 
     try
     {
-        $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp, notenschluesselTyp_Id, scoredPoints, maxPoints, lehrer)
+        $sql = "INSERT INTO note (Kommentar, Note, Prozent, Datum, Schueler_id_Schueler, Fach_id_Fach, NotenTyp_idNotenTyp, notenschluesselTyp_Id, scoredPoints, maxPoints, teacher_FK)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $exe = $PDO->prepare($sql);
-        $return = $exe->execute(array($comment, $grade[0]['entspricht'], $percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $short));
+        $return = $exe->execute(array($comment, $grade[0]['entspricht'], $percent, $date, $studentID, $classID, $gradeTypID, $gradeKey, $scored, $max, $Tid));
         if ($return)
         {
             return 1;
