@@ -8,6 +8,8 @@
  * https://github.com/TheAmazingCodini/StudentAdministration/blob/master/LICENSE
  */
 include_once 'files_lp/ui/header.php';
+$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+
 
 if (isset($_GET))
 {
@@ -46,7 +48,13 @@ if (isset($_POST['submit'])) {
     $max = $_POST['max'];
     $short = $_SESSION['UserShort'];
 
-    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $scored, $max, $short, $comment);
+    $Tsql ="SELECT id_Teacher FROM teacher WHERE short = ?";
+    $prep = $PDO->prepare($Tsql);
+    $prep->execute(array($_SESSION["UserShort"]));
+    $Tid = $prep->fetch(PDO::FETCH_ASSOC);
+
+
+    $return = addGrade($percent, $date, $id, $course, $gradeType, $gradeKey, $scored, $max, $Tid["id_Teacher"], $comment);
     if ($return)
     {
         header("Location: ./newGrade.php?id=".$id."&class=".$class."&succsess=grade");
@@ -55,7 +63,6 @@ if (isset($_POST['submit'])) {
         header("Location: ./newGrade.php?id=".$id."&error=error");
     }
 }
-$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
 $sql = "SELECT Vorname, Nachname FROM schueler
         WHERE id_Schueler = ?";
 $pre = $PDO->prepare($sql);

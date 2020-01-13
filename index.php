@@ -63,7 +63,12 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
             }
             ?>
             <p id='className'>Klasse <?= $kurs ?></p>
-            <button class='ui-button' onclick="location.href='?id=<?= $kurs ?>&sort=true'">Sortieren</button>
+            <?php
+                if ($liste->getSorted() == false)
+                {
+                    echo "<button class='ui-button' onclick=\"location.href='?id=".$kurs."&sort=true'\">Sortieren</button>";
+                }
+            ?>
             <button class='ui-button' onclick="pickStudent('<?= $kurs ?>')">Zufälligen Schüler auswählen</button>
             <p id="random"></p>
             <?php
@@ -258,7 +263,7 @@ else
                 },
             dataType: "html",
             success: function (data) {
-                $("#random").html("Der Zufallsgenerator hat <b>" + data + "</b> ausgewählt. Herzlichen Glückwunsch!");
+                $("#random").html("Der Zufallsgenerator hat <b>" + data + "</b> ausgewählt. Herzlichen Glückwunsch! :)");
                 console.log("yay");
                 console.log(data);
             },

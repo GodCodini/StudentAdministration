@@ -35,7 +35,7 @@ class DoublyLinkedList
     /**
      * @param $data
      */
-    public function add($data)
+    public function add(Student $data)
     {
         $element = new Element($data);
         //das erste element bekommt den start und endpunkt
@@ -142,9 +142,11 @@ class DoublyLinkedList
                 $secondLastName = $next->getLast();
                 if (strcasecmp($firstLastName, $secondLastName) > 0)
                 {
+
                     $this->swapData($start, $next);
                     $swapped = true;
                 }
+
                 else
                 {
                     $start = $next;
