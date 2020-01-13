@@ -47,6 +47,7 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
             echo "</thead>";
             printList($liste, $kurs, true);
             echo "</table>";
+            dump($liste);
         }
         elseif (isset($_GET['id']))
         {
@@ -77,6 +78,7 @@ if (isset($_SESSION['UserRight']) AND isset($_SESSION['UserLogin']))
             echo "</thead>";
             printList($liste, $kurs);
             echo "</table>";
+            dump($liste);
         }
         else
         {

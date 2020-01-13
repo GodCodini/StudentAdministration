@@ -61,6 +61,11 @@ class Element
         $this->data = $data;
     }
 
+    public function getStudentObj()
+    {
+        return $this->data;
+    }
+
     public function getData()
     {
         return $this->data->getStudentData();
@@ -74,6 +79,21 @@ class Element
     public function getFirst()
     {
         return $this->data->getFirstName();
+    }
+
+    public function getBday()
+    {
+        return $this->data->getBday();
+    }
+
+    public function getClass()
+    {
+        return $this->data->getClass();
+    }
+
+    public function getId()
+    {
+        return $this->data->getId();
     }
 
     public function getStudent($id)
