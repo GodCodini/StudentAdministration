@@ -361,6 +361,9 @@ function sortList($name)
  */
 function printList($liste, $kurs, $sort = false)
 {
+    /**
+     * @var DoublyLinkedList $liste
+     */
     if ($sort === true)
     {
         $sorted = sortList($kurs);
