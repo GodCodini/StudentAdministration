@@ -87,7 +87,7 @@ class DoublyLinkedList
 
     public function quickSort(DoublyLinkedList $liste)
     {
-        $size = $liste->getSize();
+        $size = $liste->getCount();
         $randomIndex = random_int(0, $size-1);
         $pivot = $start = $this->start;
         for ($i = 0; $i < $randomIndex; $i++)
@@ -106,11 +106,12 @@ class DoublyLinkedList
             {
                 $right[] = $start;
             }
+            else
+            {
+                $left[] = $start;
+            }
             $start = $start->getNext();
-        }
-
-
-
+        } //Ende for-schleife
     }
 
     public function swapData($first, $second)
