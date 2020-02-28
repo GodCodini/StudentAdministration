@@ -6,18 +6,25 @@ if (isset($_GET["id"]) AND isset($_GET['class']))
     $id = $_GET["id"];
     $class = $_GET["class"];
 }
+try
+{
+    $PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
+    $sql = "SELECT note.Kommentar, note.Note, note.Prozent, note.Datum, note.scoredPoints, note.maxPoints, teacher.LastName, f.id_Fach, t.Fachname, n.NotenTyp, s.Vorname, s.Nachname FROM note
+            LEFT JOIN fach f on note.Fach_id_Fach = f.id_Fach
+            LEFT JOIN typ t on f.Typ_idTyp = t.idTyp
+            LEFT JOIN notentyp n on note.NotenTyp_idNotenTyp = n.idNotenTyp
+            LEFT JOIN schueler s on note.Schueler_id_Schueler = s.id_Schueler
+            LEFT JOIN teacher on note.lehrer = teacher.id_teacher
+            WHERE note.Schueler_id_Schueler = ?";
+    $pre = $PDO->prepare($sql);
+    $pre->execute(array($id));
+    $result = $pre->fetchAll(PDO::FETCH_ASSOC);
+}
+catch (Exception $e)
+{
+    echo $e->getMessage();
+}
 
-$PDO = DB::load(DBHOST, DBNAME, DBUSERNAME, DBPASSWORD);
-$sql = "SELECT note.Kommentar, note.Note, note.Prozent, note.Datum, note.scoredPoints, note.maxPoints, teacher.LastName, f.id_Fach, t.Fachname, n.NotenTyp, s.Vorname, s.Nachname FROM note
-        LEFT JOIN fach f on note.Fach_id_Fach = f.id_Fach
-        LEFT JOIN typ t on f.Typ_idTyp = t.idTyp
-        LEFT JOIN notentyp n on note.NotenTyp_idNotenTyp = n.idNotenTyp
-        LEFT JOIN schueler s on note.Schueler_id_Schueler = s.id_Schueler
-        LEFT JOIN teacher on note.teacher_FK = teacher.id_teacher
-        WHERE note.Schueler_id_Schueler = ?";
-$pre = $PDO->prepare($sql);
-$pre->execute(array($id));
-$result = $pre->fetchAll(PDO::FETCH_ASSOC);
 echo "<a href='index.php?id=$class'>Zurück zur Klasse $class</a><br><br>";
 echo "Notentabelle für ".$result[0]['Vorname']." ".$result[0]['Nachname'];
 echo "<table>";

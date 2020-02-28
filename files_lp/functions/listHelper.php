@@ -354,6 +354,20 @@ function sortList($name)
     return $newList;
 }
 
+function quick_sort_list(DoublyLinkedList $liste)
+{
+    $array_list = array();
+    $first = $liste->getStart();
+    for ($i = 0; $i < $liste->getCount();$i++)
+    {
+        $array_list[] = $first->getStudentObj();
+        $first = $first->getNext();
+    }
+
+    //$liste->quick_sort($array_list);
+    return $array_list;
+}
+
 /**
  * @param $liste DoublyLinkedList
  * @param $kurs
